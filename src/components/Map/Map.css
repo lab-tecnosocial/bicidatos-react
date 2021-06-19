@@ -1,0 +1,9 @@
+
+.map__container {
+  width: 100vw;
+  height: 50vh;
+}
+.leaflet-container {
+  width: 100%;
+  height: 93vh !important;
+}
