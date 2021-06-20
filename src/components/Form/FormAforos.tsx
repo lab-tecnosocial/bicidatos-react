@@ -29,14 +29,21 @@ const Form = ({
   };
 
   const validator = (values: PlaceFormAforosProps) => {
-    const keys = Object.keys(values);
+    const errors: any = {};
+    if(!values.fecha){
+      errors.fecha = "Requerido";
+    }
+    if(!values.tiempoInicio){
+      errors.tiempoInicio = "Requerido";
+    }
+    if(!values.tiempoFin){
+      errors.tiempoFin = "Requerido";
+    }
+    if(!values.numCiclistas){
+      errors.numCiclistas = "Requerido";
+    }
 
-    return keys.reduce((prev, curr) => {
-      if (!values[curr]) {
-        return { ...prev, [curr]: "required" };
-      }
-      return prev;
-    }, {});
+    return errors;
   };
 
   const handleOnSubmit = (values: PlaceFormAforosProps) => {
@@ -44,7 +51,7 @@ const Form = ({
       ...values,
       position: [position.lat, position.lng]
     };
-    console.log(newAforo);
+    console.log(newAforo); // objeto a subir a backend
     addNewPlace(newAforo);
     closeForm()
   }
@@ -66,42 +73,42 @@ const Form = ({
                 <label htmlFor="fecha">Fecha</label>
                 <Field id="fecha" name="fecha" />
               </div>
-              {errors.fecha && <div className="errors">Obligatoria</div>}
+              <div className="errors">{errors.fecha}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="tiempoInicio">Tiempo de inicio</label>
                 <Field id="tiempoInicio" name="tiempoInicio" />
               </div>
-              {errors.tiempoInicio && <div className="errors">Obligatoria</div>}
+              <div className="errors">{errors.tiempoInicio}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="tiempoFin">Tiempo de fin</label>
                 <Field id="tiempoFin" name="tiempoFin" />
               </div>
-              {errors.tiempoFin && <div className="errors">Obligatoria</div>}
+               <div className="errors">{errors.tiempoFin}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="numCiclistas">Número de ciclistas observados</label>
                 <Field id="numCiclistas" name="numCiclistas" />
               </div>
-              {errors.numCiclistas && <div className="errors">Obligatoria</div>}
+             <div className="errors"> {errors.numCiclistas}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="numMujeres">Número de mujeres</label>
                 <Field id="numMujeres" name="numMujeres" />
               </div>
-              {errors.numCiclistas && <div className="errors">Obligatoria</div>}
+              <div className="errors">{errors.numMujeres}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="numHombres">Número de hombres</label>
                 <Field id="numHombres" name="numHombres" />
               </div>
-              {errors.numCiclistas && <div className="errors">Obligatoria</div>}
+              <div className="errors">{errors.numHombres}</div>
             </div>
 
             <div className="button__container">

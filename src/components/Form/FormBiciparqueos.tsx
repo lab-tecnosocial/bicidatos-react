@@ -25,16 +25,37 @@ const Form = ({
     seguridadPercibida: "",
     fotografia: ""
   };
+  // Variables para validacion de fotografia
+  const FILE_SIZE = 3 * 1024 * 1024;  // solo 3MB
+  const SUPPORTED_FORMATS = [
+    "image/jpg",
+    "image/jpeg",
+    "image/png"
+  ];
 
   const validator = (values: PlaceFormBiciparqueosProps) => {
-    const keys = Object.keys(values);
+    const errors: any = {};
+    if(!values.accesibilidad){
+      errors.accesibilidad = "Requerido";
+    }
+    if(!values.senalizacion){
+      errors.senalizacion = "Requerido";
+    }
+    if(!values.seguridadPercibida){
+      errors.seguridadPercibidad = "Requerido";
+    }
+    if(!values.fotografia){
+      errors.fotografia = "Requerido";
+    }
+    if(!SUPPORTED_FORMATS.includes(values.fotografia.type) ){
+      errors.fotografia = "Debe ser una imagen .jpg o .png";
+    }
 
-    return keys.reduce((prev, curr) => {
-      if (!values[curr]) {
-        return { ...prev, [curr]: "required" };
-      }
-      return prev;
-    }, {});
+    if(values.fotografia.size > FILE_SIZE){
+      errors.fotografia = "Debe ser menor de 3MB";
+    }
+
+    return errors;
   };
 
   const handleOnSubmit = (values: PlaceFormBiciparqueosProps) => {
@@ -42,7 +63,8 @@ const Form = ({
       ...values,
       position: [position.lat, position.lng]
     };
-    console.log(newBiciparqueo);
+    console.log(newBiciparqueo);    // objeto a subir a backend
+    console.log(values.fotografia); // objeto de la imagen subida
     addNewPlace(newBiciparqueo);
     closeForm();
   }
@@ -68,7 +90,7 @@ const Form = ({
                   <option value="Privado">Privado</option>
                 </Field>
               </div>
-              {errors.accesibilidad && <div className="errors">Obligatoria</div>}
+              <div className="errors">{errors.accesibilidad}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
@@ -79,7 +101,7 @@ const Form = ({
                   <option value="No cuenta">No cuenta</option>
                 </Field>
               </div>
-              {errors.senalizacion && <div className="errors">Obligatoria</div>}
+               <div className="errors">{errors.senalizacion}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
@@ -90,15 +112,16 @@ const Form = ({
                   <option value="No seguro">No seguro</option>
                 </Field>
               </div>
-              {errors.seguridadPercibida && <div className="errors">Obligatoria</div>}
+               <div className="errors">{errors.seguridadPercibida}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="fotografia">Fotografía</label>
-                <Field id="fotografia" name="fotografia" placeholder="" />
-                {/* <input id="fotografia" name="fotografia" type="file"  className="form-control" /> */}
+                <input id="fotografia" name="fotografia" type="file"  className="form-control" onChange={(event) => {
+  setFieldValue("fotografia", event.currentTarget.files![0]);
+}} />
               </div>
-              {errors.fotografia && <div className="errors">Obligatoria</div>}
+               <div className="errors">{errors.fotografia}</div>
             </div>
 
             <div className="button__container">
@@ -137,5 +160,5 @@ interface PlaceFormBiciparqueosProps {
   accesibilidad: string;
   senalizacion: string;
   seguridadPercibida: string;
-  fotografia: any;
+  fotografia?: any;
 }

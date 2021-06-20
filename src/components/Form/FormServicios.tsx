@@ -29,15 +29,37 @@ const Form = ({
   
   };
 
-  const validator = (values: PlaceFormServiciosProps) => {
-    const keys = Object.keys(values);
+    // Variables para validacion de fotografia
+    const FILE_SIZE = 3 * 1024 * 1024;  // solo 3MB
+    const SUPPORTED_FORMATS = [
+      "image/jpg",
+      "image/jpeg",
+      "image/png"
+    ];
 
-    return keys.reduce((prev, curr) => {
-      if (!values[curr]) {
-        return { ...prev, [curr]: "required" };
-      }
-      return prev;
-    }, {});
+  const validator = (values: PlaceFormServiciosProps) => {
+    const errors: any = {};
+    if(!values.nombre){
+      errors.nombre = "Requerido";
+    }
+    if(!values.tipoServicio){
+      errors.tipoServicio = "Requerido";
+    }
+    if(!values.telefono){
+      errors.telefono = "Requerido";
+    }
+    if(!values.fotografia){
+      errors.fotografia = "Requerido";
+    }
+    if(!SUPPORTED_FORMATS.includes(values.fotografia.type) ){
+      errors.fotografia = "Debe ser una imagen .jpg o .png";
+    }
+
+    if(values.fotografia.size > FILE_SIZE){
+      errors.fotografia = "Debe ser menor de 3MB";
+    }
+
+    return errors;
   };
 
   const handleOnSubmit = (values: PlaceFormServiciosProps) => {
@@ -45,7 +67,8 @@ const Form = ({
       ...values,
       position: [position.lat, position.lng]
     };
-    console.log(newServicio);
+    console.log(newServicio);       // objeto a subir a backend
+    console.log(values.fotografia); // objeto de la imagen subida
     addNewPlace(newServicio);
     closeForm()
   }
@@ -66,7 +89,7 @@ const Form = ({
                 <label htmlFor="nombre">Nombre</label>
                 <Field id="nombre" name="nombre" />
               </div>
-              {errors.nombre && <div className="errors">Obligatoria</div>}
+               <div className="errors">{errors.nombre}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
@@ -78,36 +101,37 @@ const Form = ({
                   <option value="Llantería de bicicleta">Llantería de bicicleta</option>
                 </Field>
               </div>
-              {errors.tipoServicio && <div className="errors">Obligatoria</div>}
+              <div className="errors">{errors.tipoServicio}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="descripcion">Descripción</label>
                 <Field id="descripcion" name="descripcion" />
               </div>
-              {errors.descripcion && <div className="errors">Obligatoria</div>}
+              <div className="errors">{errors.descripcion}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="sitioWeb">Sitio web</label>
                 <Field id="sitioWeb" name="sitioWeb" />
               </div>
-              {errors.sitioWeb && <div className="errors">Obligatoria</div>}
+              <div className="errors">{errors.sitioWeb}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="telefono">Telefono</label>
                 <Field id="telefono" name="telefono" />
               </div>
-              {errors.telefono && <div className="errors">Obligatoria</div>}
+              <div className="errors">{errors.telefono}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="fotografia">Fotografía</label>
-                <Field id="fotografia" name="fotografia" placeholder="" />
-                {/* <input id="fotografia" name="fotografia" type="file"  className="form-control" /> */}
+                <input id="fotografia" name="fotografia" type="file"  className="form-control" onChange={(event) => {
+  setFieldValue("fotografia", event.currentTarget.files![0]);
+}} />
               </div>
-              {errors.fotografia && <div className="errors">Obligatoria</div>}
+              <div className="errors">{errors.fotografia}</div>
             </div>
 
             <div className="button__container">

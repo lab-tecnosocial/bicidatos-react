@@ -75,7 +75,8 @@ input {
 }
 
 .errors {
-  margin-top: 1rem;
+  margin-top: 0.2rem;
+  text-align: right;
   color: #c41c1c;
 }
 

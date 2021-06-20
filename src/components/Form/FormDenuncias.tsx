@@ -28,15 +28,37 @@ const Form = ({
   
   };
 
-  const validator = (values: PlaceFormDenunciasProps) => {
-    const keys = Object.keys(values);
+  // Variables para validacion de fotografia
+  const FILE_SIZE = 3 * 1024 * 1024;  // solo 3MB
+  const SUPPORTED_FORMATS = [
+    "image/jpg",
+    "image/jpeg",
+    "image/png"
+  ];
 
-    return keys.reduce((prev, curr) => {
-      if (!values[curr]) {
-        return { ...prev, [curr]: "required" };
-      }
-      return prev;
-    }, {});
+  const validator = (values: PlaceFormDenunciasProps) => {
+    const errors: any = {};
+    if(!values.fecha){
+      errors.fecha = "Requerido";
+    }
+    if(!values.tipoIncidente){
+      errors.tipoIncidente = "Requerido";
+    }
+    if(!values.telefono){
+      errors.telefono = "Requerido";
+    }
+    if(!values.fotografiaConf){
+      errors.fotografiaConf = "Requerido";
+    }
+    if(!SUPPORTED_FORMATS.includes(values.fotografiaConf.type) ){
+      errors.fotografiaConf = "Debe ser una imagen .jpg o .png";
+    }
+
+    if(values.fotografiaConf.size > FILE_SIZE){
+      errors.fotografiaConf = "Debe ser menor de 3MB";
+    }
+
+    return errors;
   };
 
   const handleOnSubmit = (values: PlaceFormDenunciasProps) => {
@@ -44,7 +66,9 @@ const Form = ({
       ...values,
       position: [position.lat, position.lng]
     };
-    console.log(newDenuncia);
+    console.log(newDenuncia);       // objeto a subir a backend
+    console.log(values.fotografia); // objeto de la imagen subida
+
     addNewPlace(newDenuncia);
     closeForm()
   }
@@ -66,7 +90,7 @@ const Form = ({
                 <label htmlFor="fecha">Fecha del incidente</label>
                 <Field id="fecha" name="fecha" />
               </div>
-              {errors.fecha && <div className="errors">Obligatoria</div>}
+               <div className="errors">{errors.fecha}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
@@ -82,29 +106,30 @@ const Form = ({
                   <option value="Daño a infrestructura ciclista">Daño a infrestructura ciclista</option>
                 </Field>
               </div>
-              {errors.tipoIncidente && <div className="errors">Obligatoria</div>}
+               <div className="errors">{errors.tipoIncidente}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="descripcion">Descripción</label>
                 <Field id="descripcion" name="descripcion" />
               </div>
-              {errors.descripcion && <div className="errors">Obligatoria</div>}
+              <div className="errors">{errors.descripcion}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="enlace">Enlace</label>
                 <Field id="enlace" name="enlace" />
               </div>
-              {errors.enlace && <div className="errors">Obligatoria</div>}
+               <div className="errors">{errors.enlace}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="fotografiaConf">Fotografía</label>
-                <Field id="fotografiaConf" name="fotografiaConf" placeholder="" />
-                {/* <input id="fotografiaConf" name="fotografiaConf" type="file"  className="form-control" /> */}
+                <input id="fotografiaConf" name="fotografiaConf" type="file"  className="form-control" onChange={(event) => {
+  setFieldValue("fotografia", event.currentTarget.files![0]);
+}} />
               </div>
-              {errors.fotografiaConf && <div className="errors">Obligatoria</div>}
+               <div className="errors">{errors.fotografiaConf}</div>
             </div>
 
             <div className="button__container">
