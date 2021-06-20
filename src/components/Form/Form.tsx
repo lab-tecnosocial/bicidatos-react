@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { connect } from "react-redux";
-import { addNewPlace as setPlaceFormVisibility } from "../../store/actions";
+import { setPlaceFormVisibility } from "../../store/actions";
 import { AiFillCloseCircle } from "react-icons/ai";
 import "./Form.css";
 import FormBiciparqueos from "./FormBiciparqueos";
 import FormServicios from "./FormServicios";
 import FormDenuncias from "./FormDenuncias";
 import FormAforos from "./FormAforos";
+
+
 
 
 const Form = ({
