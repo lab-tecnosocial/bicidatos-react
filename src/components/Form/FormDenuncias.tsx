@@ -40,10 +40,12 @@ const Form = ({
   };
 
   const handleOnSubmit = (values: PlaceFormDenunciasProps) => {
-    addNewPlace({
+    const newDenuncia = {
       ...values,
       position: [position.lat, position.lng]
-    });
+    };
+    console.log(newDenuncia);
+    addNewPlace(newDenuncia);
     closeForm()
   }
 

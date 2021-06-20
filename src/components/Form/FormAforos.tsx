@@ -40,10 +40,12 @@ const Form = ({
   };
 
   const handleOnSubmit = (values: PlaceFormAforosProps) => {
-    addNewPlace({
+    const newAforo = {
       ...values,
       position: [position.lat, position.lng]
-    });
+    };
+    console.log(newAforo);
+    addNewPlace(newAforo);
     closeForm()
   }
 

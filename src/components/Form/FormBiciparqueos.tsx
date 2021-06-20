@@ -38,10 +38,12 @@ const Form = ({
   };
 
   const handleOnSubmit = (values: PlaceFormBiciparqueosProps) => {
-    addNewPlace({
+    const newBiciparqueo = {
       ...values,
       position: [position.lat, position.lng]
-    });
+    };
+    console.log(newBiciparqueo);
+    addNewPlace(newBiciparqueo);
     closeForm();
   }
 

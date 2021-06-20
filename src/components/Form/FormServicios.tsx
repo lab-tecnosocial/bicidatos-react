@@ -41,10 +41,12 @@ const Form = ({
   };
 
   const handleOnSubmit = (values: PlaceFormServiciosProps) => {
-    addNewPlace({
+    const newServicio = {
       ...values,
       position: [position.lat, position.lng]
-    });
+    };
+    console.log(newServicio);
+    addNewPlace(newServicio);
     closeForm()
   }
 
