@@ -27,7 +27,7 @@ const Form = ({
     numMujeres: "",
     numHombres: ""
   };
-
+  
   const validator = (values: PlaceFormAforosProps) => {
     const errors: any = {};
     if(!values.fecha){
@@ -46,13 +46,14 @@ const Form = ({
     return errors;
   };
 
-  const handleOnSubmit = (values: PlaceFormAforosProps) => {
+  const handleOnSubmit = (values: PlaceFormAforosProps, actions: any) => {
     const newAforo = {
       ...values,
       position: [position.lat, position.lng]
     };
     console.log(newAforo); // objeto a subir a backend
     addNewPlace(newAforo);
+    actions.resetForm({});
     closeForm()
   }
 

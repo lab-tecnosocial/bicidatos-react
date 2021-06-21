@@ -5,6 +5,8 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import "./Form.css";
 import { Field, Formik, Form as FormikForm } from "formik";
 import { LatLng } from "leaflet";
+import { AnyAaaaRecord } from "dns";
+import { useRef } from "react";
 
 const Form = ({
   isVisible,
@@ -36,6 +38,8 @@ const Form = ({
     "image/png"
   ];
 
+  const fotoRef = useRef(null);
+
   const validator = (values: PlaceFormDenunciasProps) => {
     const errors: any = {};
     if(!values.fecha){
@@ -61,7 +65,7 @@ const Form = ({
     return errors;
   };
 
-  const handleOnSubmit = (values: PlaceFormDenunciasProps) => {
+  const handleOnSubmit = (values: PlaceFormDenunciasProps, actions: any) => {
     const newDenuncia = {
       ...values,
       position: [position.lat, position.lng]
@@ -70,6 +74,8 @@ const Form = ({
     console.log(values.fotografia); // objeto de la imagen subida
 
     addNewPlace(newDenuncia);
+    actions.resetForm({});
+    fotoRef.current.value = null;
     closeForm()
   }
 
@@ -127,7 +133,7 @@ const Form = ({
                 <label htmlFor="fotografiaConf">Fotografía</label>
                 <input id="fotografiaConf" name="fotografiaConf" type="file"  className="form-control" onChange={(event) => {
   setFieldValue("fotografia", event.currentTarget.files![0]);
-}} />
+}} ref={fotoRef} />
               </div>
                <div className="errors">{errors.fotografiaConf}</div>
             </div>

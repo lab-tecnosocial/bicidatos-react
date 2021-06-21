@@ -5,6 +5,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import "./Form.css";
 import { Field, Formik, Form as FormikForm } from "formik";
 import { LatLng } from "leaflet";
+import { useRef } from "react";
 
 const Form = ({
   isVisible,
@@ -37,6 +38,8 @@ const Form = ({
       "image/png"
     ];
 
+  const fotoRef = useRef(null);
+
   const validator = (values: PlaceFormServiciosProps) => {
     const errors: any = {};
     if(!values.nombre){
@@ -62,7 +65,7 @@ const Form = ({
     return errors;
   };
 
-  const handleOnSubmit = (values: PlaceFormServiciosProps) => {
+  const handleOnSubmit = (values: PlaceFormServiciosProps, actions: any) => {
     const newServicio = {
       ...values,
       position: [position.lat, position.lng]
@@ -70,6 +73,8 @@ const Form = ({
     console.log(newServicio);       // objeto a subir a backend
     console.log(values.fotografia); // objeto de la imagen subida
     addNewPlace(newServicio);
+    actions.resetForm({});
+    fotoRef.current.value = null;
     closeForm()
   }
 
@@ -129,7 +134,7 @@ const Form = ({
                 <label htmlFor="fotografia">Fotografía</label>
                 <input id="fotografia" name="fotografia" type="file"  className="form-control" onChange={(event) => {
   setFieldValue("fotografia", event.currentTarget.files![0]);
-}} />
+}} ref={fotoRef} />
               </div>
               <div className="errors">{errors.fotografia}</div>
             </div>
