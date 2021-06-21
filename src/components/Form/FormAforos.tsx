@@ -3,8 +3,14 @@ import { addNewPlace as addNewPlaceAction, setPlaceFormVisibility } from "../../
 import { Place, PlaceAforos } from "../../store/models";
 import { AiFillCloseCircle } from "react-icons/ai";
 import "./Form.css";
-import { Field, Formik, Form as FormikForm } from "formik";
+import { Field, Formik, Form as FormikForm, validateYupSchema } from "formik";
 import { LatLng } from "leaflet";
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  DatePicker,
+  TimePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
 
 const Form = ({
   isVisible,
@@ -67,47 +73,82 @@ const Form = ({
         validate={validator}
         onSubmit={handleOnSubmit}
       >
-        {({ errors, touched, isValidating, setFieldValue }) => (
+        {({ errors, touched, isValidating, setFieldValue, values}) => (
           <FormikForm>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="fecha">Fecha</label>
-                <Field id="fecha" name="fecha" />
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <Field 
+                  component={DatePicker} 
+                  id="fecha" 
+                  name="fecha" 
+                  format="dd/MM/yyyy"
+                  value={values.fecha}
+                  invalidDateMessage=""
+                  clearable
+                  onChange={
+                    value => { setFieldValue("fecha", value) }
+                  } />
+                </MuiPickersUtilsProvider>
+
               </div>
               <div className="errors">{errors.fecha}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="tiempoInicio">Tiempo de inicio</label>
-                <Field id="tiempoInicio" name="tiempoInicio" />
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <Field 
+                  component={TimePicker} 
+                  id="tiempoInicio" 
+                  name="tiempoInicio"
+                  value={values.tiempoInicio}
+                  invalidDateMessage=""
+                  ampm={false}
+                  onChange={
+                    value => { setFieldValue("tiempoInicio", value) }
+                  } />
+                </MuiPickersUtilsProvider>
               </div>
               <div className="errors">{errors.tiempoInicio}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="tiempoFin">Tiempo de fin</label>
-                <Field id="tiempoFin" name="tiempoFin" />
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <Field 
+                  component={TimePicker} 
+                  id="tiempoFin" 
+                  name="tiempoFin" 
+                  value={values.tiempoFin}
+                  invalidDateMessage=""
+                  ampm={false}
+                  onChange={
+                    value => { setFieldValue("tiempoFin", value) }
+                  } />
+                </MuiPickersUtilsProvider>
               </div>
                <div className="errors">{errors.tiempoFin}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="numCiclistas">Número de ciclistas observados</label>
-                <Field id="numCiclistas" name="numCiclistas" />
+                <Field id="numCiclistas" name="numCiclistas" type="number" min="1"/>
               </div>
              <div className="errors"> {errors.numCiclistas}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="numMujeres">Número de mujeres</label>
-                <Field id="numMujeres" name="numMujeres" />
+                <Field id="numMujeres" name="numMujeres" type="number" min="1" />
               </div>
               <div className="errors">{errors.numMujeres}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="numHombres">Número de hombres</label>
-                <Field id="numHombres" name="numHombres" />
+                <Field id="numHombres" name="numHombres" type="number" min="1" />
               </div>
               <div className="errors">{errors.numHombres}</div>
             </div>

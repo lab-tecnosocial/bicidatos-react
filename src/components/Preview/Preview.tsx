@@ -32,8 +32,8 @@ const Preview = ({ isVisible, place, closePreview }: any) => {
         {place?.enlace && <div className=""><b>Enlace:</b> {place?.enlace}</div>}
         
         {place?.fecha && <div className=""><b>Fecha:</b> {place?.fecha}</div>}
-        {place?.tipoInicio && <div className=""><b>Tipo de inicio:</b> {place?.tipoInicio}</div>}
-        {place?.tipoFin && <div className=""><b>Tipo de fin:</b> {place?.tipoFin}</div>}
+        {place?.tiempoInicio && <div className=""><b>Tiempo de inicio:</b> {place?.tiempoInicio}</div>}
+        {place?.tiempoFin && <div className=""><b>Tiempo de fin:</b> {place?.tiempoFin}</div>}
         {place?.numCiclistas && <div className=""><b>Número de ciclistas:</b> {place?.numCiclistas}</div>}
 
       </div>

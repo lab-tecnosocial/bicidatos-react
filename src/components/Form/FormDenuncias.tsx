@@ -5,8 +5,14 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import "./Form.css";
 import { Field, Formik, Form as FormikForm } from "formik";
 import { LatLng } from "leaflet";
-import { AnyAaaaRecord } from "dns";
 import { useRef } from "react";
+import DateFnsUtils from '@date-io/date-fns'; // choose your lib
+
+import {
+  DatePicker,
+  TimePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
 
 const Form = ({
   isVisible,
@@ -89,12 +95,24 @@ const Form = ({
         validate={validator}
         onSubmit={handleOnSubmit}
       >
-        {({ errors, touched, isValidating, setFieldValue }) => (
+        {({ errors, touched, isValidating, setFieldValue, values}) => (
           <FormikForm>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="fecha">Fecha del incidente</label>
-                <Field id="fecha" name="fecha" />
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <Field 
+                  component={DatePicker} 
+                  id="fecha" 
+                  name="fecha"
+                  value={values.fecha}
+                  format="dd/MM/yyyy"
+                  clarable
+                  invalidDateMessage=""
+                  onChange={
+                    value => { setFieldValue("fecha", value) }
+                  } />
+                </MuiPickersUtilsProvider>
               </div>
                <div className="errors">{errors.fecha}</div>
             </div>
