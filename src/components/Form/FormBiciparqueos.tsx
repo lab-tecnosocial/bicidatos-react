@@ -6,7 +6,9 @@ import "./Form.css";
 import { Field, Formik, Form as FormikForm } from "formik";
 import { LatLng } from "leaflet";
 import { useRef } from "react";
-
+import db, { storageRef } from "../../database/firebase";
+import {auth, provider} from "../../database/firebase";
+import { useEffect, useState } from "react";
 const Form = ({
   isVisible,
   position,
@@ -18,7 +20,16 @@ const Form = ({
   closeForm: Function;
   addNewPlace: Function;
 }) => {
-
+  const [user,setUser] = useState(null);
+  useEffect(() => {
+    auth.onAuthStateChanged(persona =>{
+      if (persona) {
+        setUser(persona);
+      }else{
+        setUser(null);
+      }
+    })
+  },[])
   const initialValues = {
     tipo: "biciparqueos",
     accesibilidad: "",
@@ -62,21 +73,57 @@ const Form = ({
   };
 
   const handleOnSubmit = (values: PlaceFormBiciparqueosProps, actions) => {
-    
-    const newBiciparqueo = {
+    if(user){
+      const newBiciparqueo = {
       ...values,
       position: [position.lat, position.lng]
     };
     console.log(newBiciparqueo);    // objeto a subir a backend
     console.log(values.fotografia); // objeto de la imagen subida
+    uploadPhotoAndData(newBiciparqueo);
     addNewPlace(newBiciparqueo);
     actions.resetForm({});
     fotoRef.current.value = null;
     closeForm();
-
+    }else{
+      alert("Necesitar iniciar sesión para subir datos.");
+    }
     
   }
-
+  const uploadPhotoAndData = (object:any) =>{
+    const map = {
+      correo_usuario:user.displayName,
+      nombre_usuario:user.email,
+      uid:user.uid
+    };
+    //Subir la imagen a Storage para obtener la url de la imagen
+    const uploadTask = storageRef.ref(`imagenesBiciparqueos/${ new Date().getTime() +"_"+object.fotografia.name}`)
+    .put(object.fotografia).then(data=>{
+      data.ref.getDownloadURL().then(url=>{
+         //Despues, Formatear la estructura del objeto con la url obtenida de la imagen
+         let biciparqueoFormated = formaterBiciparqueo(object,url);
+         //Subir datos a Firestore
+         db.collection("biciparqueos").doc(biciparqueoFormated.id).set(biciparqueoFormated).then(nada =>{
+            db.collection("conf").doc(biciparqueoFormated.id2).set(map)
+           })
+      })
+    })
+  }
+const formaterBiciparqueo = (bici:any,urlImage:string) =>{
+  let idBici = db.collection("biciparqueos").doc().id;
+  let data = {
+    id:idBici,
+    accesibilidad:bici.accesibilidad,
+    senalizacion:bici.senalizacion,
+    fotografia: urlImage,
+    latitud:bici.position[0],
+    timestamp:new Date(),
+    seguridad_percibida:bici.seguridadPercibida,
+    longitud: bici.position[1],
+    id2:db.collection("conf").doc().id
+  };
+  return data;
+}
   return (
     <div
       className={`form__container form__container--${isVisible && "active"}`}

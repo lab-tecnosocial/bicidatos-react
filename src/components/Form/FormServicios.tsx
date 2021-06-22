@@ -6,7 +6,9 @@ import "./Form.css";
 import { Field, Formik, Form as FormikForm } from "formik";
 import { LatLng } from "leaflet";
 import { useRef } from "react";
-
+import db, { storageRef } from "../../database/firebase";
+import {auth, provider} from "../../database/firebase";
+import { useEffect, useState } from "react";
 const Form = ({
   isVisible,
   position,
@@ -18,7 +20,16 @@ const Form = ({
   closeForm: Function;
   addNewPlace: Function;
 }) => {
-
+  const [user,setUser] = useState(null);
+  useEffect(() => {
+    auth.onAuthStateChanged(persona =>{
+      if (persona) {
+        setUser(persona);
+      }else{
+        setUser(null);
+      }
+    })
+  },[])
   const initialValues = {
     tipo: "servicios",
     nombre: "",
@@ -66,18 +77,59 @@ const Form = ({
   };
 
   const handleOnSubmit = (values: PlaceFormServiciosProps, actions: any) => {
-    const newServicio = {
-      ...values,
-      position: [position.lat, position.lng]
-    };
-    console.log(newServicio);       // objeto a subir a backend
-    console.log(values.fotografia); // objeto de la imagen subida
-    addNewPlace(newServicio);
-    actions.resetForm({});
-    fotoRef.current.value = null;
-    closeForm()
+    if(user){
+      const newServicio = {
+        ...values,
+        position: [position.lat, position.lng]
+      };
+      console.log(newServicio);       // objeto a subir a backend
+      console.log(values.fotografia); // objeto de la imagen subida
+      uploadPhotoAndData(newServicio);
+      addNewPlace(newServicio);
+      actions.resetForm({});
+      fotoRef.current.value = null;
+      closeForm()
+    }else{
+      alert("Necesitar iniciar sesión para subir datos.");
+    }
+   
   }
-
+  const uploadPhotoAndData = (object:any) =>{
+    const map = {
+      correo_usuario:user.displayName,
+      nombre_usuario:user.email,
+      uid:user.uid
+    };
+    //Subir la imagen a Storage para obtener la url de la imagen
+    const uploadTask = storageRef.ref(`imagenesServicios/${ new Date().getTime() +"_"+object.fotografia.name}`)
+    .put(object.fotografia).then(data=>{
+      data.ref.getDownloadURL().then(url=>{
+        //Despues, Formatear la estructura del objeto con la url obtenida de la imagen
+        let servicioFormated = formaterServicio(object,url);
+        //Subir datos a Firestore
+        db.collection("servicios").doc(servicioFormated.id).set(servicioFormated).then(nada=>{
+          db.collection("conf").doc(servicioFormated.id2).set(map)
+        })
+      })
+    })
+  }
+const formaterServicio = (serv:any,urlImage:string) =>{
+  let idserv = db.collection("servicios").doc().id;
+  let data = {
+    id:idserv,
+    descripcion:serv.descripcion,
+    nombre:serv.nombre,
+    fotografia: urlImage,
+    latitud:serv.position[0],
+    timestamp:new Date(),
+    sitioweb:serv.sitioWeb,
+    telefono: parseInt(serv.telefono),
+    tipo: serv.tipoServicio,
+    longitud: serv.position[1],
+    id2:db.collection("conf").doc().id
+  };
+  return data;
+}
   return (
     <div
       className={`form__container form__container--${isVisible && "active"}`}
@@ -101,9 +153,9 @@ const Form = ({
                 <label htmlFor="tipoServicio">Tipo de servicio</label>
                 <Field id="tipoServicio" name="tipoServicio" as="select" >
                   <option hidden >Selecciona una opción</option>
-                  <option value="Tienda de bicicleta">Tienda de bicicleta</option>
+                  <option value="Tienda de servcleta">Tienda de servcleta</option>
                   <option value="Taller de repuestos">Taller de repuestos</option>
-                  <option value="Llantería de bicicleta">Llantería de bicicleta</option>
+                  <option value="Llantería de servcleta">Llantería de servcleta</option>
                 </Field>
               </div>
               <div className="errors">{errors.tipoServicio}</div>
