@@ -7,7 +7,9 @@ import { Field, Formik, Form as FormikForm } from "formik";
 import { LatLng } from "leaflet";
 import { useRef } from "react";
 import DateFnsUtils from '@date-io/date-fns'; // choose your lib
-
+import db, { storageRef } from "../../database/firebase";
+import {auth, provider} from "../../database/firebase";
+import { useEffect, useState } from "react";
 import {
   DatePicker,
   TimePicker,
@@ -25,7 +27,16 @@ const Form = ({
   closeForm: Function;
   addNewPlace: Function;
 }) => {
-
+  const [user,setUser] = useState(null);
+  useEffect(() => {
+    auth.onAuthStateChanged(persona =>{
+      if (persona) {
+        setUser(persona);
+      }else{
+        setUser(null);
+      }
+    })
+  },[])
   const initialValues = {
     tipo: "denuncias",
     fecha: "",
@@ -60,7 +71,7 @@ const Form = ({
     if(!values.fotografiaConf){
       errors.fotografiaConf = "Requerido";
     }
-    if(!SUPPORTED_FORMATS.includes(values.fotografiaConf.type) ){
+    if(!SUPPORTED_FORMATS.includes(values.fotografiaConf) ){
       errors.fotografiaConf = "Debe ser una imagen .jpg o .png";
     }
 
@@ -72,19 +83,58 @@ const Form = ({
   };
 
   const handleOnSubmit = (values: PlaceFormDenunciasProps, actions: any) => {
-    const newDenuncia = {
-      ...values,
-      position: [position.lat, position.lng]
-    };
-    console.log(newDenuncia);       // objeto a subir a backend
-    console.log(values.fotografia); // objeto de la imagen subida
-
-    addNewPlace(newDenuncia);
-    actions.resetForm({});
-    fotoRef.current.value = null;
-    closeForm()
+    if(user){
+      const newDenuncia = {
+        ...values,
+        position: [position.lat, position.lng]
+      };
+      console.log(newDenuncia);       // objeto a subir a backend
+      console.log(values.fotografia); // objeto de la imagen subida
+      uploadPhotoAndData(newDenuncia);
+      addNewPlace(newDenuncia);
+      actions.resetForm({});
+      fotoRef.current.value = null;
+      closeForm()
+    }else{
+      alert("Necesitar iniciar sesión para subir datos.");
+    }
+    
   }
-
+  const uploadPhotoAndData = (object:any) =>{
+    //Subir la imagen a Storage para obtener la url de la imagen
+    const uploadTask = storageRef.ref(`imagenesDenuncias/${ new Date().getTime() +"_"+object.fotografia.name}`)
+    .put(object.fotografia).then(data =>{
+      data.ref.getDownloadURL().then(url=>{
+        //Despues, Formatear la estructura del objeto con la url obtenida de la imagen
+        let denunciaFormated = formaterDenuncia(object);
+        //Subir datos a Firestore
+        const map = {
+          correo_usuario:user.displayName,
+          nombre_usuario:user.email,
+          uid:user.uid,
+          fotografia:url
+        };
+        db.collection("denuncias").doc(denunciaFormated.id).set(denunciaFormated).then(nada=>{
+          db.collection("conf").doc(denunciaFormated.id2).set(map)
+        })
+      })
+    })
+  }
+const formaterDenuncia = (denu:any) =>{
+  let iddenu = db.collection("denuncias").doc().id;
+  let data = {
+    id:iddenu,
+    descripcion:denu.descripcion,
+    enlace:denu.enlace,
+    latitud:denu.position[0],
+    timestamp:new Date(),
+    fecha_incidente:denu.fecha.toString(),
+    tipo_incidente: denu.tipoIncidente,
+    longitud: denu.position[1],
+    id2:db.collection("conf").doc().id
+  };
+  return data;
+}
   return (
     <div
       className={`form__container form__container--${isVisible && "active"}`}

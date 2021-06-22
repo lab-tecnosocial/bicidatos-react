@@ -5,8 +5,8 @@ import { connect } from "react-redux";
 import { setPlacePreviewVisibility, setSelectedPlace } from "../../store/actions";
 import AddMarker from "./AddMarker";
 import "./Map.css";
-
-
+import db from "../../database/firebase";
+import {auth, provider} from "../../database/firebase";
 
 const Map = ({
   isVisible,
@@ -16,7 +16,99 @@ const Map = ({
   setPlaceForPreview,
 }: any) => {
   const defaultPosition: LatLngExpression = [-17.396, -66.153]; // Cochabamba
+  const [aforos,setAforos] = useState([] as any);
+  const [biciparqueos,setBiciparqueos] = useState([] as any);
+  const [servicios,setServicios] = useState([] as any);
+  const [denuncias,setDenuncias] = useState([] as any);
+  const [loading,setLoading] = useState(false);
+  const [user,setUser] = useState(null);
+  if(user){
+    // console.log(user);
+  }else{
+    // console.log(null);
+  }
+  useEffect(()=>{
+    auth.onAuthStateChanged(persona =>{
+      if(persona){
+        setUser(persona);
+      }else{
+        setUser(null);
+      }
+    })
+    getBiciparqueosFromFirebase();
+    getServiciosFromFirebase();
+    getDenunciasFromFirebase();
+    getAforosFromFirebase();
+  },[])
 
+  const getBiciparqueosFromFirebase = async () => {
+    const biciparqueosRef = db.collection('biciparqueos');
+    const snapshot = await biciparqueosRef.get();
+    if (snapshot.empty) {
+      console.log('No se encontraron biciparqueos.');
+      setLoading(false);
+      return;
+    }
+    let arr: any = [];
+    snapshot.forEach(doc => {
+      arr.push(doc.data());
+    });
+   const data = await  [...arr];
+    setBiciparqueos(data);
+    setLoading(false);
+  };
+
+  const getServiciosFromFirebase = async () => {
+    setLoading(true);
+    const serviciosRef = db.collection('servicios');
+    const snapshot = await serviciosRef.get();
+    if (snapshot.empty) {
+      console.log('No se encontraron servicios.');
+      setLoading(false);
+      return;
+    }
+    let arr:any = [];
+    snapshot.forEach(doc => {
+      arr.push(doc.data());
+    });
+    const data = await [...arr];
+    setServicios(data)
+    setLoading(false);
+  };
+
+  const getDenunciasFromFirebase = async () => {
+    const denunciasRef = db.collection('denuncias');
+    const snapshot = await denunciasRef.get();
+    if (snapshot.empty) {
+      console.log('No se encontraron denuncias.');
+      setLoading(false);
+      return;
+    }
+    let arr:any = [];
+    snapshot.forEach(doc => {
+      arr.push(doc.data());
+    });
+    const data = await [...arr];
+    setDenuncias(data)
+    setLoading(false);
+  };
+
+  const getAforosFromFirebase = async () => {
+    const aforosRef = db.collection('aforos');
+    const snapshot = await aforosRef.get();
+    if (snapshot.empty) {
+      console.log('No se encontraron aforos.');
+      setLoading(false);
+      return;
+    }
+    let arr:any = [];
+    snapshot.forEach(doc => {
+      arr.push(doc.data());
+    });
+    const data = await  [...arr];
+    setAforos(data);
+    setLoading(false);
+  };
 
   const showPreview = (place: any) => {
     if (isVisible) {
@@ -36,9 +128,29 @@ const Map = ({
     togglePreview(true);
   };
 
+  const signInWithGoogle = async() => {
+    try{
+      await auth.signInWithPopup( provider)
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+
+  const signOut = async() =>{
+    auth.signOut();
+  }
   return (
     <div className="map__container">
-      <MapContainer
+      {
+        loading ? <h1>Cargando...</h1> :
+      <div>
+        {
+          user ? <button onClick={signOut}>Cerrar sesión</button> :
+          <button onClick={signInWithGoogle}>Iniciar sesión con Google</button>
+        }
+        
+ <MapContainer
         center={defaultPosition}
         zoom={12}
         scrollWheelZoom={true}
@@ -85,6 +197,10 @@ const Map = ({
         ))}
         <AddMarker />
       </MapContainer>
+      </div>
+     
+      }
+      
     </div>
   );
 };

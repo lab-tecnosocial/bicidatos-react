@@ -6,11 +6,14 @@ import "./Form.css";
 import { Field, Formik, Form as FormikForm, validateYupSchema } from "formik";
 import { LatLng } from "leaflet";
 import DateFnsUtils from '@date-io/date-fns';
+import db, { storageRef } from "../../database/firebase";
+import {auth, provider} from "../../database/firebase";
 import {
   DatePicker,
   TimePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
+import { useEffect, useState } from "react";
 
 const Form = ({
   isVisible,
@@ -23,7 +26,16 @@ const Form = ({
   closeForm: Function;
   addNewPlace: Function;
 }) => {
-
+  const [user,setUser] = useState(null);
+  useEffect(() => {
+    auth.onAuthStateChanged(persona =>{
+      if (persona) {
+        setUser(persona);
+      }else{
+        setUser(null);
+      }
+    })
+  },[])
   const initialValues = {
     tipo: "aforos",
     fecha: "",
@@ -53,16 +65,54 @@ const Form = ({
   };
 
   const handleOnSubmit = (values: PlaceFormAforosProps, actions: any) => {
-    const newAforo = {
+    if(user){
+      const newAforo = {
       ...values,
       position: [position.lat, position.lng]
     };
     console.log(newAforo); // objeto a subir a backend
+    uploadData(newAforo);
     addNewPlace(newAforo);
     actions.resetForm({});
     closeForm()
+    }else{
+      alert("Necesitar iniciar sesión para subir datos.");
+    }
+    
   }
+  const uploadData = (object:any) =>{
+        const map = {
+          correo_usuario:user.displayName,
+          nombre_usuario:user.email,
+          uid:user.uid
+        };
 
+        //Formatear la estructura del objeto
+        let aforoFormated = formaterAforo(object);
+        //Subir datos a Firestore
+        db.collection("aforos").doc(aforoFormated.id).set(aforoFormated).then((e)=>{
+          db.collection("conf").doc(aforoFormated.id2).set(map)
+        }).catch((error)=>
+          console.log(error)
+        )
+  }
+const formaterAforo = (afo:any )=> {
+  let idafo = db.collection("aforos").doc().id;
+  let data = {
+    id:idafo,
+    hora_fin_observacion:afo.tiempoFin.toString(),
+    hora_inicio_observacion:afo.tiempoInicio.toString(),
+    nro_ciclistas_observados: afo.numCiclistas,
+    latitud:afo.position[0],
+    timestamp:new Date(),
+    fecha_observacion:afo.fecha.toString(),
+    nro_hombres: afo.numHombres,
+    nro_mujeres: afo.numMujeres,
+    longitud: afo.position[1],
+    id2: db.collection("conf").doc().id
+  };
+  return data;
+}
   return (
     <div
       className={`form__container form__container--${isVisible && "active"}`}
