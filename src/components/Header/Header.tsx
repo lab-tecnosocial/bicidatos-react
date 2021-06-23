@@ -5,7 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import HomeIcon from '@material-ui/icons/Home';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
   },
   header: {
     backgroundColor: '#21DFDF',
-    // alignItems: 'center'
   }
 }));
 
@@ -28,9 +27,12 @@ export default function Header() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" className={classes.header}>
+      <AppBar position="static" className={classes.header} elevation={0}>
         <Toolbar>
-          <Typography variant="h4" className={classes.title} align="center">
+          <IconButton href="https://bicidatos.org/" edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <HomeIcon />
+          </IconButton>
+          <Typography variant="h5" className={classes.title} >
             BiciDatos
           </Typography>
         </Toolbar>

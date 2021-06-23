@@ -6,6 +6,8 @@ import "./Form.css";
 import { Field, Formik, Form as FormikForm, validateYupSchema } from "formik";
 import { LatLng } from "leaflet";
 import DateFnsUtils from '@date-io/date-fns';
+import esLocale from "date-fns/locale/es";
+
 import db, { storageRef } from "../../database/firebase";
 import {auth, provider} from "../../database/firebase";
 import {
@@ -130,8 +132,10 @@ const formaterAforo = (afo:any )=> {
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="fecha">Fecha</label>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
                   <Field 
+                  autoOk
+                  cancelLabel="Cancelar"
                   component={DatePicker} 
                   id="fecha" 
                   name="fecha" 
@@ -139,7 +143,6 @@ const formaterAforo = (afo:any )=> {
                   value={values.fecha}
                   invalidDateMessage=""
                   placeholder=""
-                  clearable
                   onChange={
                     value => { setFieldValue("fecha", dateFns.format(value, "dd-MM-yyyy")) }
                   } />

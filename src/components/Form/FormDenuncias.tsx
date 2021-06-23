@@ -7,6 +7,8 @@ import { Field, Formik, Form as FormikForm } from "formik";
 import { LatLng } from "leaflet";
 import { useRef } from "react";
 import DateFnsUtils from '@date-io/date-fns'; 
+import esLocale from "date-fns/locale/es";
+
 import db, { storageRef } from "../../database/firebase";
 import {auth, provider} from "../../database/firebase";
 import { useEffect, useState } from "react";
@@ -150,8 +152,10 @@ const formaterDenuncia = (denu:any) =>{
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="fecha">Fecha del incidente</label>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
                   <Field 
+                  autoOk
+                  cancelLabel="Cancelar"
                   component={DatePicker} 
                   id="fecha" 
                   name="fecha"
@@ -160,6 +164,7 @@ const formaterDenuncia = (denu:any) =>{
                   invalidDateMessage=""
                   placeholder = ""
                   maxDate = {new Date()}
+                  maxDateMessage = "La fecha no puede estar en el futuro"
                   onChange={
                     value => { 
                       setFieldValue("fecha", dateFns.format(value, "dd-MM-yyyy"))

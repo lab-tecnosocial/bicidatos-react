@@ -2,7 +2,7 @@
   z-index: 1000;
   position: fixed;
   width: 100%;
-  height: 80vh;
+  height: 90vh;
   background-color: white;
   top: 0;
   right: -100%;
@@ -78,6 +78,13 @@ input {
   margin-top: 0.2rem;
   text-align: right;
   color: #c41c1c;
+}
+
+@media only screen and (min-width: 768px) {
+  .form__container {
+    top: auto;
+    width: 33%;
+  }
 }
 
 @media only screen and (min-width: 768px) {
