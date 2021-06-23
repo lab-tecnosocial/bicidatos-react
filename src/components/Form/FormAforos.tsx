@@ -15,6 +15,8 @@ import {
 } from '@material-ui/pickers';
 import { useEffect, useState } from "react";
 
+const dateFns = new DateFnsUtils();
+
 const Form = ({
   isVisible,
   position,
@@ -38,9 +40,9 @@ const Form = ({
   },[])
   const initialValues = {
     tipo: "aforos",
-    fecha: "",
-    tiempoInicio: "",
-    tiempoFin: "",
+    fecha: null,
+    tiempoInicio: null,
+    tiempoFin: null,
     numCiclistas: "",
     numMujeres: "",
     numHombres: ""
@@ -136,9 +138,10 @@ const formaterAforo = (afo:any )=> {
                   format="dd/MM/yyyy"
                   value={values.fecha}
                   invalidDateMessage=""
+                  placeholder=""
                   clearable
                   onChange={
-                    value => { setFieldValue("fecha", value) }
+                    value => { setFieldValue("fecha", dateFns.format(value, "dd-MM-yyyy")) }
                   } />
                 </MuiPickersUtilsProvider>
 
@@ -155,9 +158,10 @@ const formaterAforo = (afo:any )=> {
                   name="tiempoInicio"
                   value={values.tiempoInicio}
                   invalidDateMessage=""
+                  placeholder=""
                   ampm={false}
                   onChange={
-                    value => { setFieldValue("tiempoInicio", value) }
+                    value => { setFieldValue("tiempoInicio", dateFns.format(value, "HH:mm")) }
                   } />
                 </MuiPickersUtilsProvider>
               </div>
@@ -173,9 +177,10 @@ const formaterAforo = (afo:any )=> {
                   name="tiempoFin" 
                   value={values.tiempoFin}
                   invalidDateMessage=""
+                  placeholder=""
                   ampm={false}
                   onChange={
-                    value => { setFieldValue("tiempoFin", value) }
+                    value => { setFieldValue("tiempoFin", dateFns.format(value, "HH:mm")) }
                   } />
                 </MuiPickersUtilsProvider>
               </div>
