@@ -7,7 +7,7 @@ import AddMarker from "./AddMarker";
 import "./Map.css";
 import db from "../../database/firebase";
 import { auth, provider } from "../../database/firebase";
-import { LinearProgress } from "@material-ui/core";
+import { Button, LinearProgress } from "@material-ui/core";
 
 const Map = ({
   isVisible,
@@ -185,15 +185,15 @@ const Map = ({
   return (
     <div className="map__container">
       {
-         
           <div>
+            
             {loading ? <LinearProgress /> : null }
             
             {
-              user ? <button onClick={signOut}>Cerrar sesión</button> :
-                <button onClick={signInWithGoogle}>Iniciar sesión con Google</button>
+              user ? <Button size="small" onClick={signOut}>Cerrar sesión</Button> :
+                <Button size="small" onClick={signInWithGoogle}  >Iniciar sesión</Button>
             }
-
+          
             <MapContainer
               center={defaultPosition}
               zoom={12}
