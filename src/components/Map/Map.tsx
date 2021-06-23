@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { LatLngExpression } from "leaflet";
-import { MapContainer, TileLayer, Marker, Tooltip, LayersControl, LayerGroup, GeoJSON } from "react-leaflet";
+import { MapContainer, useMapEvents, TileLayer, Marker, Tooltip, LayersControl, LayerGroup, GeoJSON } from "react-leaflet";
 import { connect } from "react-redux";
 import { setPlacePreviewVisibility, setSelectedPlace } from "../../store/actions";
 import AddMarker from "./AddMarker";
@@ -35,13 +35,42 @@ const Map = ({
       } else {
         setUser(null);
       }
-    })
-    getBiciparqueosFromFirebase();
-    getServiciosFromFirebase();
-    getDenunciasFromFirebase();
-    getAforosFromFirebase();
+    });
+    // getBiciparqueosFromFirebase();
+    // getServiciosFromFirebase();
+    // getDenunciasFromFirebase();
+    // getAforosFromFirebase();
     getCicloviasFromGithub();
   }, [])
+
+
+  const MapEvents = () => {
+
+    useMapEvents({
+      overlayadd: (e) => {
+        console.log(e.name)
+        switch (e.name) {
+          case "Biciparqueos":
+              getBiciparqueosFromFirebase();
+              break;
+          case "Servicios":
+              getServiciosFromFirebase();
+              break;
+          case "Denuncias":
+            getDenunciasFromFirebase();
+            break;
+          case "Aforos":
+            getAforosFromFirebase();
+            break;
+          // case "Ciclovias":
+          //   getCicloviasFromGithub();
+          //   break;
+        }
+      }
+    });
+    return null;
+  }
+
 
   const getBiciparqueosFromFirebase = async () => {
     const biciparqueosRef = db.collection('biciparqueos');
@@ -61,7 +90,6 @@ const Map = ({
   };
 
   const getServiciosFromFirebase = async () => {
-    setLoading(true);
     const serviciosRef = db.collection('servicios');
     const snapshot = await serviciosRef.get();
     if (snapshot.empty) {
@@ -114,7 +142,7 @@ const Map = ({
 
   const getCicloviasFromGithub = async () => {
     const url = 'https://raw.githubusercontent.com/lab-tecnosocial/bicidatos/main/data2/ciclovias.geojson';
-    const cicloviasData = await fetch(url).then( response => response.json() )
+    const cicloviasData = await fetch(url).then(response => response.json())
     setCiclovias(cicloviasData);
   }
 
@@ -219,7 +247,7 @@ const Map = ({
                 </LayersControl.Overlay>
 
                 <LayersControl.Overlay name="Aforos">
-                <LayerGroup>
+                  <LayerGroup>
                     {aforos.map((aforo: any) =>
                       <Marker
                         key={aforo.id}
@@ -234,13 +262,13 @@ const Map = ({
                 </LayersControl.Overlay>
 
                 <LayersControl.Overlay name="Ciclovías">
-                  <GeoJSON 
-                    data={ciclovias}
-                  />
+                  {/* <GeoJSON
+                    data={ciclovias} /> */}
                 </LayersControl.Overlay>
 
               </LayersControl>
               <AddMarker />
+              <MapEvents />
             </MapContainer>
           </div>
 
