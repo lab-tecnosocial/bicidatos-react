@@ -9,6 +9,8 @@ import { useRef } from "react";
 import db, { storageRef } from "../../database/firebase";
 import {auth, provider} from "../../database/firebase";
 import { useEffect, useState } from "react";
+import Toast from "../Header/Toast";
+
 const Form = ({
   isVisible,
   position,
@@ -85,6 +87,7 @@ const Form = ({
     actions.resetForm({});
     fotoRef.current.value = null;
     closeForm();
+    alert('Punto enviado correctamente');
     }else{
       alert("Necesitar iniciar sesión para subir datos.");
     }
@@ -128,7 +131,6 @@ const formaterBiciparqueo = (bici:any,urlImage:string) =>{
     <div
       className={`form__container form__container--${isVisible && "active"}`}
     >
-      
       <Formik
         initialValues={initialValues}
         validate={validator}

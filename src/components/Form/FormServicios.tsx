@@ -56,12 +56,22 @@ const Form = ({
     if(!values.nombre){
       errors.nombre = "Requerido";
     }
+
+    if(values.nombre.length < 3){
+      errors.nombre = "Debe contener más de 3 letras";
+    }
+
     if(!values.tipoServicio){
       errors.tipoServicio = "Requerido";
     }
     if(!values.telefono){
       errors.telefono = "Requerido";
     }
+
+    if(values.telefono.length < 7){
+      errors.telefono = "Debe tener más de 6 digitos";
+    }
+
     if(!values.fotografia){
       errors.fotografia = "Requerido";
     }
@@ -88,7 +98,8 @@ const Form = ({
       addNewPlace(newServicio);
       actions.resetForm({});
       fotoRef.current.value = null;
-      closeForm()
+      closeForm();
+      alert('Punto enviado correctamente');
     }else{
       alert("Necesitar iniciar sesión para subir datos.");
     }

@@ -78,7 +78,8 @@ const Form = ({
     uploadData(newAforo);
     addNewPlace(newAforo);
     actions.resetForm({});
-    closeForm()
+    closeForm();
+    alert('Punto enviado correctamente');
     }else{
       alert("Necesitar iniciar sesión para subir datos.");
     }
