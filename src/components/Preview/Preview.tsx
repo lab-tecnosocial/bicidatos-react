@@ -20,21 +20,21 @@ const Preview = ({ isVisible, place, closePreview }: any) => {
       <div className="preview__description__container">
         {place?.accesibilidad && <div className=""><b>Accesibilidad:</b> {place?.accesibilidad}</div>}  
         {place?.senalizacion && <div className=""><b>Señalización:</b> {place?.senalizacion}</div>}
-        {place?.seguridadPercibida && <div className=""><b>Seguridad percibida:</b> {place?.seguridadPercibida}</div>}
+        {place?.seguridad_percibida && <div className=""><b>Seguridad percibida:</b> {place?.seguridad_percibida}</div>}
 
         {place?.nombre && <div className=""><b>Nombre:</b> {place?.nombre}</div>}
-        {place?.tipoServicio && <div className=""><b>Tipo de servicio:</b> {place?.tipoServicio}</div>}
-        {place?.sitioWeb && <div className=""><b>Sitio web:</b> {place?.sitioWeb}</div>}
+        {place?.tipo && <div className=""><b>Tipo de servicio:</b> {place?.tipo}</div>}
+        {place?.sitioweb && <div className=""><b>Sitio web:</b> {place?.sitioweb}</div>}
         {place?.telefono && <div className=""><b>Telefono:</b> {place?.telefono}</div>}
         
-        {place?.fecha && <div className=""><b>Fecha:</b> {place?.fecha}</div>}
-        {place?.tipoIncidente && <div className=""><b>Tipo de incidente:</b> {place?.tipoIncidente}</div>}
+        {place?.fecha_incidente && <div className=""><b>Fecha:</b> {place?.fecha_incidente}</div>}
+        {place?.tipo_incidente && <div className=""><b>Tipo de incidente:</b> {place?.tipo_incidente}</div>}
         {place?.enlace && <div className=""><b>Enlace:</b> {place?.enlace}</div>}
         
-        {place?.fecha && <div className=""><b>Fecha:</b> {place?.fecha}</div>}
-        {place?.tiempoInicio && <div className=""><b>Tiempo de inicio:</b> {place?.tiempoInicio}</div>}
-        {place?.tiempoFin && <div className=""><b>Tiempo de fin:</b> {place?.tiempoFin}</div>}
-        {place?.numCiclistas && <div className=""><b>Número de ciclistas:</b> {place?.numCiclistas}</div>}
+        {place?.fecha_observacion && <div className=""><b>Fecha:</b> {place?.fecha_observacion}</div>}
+        {place?.hora_inicio_observacion && <div className=""><b>Tiempo de inicio:</b> {place?.hora_inicio_observacion}</div>}
+        {place?.hora_fin_observacion && <div className=""><b>Tiempo de fin:</b> {place?.hora_fin_observacion}</div>}
+        {place?.nro_ciclistas_observados && <div className=""><b>Número de ciclistas:</b> {place?.nro_ciclistas_observados}</div>}
 
       </div>
     </div>

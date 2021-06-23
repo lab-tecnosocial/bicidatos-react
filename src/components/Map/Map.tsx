@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { LatLngExpression } from "leaflet";
-import { MapContainer, TileLayer, Marker, Tooltip, LayersControl } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Tooltip, LayersControl, LayerGroup, GeoJSON } from "react-leaflet";
 import { connect } from "react-redux";
 import { setPlacePreviewVisibility, setSelectedPlace } from "../../store/actions";
 import AddMarker from "./AddMarker";
 import "./Map.css";
 import db from "../../database/firebase";
-import {auth, provider} from "../../database/firebase";
+import { auth, provider } from "../../database/firebase";
 
 const Map = ({
   isVisible,
@@ -16,22 +16,23 @@ const Map = ({
   setPlaceForPreview,
 }: any) => {
   const defaultPosition: LatLngExpression = [-17.396, -66.153]; // Cochabamba
-  const [aforos,setAforos] = useState([] as any);
-  const [biciparqueos,setBiciparqueos] = useState([] as any);
-  const [servicios,setServicios] = useState([] as any);
-  const [denuncias,setDenuncias] = useState([] as any);
-  const [loading,setLoading] = useState(false);
-  const [user,setUser] = useState(null);
-  if(user){
+  const [aforos, setAforos] = useState([] as any);
+  const [biciparqueos, setBiciparqueos] = useState([] as any);
+  const [servicios, setServicios] = useState([] as any);
+  const [denuncias, setDenuncias] = useState([] as any);
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
+  const [ciclovias, setCiclovias] = useState({} as any);
+  if (user) {
     // console.log(user);
-  }else{
+  } else {
     // console.log(null);
   }
-  useEffect(()=>{
-    auth.onAuthStateChanged(persona =>{
-      if(persona){
+  useEffect(() => {
+    auth.onAuthStateChanged(persona => {
+      if (persona) {
         setUser(persona);
-      }else{
+      } else {
         setUser(null);
       }
     })
@@ -39,7 +40,8 @@ const Map = ({
     getServiciosFromFirebase();
     getDenunciasFromFirebase();
     getAforosFromFirebase();
-  },[])
+    getCicloviasFromGithub();
+  }, [])
 
   const getBiciparqueosFromFirebase = async () => {
     const biciparqueosRef = db.collection('biciparqueos');
@@ -53,7 +55,7 @@ const Map = ({
     snapshot.forEach(doc => {
       arr.push(doc.data());
     });
-   const data = await  [...arr];
+    const data = await [...arr];
     setBiciparqueos(data);
     setLoading(false);
   };
@@ -67,7 +69,7 @@ const Map = ({
       setLoading(false);
       return;
     }
-    let arr:any = [];
+    let arr: any = [];
     snapshot.forEach(doc => {
       arr.push(doc.data());
     });
@@ -84,7 +86,7 @@ const Map = ({
       setLoading(false);
       return;
     }
-    let arr:any = [];
+    let arr: any = [];
     snapshot.forEach(doc => {
       arr.push(doc.data());
     });
@@ -101,14 +103,20 @@ const Map = ({
       setLoading(false);
       return;
     }
-    let arr:any = [];
+    let arr: any = [];
     snapshot.forEach(doc => {
       arr.push(doc.data());
     });
-    const data = await  [...arr];
+    const data = await [...arr];
     setAforos(data);
     setLoading(false);
   };
+
+  const getCicloviasFromGithub = async () => {
+    const url = 'https://raw.githubusercontent.com/lab-tecnosocial/bicidatos/main/data2/ciclovias.geojson';
+    const cicloviasData = await fetch(url).then( response => response.json() )
+    setCiclovias(cicloviasData);
+  }
 
   const showPreview = (place: any) => {
     if (isVisible) {
@@ -128,79 +136,116 @@ const Map = ({
     togglePreview(true);
   };
 
-  const signInWithGoogle = async() => {
-    try{
-      await auth.signInWithPopup( provider)
+  const signInWithGoogle = async () => {
+    try {
+      await auth.signInWithPopup(provider)
     }
-    catch(error){
+    catch (error) {
       console.log(error);
     }
   }
 
-  const signOut = async() =>{
+  const signOut = async () => {
     auth.signOut();
   }
   return (
     <div className="map__container">
       {
         loading ? <h1>Cargando...</h1> :
-      <div>
-        {
-          user ? <button onClick={signOut}>Cerrar sesión</button> :
-          <button onClick={signInWithGoogle}>Iniciar sesión con Google</button>
-        }
-        
- <MapContainer
-        center={defaultPosition}
-        zoom={12}
-        scrollWheelZoom={true}
-        style={{ height: "100vh" }}
-        zoomControl={true}
-      >
-        <LayersControl position="bottomleft" collapsed={false}>
-          <LayersControl.BaseLayer checked name="Base">
-            <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-          </LayersControl.BaseLayer>
-          
-          <LayersControl.Overlay name="Biciparqueos">
-            <Marker position={[-17.396, -66.153]}></Marker>
-          </LayersControl.Overlay>
+          <div>
+            {
+              user ? <button onClick={signOut}>Cerrar sesión</button> :
+                <button onClick={signInWithGoogle}>Iniciar sesión con Google</button>
+            }
 
-          <LayersControl.Overlay name="Servicios">
-            <Marker position={[-17.410, -66.153]}></Marker>
-          </LayersControl.Overlay>
+            <MapContainer
+              center={defaultPosition}
+              zoom={12}
+              scrollWheelZoom={true}
+              style={{ height: "100vh" }}
+              zoomControl={true}
+            >
+              <LayersControl position="bottomleft" collapsed={false}>
+                <LayersControl.BaseLayer checked name="Base">
+                  <TileLayer
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                </LayersControl.BaseLayer>
 
-          <LayersControl.Overlay name="Denuncias">
-            <Marker position={[-17.420, -66.153]}></Marker>
-          </LayersControl.Overlay>
+                <LayersControl.Overlay name="Biciparqueos">
+                  <LayerGroup>
+                    {biciparqueos.map((biciparqueo: any) =>
+                      <Marker
+                        key={biciparqueo.id}
+                        position={[biciparqueo.latitud, biciparqueo.longitud]}
+                        eventHandlers={{ click: () => showPreview(biciparqueo) }}
+                      >
+                        <Tooltip>Biciparqueo</Tooltip>
+                      </Marker>
+                    )
+                    }
+                  </LayerGroup>
+                </LayersControl.Overlay>
 
-          <LayersControl.Overlay name="Aforos">
-            <Marker position={[-17.430, -66.153]}></Marker>
-          </LayersControl.Overlay>
+                <LayersControl.Overlay name="Servicios">
+                  <LayerGroup>
+                    {servicios.map((servicio: any) =>
+                      <Marker
+                        key={servicio.id}
+                        position={[servicio.latitud, servicio.longitud]}
+                        eventHandlers={{ click: () => showPreview(servicio) }}
+                      >
+                        <Tooltip>Servicio</Tooltip>
+                      </Marker>
+                    )
+                    }
+                  </LayerGroup>
+                </LayersControl.Overlay>
 
-          <LayersControl.Overlay name="Ciclovías">
-            <Marker position={[-17.450, -66.153]}></Marker>
-          </LayersControl.Overlay>
+                <LayersControl.Overlay name="Denuncias">
+                  <LayerGroup>
+                    {denuncias.map((denuncia: any) =>
+                      <Marker
+                        key={denuncia.id}
+                        position={[denuncia.latitud, denuncia.longitud]}
+                        eventHandlers={{ click: () => showPreview(denuncia) }}
+                      >
+                        <Tooltip>Denuncia</Tooltip>
+                      </Marker>
+                    )
+                    }
+                  </LayerGroup>
+                </LayersControl.Overlay>
 
-        </LayersControl>
-        {places.map((place: any) => (
-          <Marker
-            key={place.title}
-            position={place.position}
-            eventHandlers={{ click: () => showPreview(place) }}
-          >
-            <Tooltip>{place.tipo}</Tooltip>
-          </Marker>
-        ))}
-        <AddMarker />
-      </MapContainer>
-      </div>
-     
+                <LayersControl.Overlay name="Aforos">
+                <LayerGroup>
+                    {aforos.map((aforo: any) =>
+                      <Marker
+                        key={aforo.id}
+                        position={[aforo.latitud, aforo.longitud]}
+                        eventHandlers={{ click: () => showPreview(aforo) }}
+                      >
+                        <Tooltip>Aforo</Tooltip>
+                      </Marker>
+                    )
+                    }
+                  </LayerGroup>
+                </LayersControl.Overlay>
+
+                <LayersControl.Overlay name="Ciclovías">
+                  <GeoJSON 
+                    data={ciclovias}
+                  />
+                </LayersControl.Overlay>
+
+              </LayersControl>
+              <AddMarker />
+            </MapContainer>
+          </div>
+
       }
-      
+
     </div>
   );
 };
