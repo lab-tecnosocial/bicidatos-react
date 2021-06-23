@@ -71,7 +71,7 @@ const Form = ({
     if(!values.fotografiaConf){
       errors.fotografiaConf = "Requerido";
     }
-    if(!SUPPORTED_FORMATS.includes(values.fotografiaConf) ){
+    if(!SUPPORTED_FORMATS.includes(values.fotografiaConf.type) ){
       errors.fotografiaConf = "Debe ser una imagen .jpg o .png";
     }
 
@@ -89,7 +89,7 @@ const Form = ({
         position: [position.lat, position.lng]
       };
       console.log(newDenuncia);       // objeto a subir a backend
-      console.log(values.fotografia); // objeto de la imagen subida
+      console.log(values.fotografiaConf); // objeto de la imagen subida
       uploadPhotoAndData(newDenuncia);
       addNewPlace(newDenuncia);
       actions.resetForm({});
@@ -200,7 +200,7 @@ const formaterDenuncia = (denu:any) =>{
               <div className="formGroupInput">
                 <label htmlFor="fotografiaConf">Fotografía</label>
                 <input id="fotografiaConf" name="fotografiaConf" type="file"  className="form-control" onChange={(event) => {
-  setFieldValue("fotografia", event.currentTarget.files![0]);
+  setFieldValue("fotografiaConf", event.currentTarget.files![0]);
 }} ref={fotoRef} />
               </div>
                <div className="errors">{errors.fotografiaConf}</div>
