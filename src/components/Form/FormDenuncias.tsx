@@ -96,7 +96,8 @@ const Form = ({
       addNewPlace(newDenuncia);
       actions.resetForm({});
       fotoRef.current.value = null;
-      closeForm()
+      closeForm();
+      alert('Punto enviado correctamente');
     }else{
       alert("Necesitar iniciar sesión para subir datos.");
     }
