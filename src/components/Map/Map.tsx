@@ -7,7 +7,17 @@ import AddMarker from "./AddMarker";
 import "./Map.css";
 import db from "../../database/firebase";
 import { auth, provider } from "../../database/firebase";
-import { Button, LinearProgress } from "@material-ui/core";
+import { Button, LinearProgress, makeStyles, withStyles } from "@material-ui/core";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#21DFDF'
+    }
+  }
+});
+
 
 const Map = ({
   isVisible,
@@ -52,11 +62,11 @@ const Map = ({
         console.log(e.name)
         switch (e.name) {
           case "Biciparqueos":
-              getBiciparqueosFromFirebase();
-              break;
+            getBiciparqueosFromFirebase();
+            break;
           case "Servicios":
-              getServiciosFromFirebase();
-              break;
+            getServiciosFromFirebase();
+            break;
           case "Denuncias":
             getDenunciasFromFirebase();
             break;
@@ -185,99 +195,101 @@ const Map = ({
   return (
     <div className="map__container">
       {
-          <div>
-            
-            {loading ? <LinearProgress /> : null }
-            
-            {
-              user ? <Button size="small" onClick={signOut}>Cerrar sesión</Button> :
-                <Button size="small" onClick={signInWithGoogle}  >Iniciar sesión</Button>
-            }
-          
-            <MapContainer
-              center={defaultPosition}
-              zoom={12}
-              scrollWheelZoom={true}
-              style={{ height: "100vh" }}
-              zoomControl={true}
-            >
-              <LayersControl position="bottomleft" collapsed={false}>
-                <LayersControl.BaseLayer checked name="Base">
-                  <TileLayer
-                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  />
-                </LayersControl.BaseLayer>
+        <div>
 
-                <LayersControl.Overlay name="Biciparqueos">
-                  <LayerGroup>
-                    {biciparqueos.map((biciparqueo: any) =>
-                      <Marker
-                        key={biciparqueo.id}
-                        position={[biciparqueo.latitud, biciparqueo.longitud]}
-                        eventHandlers={{ click: () => showPreview(biciparqueo) }}
-                      >
-                        <Tooltip>Biciparqueo</Tooltip>
-                      </Marker>
-                    )
-                    }
-                  </LayerGroup>
-                </LayersControl.Overlay>
 
-                <LayersControl.Overlay name="Servicios">
-                  <LayerGroup>
-                    {servicios.map((servicio: any) =>
-                      <Marker
-                        key={servicio.id}
-                        position={[servicio.latitud, servicio.longitud]}
-                        eventHandlers={{ click: () => showPreview(servicio) }}
-                      >
-                        <Tooltip>Servicio</Tooltip>
-                      </Marker>
-                    )
-                    }
-                  </LayerGroup>
-                </LayersControl.Overlay>
+          {
+            user ? <Button size="small" onClick={signOut}>Cerrar sesión</Button> :
+              <Button size="small" onClick={signInWithGoogle}  >Iniciar sesión</Button>
+          }
+          <MuiThemeProvider theme={theme}>
+            {loading ? <LinearProgress style={{ height: '0.5em' }} /> : null}
+          </MuiThemeProvider>
 
-                <LayersControl.Overlay name="Denuncias">
-                  <LayerGroup>
-                    {denuncias.map((denuncia: any) =>
-                      <Marker
-                        key={denuncia.id}
-                        position={[denuncia.latitud, denuncia.longitud]}
-                        eventHandlers={{ click: () => showPreview(denuncia) }}
-                      >
-                        <Tooltip>Denuncia</Tooltip>
-                      </Marker>
-                    )
-                    }
-                  </LayerGroup>
-                </LayersControl.Overlay>
+          <MapContainer
+            center={defaultPosition}
+            zoom={12}
+            scrollWheelZoom={true}
+            style={{ height: "100vh" }}
+            zoomControl={true}
+          >
+            <LayersControl position="bottomleft" collapsed={false}>
+              <LayersControl.BaseLayer checked name="Base">
+                <TileLayer
+                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+              </LayersControl.BaseLayer>
 
-                <LayersControl.Overlay name="Aforos">
-                  <LayerGroup>
-                    {aforos.map((aforo: any) =>
-                      <Marker
-                        key={aforo.id}
-                        position={[aforo.latitud, aforo.longitud]}
-                        eventHandlers={{ click: () => showPreview(aforo) }}
-                      >
-                        <Tooltip>Aforo</Tooltip>
-                      </Marker>
-                    )
-                    }
-                  </LayerGroup>
-                </LayersControl.Overlay>
+              <LayersControl.Overlay name="Biciparqueos">
+                <LayerGroup>
+                  {biciparqueos.map((biciparqueo: any) =>
+                    <Marker
+                      key={biciparqueo.id}
+                      position={[biciparqueo.latitud, biciparqueo.longitud]}
+                      eventHandlers={{ click: () => showPreview(biciparqueo) }}
+                    >
+                      <Tooltip>Biciparqueo</Tooltip>
+                    </Marker>
+                  )
+                  }
+                </LayerGroup>
+              </LayersControl.Overlay>
 
-                <LayersControl.Overlay name="Ciclovías">
-                  {Object.keys(ciclovias).length > 0 && <GeoJSON data={ciclovias} />}
-                </LayersControl.Overlay>
+              <LayersControl.Overlay name="Servicios">
+                <LayerGroup>
+                  {servicios.map((servicio: any) =>
+                    <Marker
+                      key={servicio.id}
+                      position={[servicio.latitud, servicio.longitud]}
+                      eventHandlers={{ click: () => showPreview(servicio) }}
+                    >
+                      <Tooltip>Servicio</Tooltip>
+                    </Marker>
+                  )
+                  }
+                </LayerGroup>
+              </LayersControl.Overlay>
 
-              </LayersControl>
-              <AddMarker />
-              <MapEvents />
-            </MapContainer>
-          </div>
+              <LayersControl.Overlay name="Denuncias">
+                <LayerGroup>
+                  {denuncias.map((denuncia: any) =>
+                    <Marker
+                      key={denuncia.id}
+                      position={[denuncia.latitud, denuncia.longitud]}
+                      eventHandlers={{ click: () => showPreview(denuncia) }}
+                    >
+                      <Tooltip>Denuncia</Tooltip>
+                    </Marker>
+                  )
+                  }
+                </LayerGroup>
+              </LayersControl.Overlay>
+
+              <LayersControl.Overlay name="Aforos">
+                <LayerGroup>
+                  {aforos.map((aforo: any) =>
+                    <Marker
+                      key={aforo.id}
+                      position={[aforo.latitud, aforo.longitud]}
+                      eventHandlers={{ click: () => showPreview(aforo) }}
+                    >
+                      <Tooltip>Aforo</Tooltip>
+                    </Marker>
+                  )
+                  }
+                </LayerGroup>
+              </LayersControl.Overlay>
+
+              <LayersControl.Overlay name="Ciclovías">
+                {Object.keys(ciclovias).length > 0 && <GeoJSON data={ciclovias} />}
+              </LayersControl.Overlay>
+
+            </LayersControl>
+            <AddMarker />
+            <MapEvents />
+          </MapContainer>
+        </div>
 
       }
 
