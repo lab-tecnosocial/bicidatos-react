@@ -153,9 +153,9 @@ const formaterServicio = (serv:any,urlImage:string) =>{
                 <label htmlFor="tipoServicio">Tipo de servicio</label>
                 <Field id="tipoServicio" name="tipoServicio" as="select" >
                   <option hidden >Selecciona una opción</option>
-                  <option value="Tienda de servcleta">Tienda de servcleta</option>
+                  <option value="Tienda de bicicleta">Tienda de bicicleta</option>
                   <option value="Taller de repuestos">Taller de repuestos</option>
-                  <option value="Llantería de servcleta">Llantería de servcleta</option>
+                  <option value="Llantería de bicicleta">Llantería de bicicleta</option>
                 </Field>
               </div>
               <div className="errors">{errors.tipoServicio}</div>
@@ -177,7 +177,7 @@ const formaterServicio = (serv:any,urlImage:string) =>{
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="telefono">Telefono</label>
-                <Field id="telefono" name="telefono" />
+                <Field id="telefono" name="telefono" type="number" min="1"/>
               </div>
               <div className="errors">{errors.telefono}</div>
             </div>

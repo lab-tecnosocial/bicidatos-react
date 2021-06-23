@@ -6,7 +6,7 @@ import "./Form.css";
 import { Field, Formik, Form as FormikForm } from "formik";
 import { LatLng } from "leaflet";
 import { useRef } from "react";
-import DateFnsUtils from '@date-io/date-fns'; // choose your lib
+import DateFnsUtils from '@date-io/date-fns'; 
 import db, { storageRef } from "../../database/firebase";
 import {auth, provider} from "../../database/firebase";
 import { useEffect, useState } from "react";
@@ -15,6 +15,8 @@ import {
   TimePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
+
+const dateFns = new DateFnsUtils();
 
 const Form = ({
   isVisible,
@@ -39,7 +41,7 @@ const Form = ({
   },[])
   const initialValues = {
     tipo: "denuncias",
-    fecha: "",
+    fecha: null,
     tipoIncidente: "",
     descripcion: "",
     enlace: "",
@@ -154,10 +156,14 @@ const formaterDenuncia = (denu:any) =>{
                   id="fecha" 
                   name="fecha"
                   value={values.fecha}
-                  format="dd/MM/yyyy"
+                  format="dd-MM-yyyy"
                   invalidDateMessage=""
+                  placeholder = ""
+                  maxDate = {new Date()}
                   onChange={
-                    value => { setFieldValue("fecha", value) }
+                    value => { 
+                      setFieldValue("fecha", dateFns.format(value, "dd-MM-yyyy"))
+                    }
                   } />
                 </MuiPickersUtilsProvider>
               </div>
