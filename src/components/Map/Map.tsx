@@ -7,6 +7,7 @@ import AddMarker from "./AddMarker";
 import "./Map.css";
 import db from "../../database/firebase";
 import { auth, provider } from "../../database/firebase";
+import { LinearProgress } from "@material-ui/core";
 
 const Map = ({
   isVisible,
@@ -74,6 +75,7 @@ const Map = ({
 
   const getBiciparqueosFromFirebase = async () => {
     const biciparqueosRef = db.collection('biciparqueos');
+    setLoading(true);
     const snapshot = await biciparqueosRef.get();
     if (snapshot.empty) {
       console.log('No se encontraron biciparqueos.');
@@ -91,6 +93,7 @@ const Map = ({
 
   const getServiciosFromFirebase = async () => {
     const serviciosRef = db.collection('servicios');
+    setLoading(true);
     const snapshot = await serviciosRef.get();
     if (snapshot.empty) {
       console.log('No se encontraron servicios.');
@@ -108,6 +111,7 @@ const Map = ({
 
   const getDenunciasFromFirebase = async () => {
     const denunciasRef = db.collection('denuncias');
+    setLoading(true);
     const snapshot = await denunciasRef.get();
     if (snapshot.empty) {
       console.log('No se encontraron denuncias.');
@@ -125,6 +129,7 @@ const Map = ({
 
   const getAforosFromFirebase = async () => {
     const aforosRef = db.collection('aforos');
+    setLoading(true);
     const snapshot = await aforosRef.get();
     if (snapshot.empty) {
       console.log('No se encontraron aforos.');
@@ -180,8 +185,10 @@ const Map = ({
   return (
     <div className="map__container">
       {
-        loading ? <h1>Cargando...</h1> :
+         
           <div>
+            {loading ? <LinearProgress /> : null }
+            
             {
               user ? <button onClick={signOut}>Cerrar sesión</button> :
                 <button onClick={signInWithGoogle}>Iniciar sesión con Google</button>
