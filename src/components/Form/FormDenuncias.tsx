@@ -176,11 +176,11 @@ const formaterDenuncia = (denu:any) =>{
                   <option hidden >Selecciona una opción</option>
                   <option value="Invasión vehicular">Invasión vehicular</option>
                   <option value="Invasión comercial">Invasión comercial</option>
-                  <option value="Atropello a ciclistata">Atropello a ciclista</option>
+                  <option value="Atropello a ciclista">Atropello a ciclista</option>
                   <option value="Agresión física<">Agresión física</option>
                   <option value="Agresión verbal">Agresión verbal</option>
                   <option value="Manoseo">Manoseo</option>
-                  <option value="Daño a infrestructura ciclista">Daño a infrestructura ciclista</option>
+                  <option value="Daño a infraestructura ciclista">Daño a infrestructura ciclista</option>
                 </Field>
               </div>
                <div className="errors">{errors.tipoIncidente}</div>
