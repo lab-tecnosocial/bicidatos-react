@@ -65,9 +65,7 @@ const Form = ({
     if(!values.tipoIncidente){
       errors.tipoIncidente = "Requerido";
     }
-    if(!values.telefono){
-      errors.telefono = "Requerido";
-    }
+
     if(!values.fotografiaConf){
       errors.fotografiaConf = "Requerido";
     }
@@ -102,8 +100,8 @@ const Form = ({
   }
   const uploadPhotoAndData = (object:any) =>{
     //Subir la imagen a Storage para obtener la url de la imagen
-    const uploadTask = storageRef.ref(`imagenesDenuncias/${ new Date().getTime() +"_"+object.fotografia.name}`)
-    .put(object.fotografia).then(data =>{
+    const uploadTask = storageRef.ref(`imagenesDenuncias/${ new Date().getTime() +"_"+object.fotografiaConf.name}`)
+    .put(object.fotografiaConf).then(data =>{
       data.ref.getDownloadURL().then(url=>{
         //Despues, Formatear la estructura del objeto con la url obtenida de la imagen
         let denunciaFormated = formaterDenuncia(object);
@@ -157,7 +155,6 @@ const formaterDenuncia = (denu:any) =>{
                   name="fecha"
                   value={values.fecha}
                   format="dd/MM/yyyy"
-                  clarable
                   invalidDateMessage=""
                   onChange={
                     value => { setFieldValue("fecha", value) }
