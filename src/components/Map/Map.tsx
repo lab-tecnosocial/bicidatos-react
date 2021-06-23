@@ -144,6 +144,7 @@ const Map = ({
     const url = 'https://raw.githubusercontent.com/lab-tecnosocial/bicidatos/main/data2/ciclovias.geojson';
     const cicloviasData = await fetch(url).then(response => response.json())
     setCiclovias(cicloviasData);
+    return ciclovias;
   }
 
   const showPreview = (place: any) => {
@@ -262,8 +263,7 @@ const Map = ({
                 </LayersControl.Overlay>
 
                 <LayersControl.Overlay name="Ciclovías">
-                  {/* <GeoJSON
-                    data={ciclovias} /> */}
+                  {Object.keys(ciclovias).length > 0 && <GeoJSON data={ciclovias} />}
                 </LayersControl.Overlay>
 
               </LayersControl>
