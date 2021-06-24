@@ -140,7 +140,7 @@ const formaterDenuncia = (denu:any) =>{
 }
   return (
     <div
-      className={`form__container form__container--${isVisible && "active"}`}
+      className={`subform__container form__container--${isVisible && "active"}`}
     >
     
       <Formik
