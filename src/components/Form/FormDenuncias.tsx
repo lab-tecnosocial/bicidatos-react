@@ -131,7 +131,7 @@ const formaterDenuncia = (denu:any) =>{
     enlace:denu.enlace,
     latitud:denu.position[0],
     timestamp:new Date(),
-    fecha_incidente:denu.fecha.toString(),
+    fecha_incidente:dateFns.format(denu.fecha, "dd-MM-yyyy"),
     tipo_incidente: denu.tipoIncidente,
     longitud: denu.position[1],
     id2:db.collection("conf").doc().id
@@ -168,7 +168,7 @@ const formaterDenuncia = (denu:any) =>{
                   maxDateMessage = "La fecha no puede estar en el futuro"
                   onChange={
                     value => { 
-                      setFieldValue("fecha", dateFns.format(value, "dd-MM-yyyy"))
+                      setFieldValue("fecha", value)
                     }
                   } />
                 </MuiPickersUtilsProvider>
