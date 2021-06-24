@@ -105,12 +105,12 @@ const formaterAforo = (afo:any )=> {
   let idafo = db.collection("aforos").doc().id;
   let data = {
     id:idafo,
-    hora_fin_observacion:afo.tiempoFin.toString(),
-    hora_inicio_observacion:afo.tiempoInicio.toString(),
+    hora_fin_observacion:dateFns.format(afo.tiempoFin, "HH:mm"),
+    hora_inicio_observacion:dateFns.format(afo.tiempoInicio, "HH:mm"),
     nro_ciclistas_observados: afo.numCiclistas,
     latitud:afo.position[0],
     timestamp:new Date(),
-    fecha_observacion:afo.fecha.toString(),
+    fecha_observacion: dateFns.format(afo.fecha, "dd-MM-yyyy"),
     nro_hombres: afo.numHombres,
     nro_mujeres: afo.numMujeres,
     longitud: afo.position[1],
@@ -135,17 +135,16 @@ const formaterAforo = (afo:any )=> {
                 <label htmlFor="fecha">Fecha</label>
                 <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
                   <Field 
-                  autoOk
                   cancelLabel="Cancelar"
                   component={DatePicker} 
                   id="fecha" 
                   name="fecha" 
-                  format="dd/MM/yyyy"
+                  format="dd-MM-yyyy"
                   value={values.fecha}
                   invalidDateMessage=""
                   placeholder=""
                   onChange={
-                    value => { setFieldValue("fecha", dateFns.format(value, "dd-MM-yyyy")) }
+                    value => { setFieldValue("fecha", value) }
                   } />
                 </MuiPickersUtilsProvider>
 
@@ -157,6 +156,7 @@ const formaterAforo = (afo:any )=> {
                 <label htmlFor="tiempoInicio">Tiempo de inicio</label>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <Field 
+                  autoOk
                   component={TimePicker} 
                   id="tiempoInicio" 
                   name="tiempoInicio"
@@ -165,7 +165,7 @@ const formaterAforo = (afo:any )=> {
                   placeholder=""
                   ampm={false}
                   onChange={
-                    value => { setFieldValue("tiempoInicio", dateFns.format(value, "HH:mm")) }
+                    value => { setFieldValue("tiempoInicio", value) }
                   } />
                 </MuiPickersUtilsProvider>
               </div>
@@ -176,6 +176,7 @@ const formaterAforo = (afo:any )=> {
                 <label htmlFor="tiempoFin">Tiempo de fin</label>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <Field 
+                  autoOK
                   component={TimePicker} 
                   id="tiempoFin" 
                   name="tiempoFin" 
@@ -184,7 +185,7 @@ const formaterAforo = (afo:any )=> {
                   placeholder=""
                   ampm={false}
                   onChange={
-                    value => { setFieldValue("tiempoFin", dateFns.format(value, "HH:mm")) }
+                    value => { setFieldValue("tiempoFin", value) }
                   } />
                 </MuiPickersUtilsProvider>
               </div>
