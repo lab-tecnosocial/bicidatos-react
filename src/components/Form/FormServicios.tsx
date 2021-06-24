@@ -143,7 +143,7 @@ const formaterServicio = (serv:any,urlImage:string) =>{
 }
   return (
     <div
-      className={`form__container form__container--${isVisible && "active"}`}
+      className={`subform__container form__container--${isVisible && "active"}`}
     >
       <Formik
         initialValues={initialValues}

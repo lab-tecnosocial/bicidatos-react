@@ -10,6 +10,10 @@
   overflow-y: auto;
 }
 
+.subform__container {
+  display: flex;
+}
+
 .form__container--active {
   right: 0;
 }
