@@ -10,7 +10,7 @@ const AddMarker = ({ formIsOpen, toggleForm, setLocation }: any) => {
   );
 
   useMapEvents({
-    dblclick: (e) => {
+    click: (e) => {
       setPosition(e.latlng);
       setLocation(e.latlng);
       toggleForm(true);

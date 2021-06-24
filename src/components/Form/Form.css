@@ -7,7 +7,7 @@
   top: 0;
   right: -100%;
   transition: all 0.2s ease-in-out;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 .subform__container {
@@ -91,9 +91,41 @@ input {
   }
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (max-width: 400px) {
   .form__container {
-    top: auto;
-    width: 33%;
+    height: 100vh;
+    background-color: white;
+    overflow-y: scroll;
   }
+  
+  .subform__container {
+    display: flex;
+  }
+    
+  .formGroup {
+    padding: 0.5rem;
+  }
+  
+  .formGroupInput {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  input {
+    height: 1rem;
+  }
+  
+  .errors {
+    margin-top: 0.2rem;
+    text-align: right;
+    color: #c41c1c;
+  }
+  
+  
 }
