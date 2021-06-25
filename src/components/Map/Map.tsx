@@ -9,6 +9,7 @@ import db from "../../database/firebase";
 import { auth, provider } from "../../database/firebase";
 import { Button, LinearProgress, makeStyles, withStyles } from "@material-ui/core";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
+import * as L from "leaflet";
 
 const theme = createMuiTheme({
   palette: {
@@ -17,6 +18,52 @@ const theme = createMuiTheme({
     }
   }
 });
+
+// Iconos de markers
+
+var iconoBiciparqueo = L.icon({
+  iconUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-parqueo-e1617504997591.png',
+  shadowUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-shadow.png',
+  iconSize: [35, 35],
+  shadowSize: [30, 30],
+  shadowAnchor: [8, 25],
+  iconAnchor: [15, 30]
+
+});
+
+var iconoServicio = L.icon({
+  iconUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-tienda-e1617504984871.png',
+  shadowUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-shadow.png',
+  iconSize: [35, 35],
+  shadowSize: [30, 30],
+  shadowAnchor: [8, 25],
+  iconAnchor: [15, 30]
+
+});
+
+var iconoDenuncia = L.icon({
+  iconUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-seguridad-e1617505231488.png',
+  shadowUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-shadow.png',
+  iconSize: [35, 35],
+  shadowSize: [30, 30],
+  shadowAnchor: [8, 25],
+  iconAnchor: [15, 30]
+
+});
+
+var iconoAforo = L.icon({
+  iconUrl: 'https://bicidatos.org/wp-content/uploads/2021/04/location-aforos.png',
+  shadowUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-shadow.png',
+  iconSize: [35, 35],
+  shadowSize: [30, 30],
+  shadowAnchor: [8, 25],
+  iconAnchor: [15, 30]
+
+});
+
+
+
+
 
 const Map = ({
   isVisible,
@@ -227,6 +274,7 @@ const Map = ({
                       key={biciparqueo.id}
                       position={[biciparqueo.latitud, biciparqueo.longitud]}
                       eventHandlers={{ click: () => showPreview(biciparqueo) }}
+                      icon={iconoBiciparqueo}
                     >
                       <Tooltip>Biciparqueo</Tooltip>
                     </Marker>
@@ -242,6 +290,7 @@ const Map = ({
                       key={servicio.id}
                       position={[servicio.latitud, servicio.longitud]}
                       eventHandlers={{ click: () => showPreview(servicio) }}
+                      icon={iconoServicio}
                     >
                       <Tooltip>Servicio</Tooltip>
                     </Marker>
@@ -257,6 +306,7 @@ const Map = ({
                       key={denuncia.id}
                       position={[denuncia.latitud, denuncia.longitud]}
                       eventHandlers={{ click: () => showPreview(denuncia) }}
+                      icon={iconoDenuncia}
                     >
                       <Tooltip>Denuncia</Tooltip>
                     </Marker>
@@ -272,6 +322,7 @@ const Map = ({
                       key={aforo.id}
                       position={[aforo.latitud, aforo.longitud]}
                       eventHandlers={{ click: () => showPreview(aforo) }}
+                      icon={iconoAforo}
                     >
                       <Tooltip>Aforo</Tooltip>
                     </Marker>
