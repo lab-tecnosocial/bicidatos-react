@@ -2,8 +2,13 @@
 .map__container {
   width: 100vw;
   height: 50vh;
+  font-size: 0.5rem !important;
 }
 .leaflet-container {
   width: 100%;
-  height: 90vh !important;
+  height: 91vh !important;
+}
+
+.leaflet-control-layers {
+  padding-bottom: 25px;
 }
