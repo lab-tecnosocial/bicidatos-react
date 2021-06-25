@@ -9,15 +9,25 @@ import DateFnsUtils from '@date-io/date-fns';
 import esLocale from "date-fns/locale/es";
 
 import db, { storageRef } from "../../database/firebase";
-import {auth, provider} from "../../database/firebase";
+import { auth, provider } from "../../database/firebase";
 import {
   DatePicker,
   TimePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import { useEffect, useState } from "react";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
 
 const dateFns = new DateFnsUtils();
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#21DFDF'
+    }
+  }
+});
+
 
 const Form = ({
   isVisible,
@@ -30,16 +40,16 @@ const Form = ({
   closeForm: Function;
   addNewPlace: Function;
 }) => {
-  const [user,setUser] = useState(null);
+  const [user, setUser] = useState(null);
   useEffect(() => {
-    auth.onAuthStateChanged(persona =>{
+    auth.onAuthStateChanged(persona => {
       if (persona) {
         setUser(persona);
-      }else{
+      } else {
         setUser(null);
       }
     })
-  },[])
+  }, [])
   const initialValues = {
     tipo: "aforos",
     fecha: null,
@@ -49,19 +59,19 @@ const Form = ({
     numMujeres: "",
     numHombres: ""
   };
-  
+
   const validator = (values: PlaceFormAforosProps) => {
     const errors: any = {};
-    if(!values.fecha){
+    if (!values.fecha) {
       errors.fecha = "Requerido";
     }
-    if(!values.tiempoInicio){
+    if (!values.tiempoInicio) {
       errors.tiempoInicio = "Requerido";
     }
-    if(!values.tiempoFin){
+    if (!values.tiempoFin) {
       errors.tiempoFin = "Requerido";
     }
-    if(!values.numCiclistas){
+    if (!values.numCiclistas) {
       errors.numCiclistas = "Requerido";
     }
 
@@ -69,55 +79,55 @@ const Form = ({
   };
 
   const handleOnSubmit = (values: PlaceFormAforosProps, actions: any) => {
-    if(user){
+    if (user) {
       const newAforo = {
-      ...values,
-      position: [position.lat, position.lng]
-    };
-    console.log(newAforo); // objeto a subir a backend
-    uploadData(newAforo);
-    addNewPlace(newAforo);
-    actions.resetForm({});
-    closeForm();
-    alert('Punto enviado correctamente');
-    }else{
+        ...values,
+        position: [position.lat, position.lng]
+      };
+      console.log(newAforo); // objeto a subir a backend
+      uploadData(newAforo);
+      addNewPlace(newAforo);
+      actions.resetForm({});
+      closeForm();
+      alert('Punto enviado correctamente');
+    } else {
       alert("Necesitar iniciar sesión para subir datos.");
     }
-    
-  }
-  const uploadData = (object:any) =>{
-        const map = {
-          correo_usuario:user.displayName,
-          nombre_usuario:user.email,
-          uid:user.uid
-        };
 
-        //Formatear la estructura del objeto
-        let aforoFormated = formaterAforo(object);
-        //Subir datos a Firestore
-        db.collection("aforos").doc(aforoFormated.id).set(aforoFormated).then((e)=>{
-          db.collection("conf").doc(aforoFormated.id2).set(map)
-        }).catch((error)=>
-          console.log(error)
-        )
   }
-const formaterAforo = (afo:any )=> {
-  let idafo = db.collection("aforos").doc().id;
-  let data = {
-    id:idafo,
-    hora_fin_observacion:dateFns.format(afo.tiempoFin, "HH:mm"),
-    hora_inicio_observacion:dateFns.format(afo.tiempoInicio, "HH:mm"),
-    nro_ciclistas_observados: afo.numCiclistas,
-    latitud:afo.position[0],
-    timestamp:new Date(),
-    fecha_observacion: dateFns.format(afo.fecha, "dd-MM-yyyy"),
-    nro_hombres: afo.numHombres,
-    nro_mujeres: afo.numMujeres,
-    longitud: afo.position[1],
-    id2: db.collection("conf").doc().id
-  };
-  return data;
-}
+  const uploadData = (object: any) => {
+    const map = {
+      correo_usuario: user.displayName,
+      nombre_usuario: user.email,
+      uid: user.uid
+    };
+
+    //Formatear la estructura del objeto
+    let aforoFormated = formaterAforo(object);
+    //Subir datos a Firestore
+    db.collection("aforos").doc(aforoFormated.id).set(aforoFormated).then((e) => {
+      db.collection("conf").doc(aforoFormated.id2).set(map)
+    }).catch((error) =>
+      console.log(error)
+    )
+  }
+  const formaterAforo = (afo: any) => {
+    let idafo = db.collection("aforos").doc().id;
+    let data = {
+      id: idafo,
+      hora_fin_observacion: dateFns.format(afo.tiempoFin, "HH:mm"),
+      hora_inicio_observacion: dateFns.format(afo.tiempoInicio, "HH:mm"),
+      nro_ciclistas_observados: afo.numCiclistas,
+      latitud: afo.position[0],
+      timestamp: new Date(),
+      fecha_observacion: dateFns.format(afo.fecha, "dd-MM-yyyy"),
+      nro_hombres: afo.numHombres,
+      nro_mujeres: afo.numMujeres,
+      longitud: afo.position[1],
+      id2: db.collection("conf").doc().id
+    };
+    return data;
+  }
   return (
     <div
       className={`subform__container form__container--${isVisible && "active"}`}
@@ -128,95 +138,98 @@ const formaterAforo = (afo:any )=> {
         validate={validator}
         onSubmit={handleOnSubmit}
       >
-        {({ errors, touched, isValidating, setFieldValue, values}) => (
-          <FormikForm>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="fecha">Fecha</label>
-                <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
-                  <Field 
-                  cancelLabel="Cancelar"
-                  component={DatePicker} 
-                  id="fecha" 
-                  name="fecha" 
-                  format="dd-MM-yyyy"
-                  value={values.fecha}
-                  invalidDateMessage=""
-                  placeholder=""
-                  onChange={
-                    value => { setFieldValue("fecha", value) }
-                  } />
-                </MuiPickersUtilsProvider>
+        {({ errors, touched, isValidating, setFieldValue, values }) => (
+          <MuiThemeProvider theme={theme}>
 
-              </div>
-              <div className="errors">{errors.fecha}</div>
-            </div>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="tiempoInicio">Tiempo de inicio</label>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <Field 
-                  autoOk
-                  component={TimePicker} 
-                  id="tiempoInicio" 
-                  name="tiempoInicio"
-                  value={values.tiempoInicio}
-                  invalidDateMessage=""
-                  placeholder=""
-                  ampm={false}
-                  onChange={
-                    value => { setFieldValue("tiempoInicio", value) }
-                  } />
-                </MuiPickersUtilsProvider>
-              </div>
-              <div className="errors">{errors.tiempoInicio}</div>
-            </div>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="tiempoFin">Tiempo de fin</label>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <Field 
-                  autoOK
-                  component={TimePicker} 
-                  id="tiempoFin" 
-                  name="tiempoFin" 
-                  value={values.tiempoFin}
-                  invalidDateMessage=""
-                  placeholder=""
-                  ampm={false}
-                  onChange={
-                    value => { setFieldValue("tiempoFin", value) }
-                  } />
-                </MuiPickersUtilsProvider>
-              </div>
-               <div className="errors">{errors.tiempoFin}</div>
-            </div>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="numCiclistas">Número de ciclistas observados</label>
-                <Field id="numCiclistas" name="numCiclistas" type="number" min="1"/>
-              </div>
-             <div className="errors"> {errors.numCiclistas}</div>
-            </div>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="numMujeres">Número de mujeres</label>
-                <Field id="numMujeres" name="numMujeres" type="number" min="1" />
-              </div>
-              <div className="errors">{errors.numMujeres}</div>
-            </div>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="numHombres">Número de hombres</label>
-                <Field id="numHombres" name="numHombres" type="number" min="1" />
-              </div>
-              <div className="errors">{errors.numHombres}</div>
-            </div>
+            <FormikForm>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="fecha">Fecha</label>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
+                    <Field
+                      cancelLabel="Cancelar"
+                      component={DatePicker}
+                      id="fecha"
+                      name="fecha"
+                      format="dd-MM-yyyy"
+                      value={values.fecha}
+                      invalidDateMessage=""
+                      placeholder=""
+                      onChange={
+                        value => { setFieldValue("fecha", value) }
+                      } />
+                  </MuiPickersUtilsProvider>
 
-            <div className="button__container">
-              <button className="form__button" type="submit">Enviar</button>
-            </div>
-          </FormikForm>
+                </div>
+                <div className="errors">{errors.fecha}</div>
+              </div>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="tiempoInicio">Tiempo de inicio</label>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <Field
+                      autoOk
+                      component={TimePicker}
+                      id="tiempoInicio"
+                      name="tiempoInicio"
+                      value={values.tiempoInicio}
+                      invalidDateMessage=""
+                      placeholder=""
+                      ampm={false}
+                      onChange={
+                        value => { setFieldValue("tiempoInicio", value) }
+                      } />
+                  </MuiPickersUtilsProvider>
+                </div>
+                <div className="errors">{errors.tiempoInicio}</div>
+              </div>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="tiempoFin">Tiempo de fin</label>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <Field
+                      autoOK
+                      component={TimePicker}
+                      id="tiempoFin"
+                      name="tiempoFin"
+                      value={values.tiempoFin}
+                      invalidDateMessage=""
+                      placeholder=""
+                      ampm={false}
+                      onChange={
+                        value => { setFieldValue("tiempoFin", value) }
+                      } />
+                  </MuiPickersUtilsProvider>
+                </div>
+                <div className="errors">{errors.tiempoFin}</div>
+              </div>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="numCiclistas">Número de ciclistas observados</label>
+                  <Field id="numCiclistas" name="numCiclistas" type="number" min="1" />
+                </div>
+                <div className="errors"> {errors.numCiclistas}</div>
+              </div>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="numMujeres">Número de mujeres</label>
+                  <Field id="numMujeres" name="numMujeres" type="number" min="1" />
+                </div>
+                <div className="errors">{errors.numMujeres}</div>
+              </div>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="numHombres">Número de hombres</label>
+                  <Field id="numHombres" name="numHombres" type="number" min="1" />
+                </div>
+                <div className="errors">{errors.numHombres}</div>
+              </div>
+
+              <div className="button__container">
+                <button className="form__button" type="submit">Enviar</button>
+              </div>
+            </FormikForm>
+          </MuiThemeProvider>
         )}
       </Formik>
     </div>

@@ -6,19 +6,28 @@ import "./Form.css";
 import { Field, Formik, Form as FormikForm } from "formik";
 import { LatLng } from "leaflet";
 import { useRef } from "react";
-import DateFnsUtils from '@date-io/date-fns'; 
+import DateFnsUtils from '@date-io/date-fns';
 import esLocale from "date-fns/locale/es";
 
 import db, { storageRef } from "../../database/firebase";
-import {auth, provider} from "../../database/firebase";
+import { auth, provider } from "../../database/firebase";
 import { useEffect, useState } from "react";
 import {
   DatePicker,
   TimePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
 
 const dateFns = new DateFnsUtils();
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#21DFDF'
+    }
+  }
+});
 
 const Form = ({
   isVisible,
@@ -31,16 +40,16 @@ const Form = ({
   closeForm: Function;
   addNewPlace: Function;
 }) => {
-  const [user,setUser] = useState(null);
+  const [user, setUser] = useState(null);
   useEffect(() => {
-    auth.onAuthStateChanged(persona =>{
+    auth.onAuthStateChanged(persona => {
       if (persona) {
         setUser(persona);
-      }else{
+      } else {
         setUser(null);
       }
     })
-  },[])
+  }, [])
   const initialValues = {
     tipo: "denuncias",
     fecha: null,
@@ -48,7 +57,7 @@ const Form = ({
     descripcion: "",
     enlace: "",
     fotografiaConf: ""
-  
+
   };
 
   // Variables para validacion de fotografia
@@ -63,21 +72,21 @@ const Form = ({
 
   const validator = (values: PlaceFormDenunciasProps) => {
     const errors: any = {};
-    if(!values.fecha){
+    if (!values.fecha) {
       errors.fecha = "Requerido";
     }
-    if(!values.tipoIncidente){
+    if (!values.tipoIncidente) {
       errors.tipoIncidente = "Requerido";
     }
 
-    if(!values.fotografiaConf){
+    if (!values.fotografiaConf) {
       errors.fotografiaConf = "Requerido";
     }
-    if(!SUPPORTED_FORMATS.includes(values.fotografiaConf.type) ){
+    if (!SUPPORTED_FORMATS.includes(values.fotografiaConf.type)) {
       errors.fotografiaConf = "Debe ser una imagen .jpg o .png";
     }
 
-    if(values.fotografiaConf.size > FILE_SIZE){
+    if (values.fotografiaConf.size > FILE_SIZE) {
       errors.fotografiaConf = "Debe ser menor de 3MB";
     }
 
@@ -85,7 +94,7 @@ const Form = ({
   };
 
   const handleOnSubmit = (values: PlaceFormDenunciasProps, actions: any) => {
-    if(user){
+    if (user) {
       const newDenuncia = {
         ...values,
         position: [position.lat, position.lng]
@@ -98,82 +107,84 @@ const Form = ({
       fotoRef.current.value = null;
       closeForm();
       alert('Punto enviado correctamente');
-    }else{
+    } else {
       alert("Necesitar iniciar sesión para subir datos.");
     }
-    
+
   }
-  const uploadPhotoAndData = (object:any) =>{
+  const uploadPhotoAndData = (object: any) => {
     //Subir la imagen a Storage para obtener la url de la imagen
-    const uploadTask = storageRef.ref(`imagenesDenuncias/${ new Date().getTime() +"_"+object.fotografiaConf.name}`)
-    .put(object.fotografiaConf).then(data =>{
-      data.ref.getDownloadURL().then(url=>{
-        //Despues, Formatear la estructura del objeto con la url obtenida de la imagen
-        let denunciaFormated = formaterDenuncia(object);
-        //Subir datos a Firestore
-        const map = {
-          correo_usuario:user.displayName,
-          nombre_usuario:user.email,
-          uid:user.uid,
-          fotografia:url
-        };
-        db.collection("denuncias").doc(denunciaFormated.id).set(denunciaFormated).then(nada=>{
-          db.collection("conf").doc(denunciaFormated.id2).set(map)
+    const uploadTask = storageRef.ref(`imagenesDenuncias/${new Date().getTime() + "_" + object.fotografiaConf.name}`)
+      .put(object.fotografiaConf).then(data => {
+        data.ref.getDownloadURL().then(url => {
+          //Despues, Formatear la estructura del objeto con la url obtenida de la imagen
+          let denunciaFormated = formaterDenuncia(object);
+          //Subir datos a Firestore
+          const map = {
+            correo_usuario: user.displayName,
+            nombre_usuario: user.email,
+            uid: user.uid,
+            fotografia: url
+          };
+          db.collection("denuncias").doc(denunciaFormated.id).set(denunciaFormated).then(nada => {
+            db.collection("conf").doc(denunciaFormated.id2).set(map)
+          })
         })
       })
-    })
   }
-const formaterDenuncia = (denu:any) =>{
-  let iddenu = db.collection("denuncias").doc().id;
-  let data = {
-    id:iddenu,
-    descripcion:denu.descripcion,
-    enlace:denu.enlace,
-    latitud:denu.position[0],
-    timestamp:new Date(),
-    fecha_incidente:dateFns.format(denu.fecha, "dd-MM-yyyy"),
-    tipo_incidente: denu.tipoIncidente,
-    longitud: denu.position[1],
-    id2:db.collection("conf").doc().id
-  };
-  return data;
-}
+  const formaterDenuncia = (denu: any) => {
+    let iddenu = db.collection("denuncias").doc().id;
+    let data = {
+      id: iddenu,
+      descripcion: denu.descripcion,
+      enlace: denu.enlace,
+      latitud: denu.position[0],
+      timestamp: new Date(),
+      fecha_incidente: dateFns.format(denu.fecha, "dd-MM-yyyy"),
+      tipo_incidente: denu.tipoIncidente,
+      longitud: denu.position[1],
+      id2: db.collection("conf").doc().id
+    };
+    return data;
+  }
   return (
     <div
       className={`subform__container form__container--${isVisible && "active"}`}
     >
-    
+
       <Formik
         initialValues={initialValues}
         validate={validator}
         onSubmit={handleOnSubmit}
       >
-        {({ errors, touched, isValidating, setFieldValue, values}) => (
+        {({ errors, touched, isValidating, setFieldValue, values }) => (
           <FormikForm>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="fecha">Fecha del incidente</label>
-                <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
-                  <Field 
-                  autoOk
-                  cancelLabel="Cancelar"
-                  component={DatePicker} 
-                  id="fecha" 
-                  name="fecha"
-                  value={values.fecha}
-                  format="dd-MM-yyyy"
-                  invalidDateMessage=""
-                  placeholder = ""
-                  maxDate = {new Date()}
-                  maxDateMessage = "La fecha no puede estar en el futuro"
-                  onChange={
-                    value => { 
-                      setFieldValue("fecha", value)
-                    }
-                  } />
-                </MuiPickersUtilsProvider>
+                <MuiThemeProvider theme={theme}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
+                    <Field
+                      autoOk
+                      cancelLabel="Cancelar"
+                      component={DatePicker}
+                      id="fecha"
+                      name="fecha"
+                      value={values.fecha}
+                      format="dd-MM-yyyy"
+                      invalidDateMessage=""
+                      placeholder=""
+                      maxDate={new Date()}
+                      maxDateMessage="La fecha no puede estar en el futuro"
+                      onChange={
+                        value => {
+                          setFieldValue("fecha", value)
+                        }
+                      } />
+                  </MuiPickersUtilsProvider>
+                </MuiThemeProvider>
               </div>
-               <div className="errors">{errors.fecha}</div>
+              <div className="errors">{errors.fecha}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
@@ -189,12 +200,12 @@ const formaterDenuncia = (denu:any) =>{
                   <option value="Daño a infraestructura ciclista">Daño a infrestructura ciclista</option>
                 </Field>
               </div>
-               <div className="errors">{errors.tipoIncidente}</div>
+              <div className="errors">{errors.tipoIncidente}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="descripcion">Descripción</label>
-                <Field id="descripcion" name="descripcion" />
+                <Field id="descripcion" name="descripcion" as="textarea" />
               </div>
               <div className="errors">{errors.descripcion}</div>
             </div>
@@ -203,16 +214,16 @@ const formaterDenuncia = (denu:any) =>{
                 <label htmlFor="enlace">Enlace</label>
                 <Field id="enlace" name="enlace" />
               </div>
-               <div className="errors">{errors.enlace}</div>
+              <div className="errors">{errors.enlace}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="fotografiaConf">Fotografía</label>
-                <input id="fotografiaConf" name="fotografiaConf" type="file"  className="form-control" onChange={(event) => {
-  setFieldValue("fotografiaConf", event.currentTarget.files![0]);
-}} ref={fotoRef} />
+                <input id="fotografiaConf" name="fotografiaConf" type="file" className="form-control" onChange={(event) => {
+                  setFieldValue("fotografiaConf", event.currentTarget.files![0]);
+                }} ref={fotoRef} />
               </div>
-               <div className="errors">{errors.fotografiaConf}</div>
+              <div className="errors">{errors.fotografiaConf}</div>
             </div>
 
             <div className="button__container">

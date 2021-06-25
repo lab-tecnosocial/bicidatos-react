@@ -18,7 +18,6 @@ const theme = createMuiTheme({
   }
 });
 
-
 const Map = ({
   isVisible,
   places,
@@ -196,11 +195,9 @@ const Map = ({
     <div className="map__container">
       {
         <div>
-
-
           {
-            user ? <Button size="small" onClick={signOut}>Cerrar sesión</Button> :
-              <Button size="small" onClick={signInWithGoogle}  >Iniciar sesión</Button>
+            user ? <Button size="small" onClick={signOut} variant="outlined" style={{ fontSize: '0.7rem' }} >Cerrar sesión</Button> :
+              <Button size="small" onClick={signInWithGoogle} variant="outlined" style={{ fontSize: '0.7rem' }} >Iniciar sesión</Button>
           }
           <MuiThemeProvider theme={theme}>
             {loading ? <LinearProgress style={{ height: '0.5em' }} /> : null}
@@ -213,14 +210,14 @@ const Map = ({
             style={{ height: "100vh" }}
             zoomControl={true}
           >
-            <LayersControl position="bottomleft" collapsed={false}>
+            <LayersControl position="bottomleft" collapsed={false} >
               <LayersControl.BaseLayer checked name="Base">
 
                 <TileLayer
                   attribution='Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
                   url="https://api.mapbox.com/styles/v1/labtecnosocial/ckmrvd5jx2gbu17p7atlk1xay/tiles/{z}/{x}/{y}?access_token=sk.eyJ1IjoibGFidGVjbm9zb2NpYWwiLCJhIjoiY2ttcnBlcG53MDl4ejJxcnMyc3N2dGpoYSJ9.MaXq1p4n25cMQ6gXIN14Eg"
                 />
-                
+
               </LayersControl.BaseLayer>
 
               <LayersControl.Overlay name="Biciparqueos">

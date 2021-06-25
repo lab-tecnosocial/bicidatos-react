@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import HomeIcon from '@material-ui/icons/Home';
+import { Container } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   header: {
     backgroundColor: '#21DFDF',
@@ -28,14 +29,16 @@ export default function Header() {
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.header} elevation={0}>
-        <Toolbar>
-          <IconButton href="https://bicidatos.org/" edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <HomeIcon />
-          </IconButton>
-          <Typography variant="h5" className={classes.title} >
-            BiciDatos
-          </Typography>
-        </Toolbar>
+        <Container maxWidth="lg">
+          <Toolbar>
+            <IconButton href="https://bicidatos.org/" edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+              <HomeIcon />
+            </IconButton>
+            <Typography variant="h6" className={classes.title} >
+              BiciDatos
+            </Typography>
+          </Toolbar>
+        </Container>
       </AppBar>
     </div>
   );

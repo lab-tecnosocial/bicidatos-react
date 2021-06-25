@@ -7,7 +7,7 @@ import { Field, Formik, Form as FormikForm } from "formik";
 import { LatLng } from "leaflet";
 import { useRef } from "react";
 import db, { storageRef } from "../../database/firebase";
-import {auth, provider} from "../../database/firebase";
+import { auth, provider } from "../../database/firebase";
 import { useEffect, useState } from "react";
 const Form = ({
   isVisible,
@@ -20,16 +20,16 @@ const Form = ({
   closeForm: Function;
   addNewPlace: Function;
 }) => {
-  const [user,setUser] = useState(null);
+  const [user, setUser] = useState(null);
   useEffect(() => {
-    auth.onAuthStateChanged(persona =>{
+    auth.onAuthStateChanged(persona => {
       if (persona) {
         setUser(persona);
-      }else{
+      } else {
         setUser(null);
       }
     })
-  },[])
+  }, [])
   const initialValues = {
     tipo: "servicios",
     nombre: "",
@@ -38,48 +38,48 @@ const Form = ({
     sitioWeb: "",
     telefono: "",
     fotografia: ""
-  
+
   };
 
-    // Variables para validacion de fotografia
-    const FILE_SIZE = 3 * 1024 * 1024;  // solo 3MB
-    const SUPPORTED_FORMATS = [
-      "image/jpg",
-      "image/jpeg",
-      "image/png"
-    ];
+  // Variables para validacion de fotografia
+  const FILE_SIZE = 3 * 1024 * 1024;  // solo 3MB
+  const SUPPORTED_FORMATS = [
+    "image/jpg",
+    "image/jpeg",
+    "image/png"
+  ];
 
   const fotoRef = useRef(null);
 
   const validator = (values: PlaceFormServiciosProps) => {
     const errors: any = {};
-    if(!values.nombre){
+    if (!values.nombre) {
       errors.nombre = "Requerido";
     }
 
-    if(values.nombre.length < 3){
+    if (values.nombre.length < 3) {
       errors.nombre = "Debe contener más de 3 letras";
     }
 
-    if(!values.tipoServicio){
+    if (!values.tipoServicio) {
       errors.tipoServicio = "Requerido";
     }
-    if(!values.telefono){
+    if (!values.telefono) {
       errors.telefono = "Requerido";
     }
 
-    if(values.telefono.length < 7){
+    if (values.telefono.length < 7) {
       errors.telefono = "Debe tener más de 6 digitos";
     }
 
-    if(!values.fotografia){
+    if (!values.fotografia) {
       errors.fotografia = "Requerido";
     }
-    if(!SUPPORTED_FORMATS.includes(values.fotografia.type) ){
+    if (!SUPPORTED_FORMATS.includes(values.fotografia.type)) {
       errors.fotografia = "Debe ser una imagen .jpg o .png";
     }
 
-    if(values.fotografia.size > FILE_SIZE){
+    if (values.fotografia.size > FILE_SIZE) {
       errors.fotografia = "Debe ser menor de 3MB";
     }
 
@@ -87,7 +87,7 @@ const Form = ({
   };
 
   const handleOnSubmit = (values: PlaceFormServiciosProps, actions: any) => {
-    if(user){
+    if (user) {
       const newServicio = {
         ...values,
         position: [position.lat, position.lng]
@@ -100,47 +100,47 @@ const Form = ({
       fotoRef.current.value = null;
       closeForm();
       alert('Punto enviado correctamente');
-    }else{
+    } else {
       alert("Necesitar iniciar sesión para subir datos.");
     }
-   
+
   }
-  const uploadPhotoAndData = (object:any) =>{
+  const uploadPhotoAndData = (object: any) => {
     const map = {
-      correo_usuario:user.displayName,
-      nombre_usuario:user.email,
-      uid:user.uid
+      correo_usuario: user.displayName,
+      nombre_usuario: user.email,
+      uid: user.uid
     };
     //Subir la imagen a Storage para obtener la url de la imagen
-    const uploadTask = storageRef.ref(`imagenesServicios/${ new Date().getTime() +"_"+object.fotografia.name}`)
-    .put(object.fotografia).then(data=>{
-      data.ref.getDownloadURL().then(url=>{
-        //Despues, Formatear la estructura del objeto con la url obtenida de la imagen
-        let servicioFormated = formaterServicio(object,url);
-        //Subir datos a Firestore
-        db.collection("servicios").doc(servicioFormated.id).set(servicioFormated).then(nada=>{
-          db.collection("conf").doc(servicioFormated.id2).set(map)
+    const uploadTask = storageRef.ref(`imagenesServicios/${new Date().getTime() + "_" + object.fotografia.name}`)
+      .put(object.fotografia).then(data => {
+        data.ref.getDownloadURL().then(url => {
+          //Despues, Formatear la estructura del objeto con la url obtenida de la imagen
+          let servicioFormated = formaterServicio(object, url);
+          //Subir datos a Firestore
+          db.collection("servicios").doc(servicioFormated.id).set(servicioFormated).then(nada => {
+            db.collection("conf").doc(servicioFormated.id2).set(map)
+          })
         })
       })
-    })
   }
-const formaterServicio = (serv:any,urlImage:string) =>{
-  let idserv = db.collection("servicios").doc().id;
-  let data = {
-    id:idserv,
-    descripcion:serv.descripcion,
-    nombre:serv.nombre,
-    fotografia: urlImage,
-    latitud:serv.position[0],
-    timestamp:new Date(),
-    sitioweb:serv.sitioWeb,
-    telefono: parseInt(serv.telefono),
-    tipo: serv.tipoServicio,
-    longitud: serv.position[1],
-    id2:db.collection("conf").doc().id
-  };
-  return data;
-}
+  const formaterServicio = (serv: any, urlImage: string) => {
+    let idserv = db.collection("servicios").doc().id;
+    let data = {
+      id: idserv,
+      descripcion: serv.descripcion,
+      nombre: serv.nombre,
+      fotografia: urlImage,
+      latitud: serv.position[0],
+      timestamp: new Date(),
+      sitioweb: serv.sitioWeb,
+      telefono: parseInt(serv.telefono),
+      tipo: serv.tipoServicio,
+      longitud: serv.position[1],
+      id2: db.collection("conf").doc().id
+    };
+    return data;
+  }
   return (
     <div
       className={`subform__container form__container--${isVisible && "active"}`}
@@ -157,7 +157,7 @@ const formaterServicio = (serv:any,urlImage:string) =>{
                 <label htmlFor="nombre">Nombre</label>
                 <Field id="nombre" name="nombre" />
               </div>
-               <div className="errors">{errors.nombre}</div>
+              <div className="errors">{errors.nombre}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
@@ -174,7 +174,7 @@ const formaterServicio = (serv:any,urlImage:string) =>{
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="descripcion">Descripción</label>
-                <Field id="descripcion" name="descripcion" />
+                <Field id="descripcion" name="descripcion" as="textarea" />
               </div>
               <div className="errors">{errors.descripcion}</div>
             </div>
@@ -188,16 +188,16 @@ const formaterServicio = (serv:any,urlImage:string) =>{
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="telefono">Telefono</label>
-                <Field id="telefono" name="telefono" type="number" min="1"/>
+                <Field id="telefono" name="telefono" type="number" min="1" />
               </div>
               <div className="errors">{errors.telefono}</div>
             </div>
             <div className="formGroup">
               <div className="formGroupInput">
                 <label htmlFor="fotografia">Fotografía</label>
-                <input id="fotografia" name="fotografia" type="file"  className="form-control" onChange={(event) => {
-  setFieldValue("fotografia", event.currentTarget.files![0]);
-}} ref={fotoRef} />
+                <input id="fotografia" name="fotografia" type="file" className="form-control" onChange={(event) => {
+                  setFieldValue("fotografia", event.currentTarget.files![0]);
+                }} ref={fotoRef} />
               </div>
               <div className="errors">{errors.fotografia}</div>
             </div>
