@@ -117,29 +117,92 @@ const Form = ({
         data.ref.getDownloadURL().then(url => {
           //Despues, Formatear la estructura del objeto con la url obtenida de la imagen
           let servicioFormated = formaterServicio(object, url);
+          //Cambiando la estructura del Servicio
+          let idVersion = db.collection("servicios2").doc().id;
+          let version = {
+            descripcion: object.descripcion,
+            nombre: object.nombre,
+            fotografia: url,
+            timestamp: new Date(),
+            sitioweb: object.sitioWeb,
+            telefono: parseInt(object.telefono),
+            tipo: object.tipoServicio,
+            id2: db.collection("conf2").doc().id
+          };
+        let servicioHistorial = {};
+        servicioHistorial['historial.'+idVersion] = version;
           //Subir datos a Firestore
-          db.collection("servicios").doc(servicioFormated.id).set(servicioFormated).then(nada => {
-            db.collection("conf").doc(servicioFormated.id2).set(map)
+           //Primero subimos el servicio con los datos que no cambian. Ej> id, latitud longitud
+           db.collection("servicios2").doc(servicioFormated.id).set(servicioFormated).then(nada => {
+            //Ahora se sube el historial del servicio como actualizacion solo del campo historial
+            db.collection("servicios2").doc(servicioFormated.id).update(servicioHistorial);
+            db.collection("conf2").doc(version.id2).set(map);
           })
         })
       })
   }
   const formaterServicio = (serv: any, urlImage: string) => {
-    let idserv = db.collection("servicios").doc().id;
+    let idserv = db.collection("servicios2").doc().id;
     let data = {
       id: idserv,
-      descripcion: serv.descripcion,
-      nombre: serv.nombre,
-      fotografia: urlImage,
+      // descripcion: serv.descripcion,
+      // nombre: serv.nombre,
+      // fotografia: urlImage,
       latitud: serv.position[0],
-      timestamp: new Date(),
-      sitioweb: serv.sitioWeb,
-      telefono: parseInt(serv.telefono),
-      tipo: serv.tipoServicio,
+      // timestamp: new Date(),
+      // sitioweb: serv.sitioWeb,
+      // telefono: parseInt(serv.telefono),
+      // tipo: serv.tipoServicio,
       longitud: serv.position[1],
-      id2: db.collection("conf").doc().id
+      // id2: db.collection("conf").doc().id
     };
     return data;
+  }
+  const updateServicio = (actualizacion: any, idPunto:any) => {
+    const map = {
+      correo_usuario: user.displayName,
+      nombre_usuario: user.email,
+      uid: user.uid
+    };
+    //Subir la imagen a Storage para obtener la url de la imagen
+    const uploadTask = storageRef.ref(`imagenesServicios/${new Date().getTime() + "_" + actualizacion.fotografia.name}`)
+      .put(actualizacion.fotografia).then(data => {
+        data.ref.getDownloadURL().then(url => {
+
+          //Estructura del Servicio
+          let idVersion = db.collection("servicios2").doc().id;
+          let version = {
+            descripcion: actualizacion.descripcion,
+            nombre: actualizacion.nombre,
+            fotografia: url,
+            timestamp: new Date(),
+            sitioweb: actualizacion.sitioWeb,
+            telefono: parseInt(actualizacion.telefono),
+            tipo: actualizacion.tipoServicio,
+            id2: db.collection("conf2").doc().id
+          };
+        let servicioHistorial = {};
+        servicioHistorial['historial.'+idVersion] = version;
+          //Subir datos a Firestore
+      
+            //Se sube el historial del servicio como actualizacion solo del campo historial
+            db.collection("servicios2").doc(idPunto).update(servicioHistorial);
+            db.collection("conf2").doc(version.id2).set(map);
+         
+        })
+      })
+  }
+  const sendNotificationServicio = (mensaje:String,idPunto:String) => {
+    const notificacion = {
+      correo_usuario: user.displayName,
+      nombre_usuario: user.email,
+      uid: user.uid,
+      mensaje:mensaje,
+      categoria: "Servicio",
+      id_punto: idPunto
+    };
+    let idNotificacion = db.collection("notificaciones").doc().id;
+    db.collection("notificaciones").doc(idNotificacion).set(notificacion);
   }
   return (
     <div

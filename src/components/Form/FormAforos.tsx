@@ -104,29 +104,83 @@ const Form = ({
 
     //Formatear la estructura del objeto
     let aforoFormated = formaterAforo(object);
+     //Cambiando la estructura del Aforo
+     let idVersion = db.collection("aforos2").doc().id;
+     let version = {
+      hora_fin_observacion: dateFns.format(object.tiempoFin, "HH:mm"),
+      hora_inicio_observacion: dateFns.format(object.tiempoInicio, "HH:mm"),
+      nro_ciclistas_observados: object.numCiclistas,
+      timestamp: new Date(),
+      fecha_observacion: dateFns.format(object.fecha, "dd-MM-yyyy"),
+      nro_hombres: object.numHombres,
+      nro_mujeres: object.numMujeres,
+       id2: db.collection("conf2").doc().id
+     };
+   let aforoHistorial = {};
+   aforoHistorial['historial.'+idVersion] = version;
     //Subir datos a Firestore
-    db.collection("aforos").doc(aforoFormated.id).set(aforoFormated).then((e) => {
-      db.collection("conf").doc(aforoFormated.id2).set(map)
+    //Primero subimos el aforo con los datos que no cambian. Ej> id, latitud longitud
+    db.collection("aforos2").doc(aforoFormated.id).set(aforoFormated).then((e) => {
+       //Ahora se sube el historial del aforo como actualizacion solo del campo historial
+       db.collection("aforos2").doc(aforoFormated.id).update(aforoHistorial);
+       db.collection("conf2").doc(version.id2).set(map);
     }).catch((error) =>
       console.log(error)
     )
   }
   const formaterAforo = (afo: any) => {
-    let idafo = db.collection("aforos").doc().id;
+    let idafo = db.collection("aforos2").doc().id;
     let data = {
       id: idafo,
-      hora_fin_observacion: dateFns.format(afo.tiempoFin, "HH:mm"),
-      hora_inicio_observacion: dateFns.format(afo.tiempoInicio, "HH:mm"),
-      nro_ciclistas_observados: afo.numCiclistas,
+      // hora_fin_observacion: dateFns.format(afo.tiempoFin, "HH:mm"),
+      // hora_inicio_observacion: dateFns.format(afo.tiempoInicio, "HH:mm"),
+      // nro_ciclistas_observados: afo.numCiclistas,
       latitud: afo.position[0],
-      timestamp: new Date(),
-      fecha_observacion: dateFns.format(afo.fecha, "dd-MM-yyyy"),
-      nro_hombres: afo.numHombres,
-      nro_mujeres: afo.numMujeres,
+      // timestamp: new Date(),
+      // fecha_observacion: dateFns.format(afo.fecha, "dd-MM-yyyy"),
+      // nro_hombres: afo.numHombres,
+      // nro_mujeres: afo.numMujeres,
       longitud: afo.position[1],
-      id2: db.collection("conf").doc().id
+      // id2: db.collection("conf").doc().id
     };
     return data;
+  }
+  const updateAforo = (actualizacion: any,idPunto:any) => {
+    const map = {
+      correo_usuario: user.displayName,
+      nombre_usuario: user.email,
+      uid: user.uid
+    };
+     //Estructura del Aforo
+     let idVersion = db.collection("aforos2").doc().id;
+     let version = {
+      hora_fin_observacion: dateFns.format(actualizacion.tiempoFin, "HH:mm"),
+      hora_inicio_observacion: dateFns.format(actualizacion.tiempoInicio, "HH:mm"),
+      nro_ciclistas_observados: actualizacion.numCiclistas,
+      timestamp: new Date(),
+      fecha_observacion: dateFns.format(actualizacion.fecha, "dd-MM-yyyy"),
+      nro_hombres: actualizacion.numHombres,
+      nro_mujeres: actualizacion.numMujeres,
+       id2: db.collection("conf2").doc().id
+     };
+   let aforoHistorial = {};
+   aforoHistorial['historial.'+idVersion] = version;
+    //Subir datos a Firestore
+       //Se sube el historial del aforo como actualizacion solo del campo historial
+       db.collection("aforos2").doc(idPunto).update(aforoHistorial);
+       db.collection("conf2").doc(version.id2).set(map);
+  }
+  const sendNotificationAforo = (mensaje:String,idPunto:String) => {
+    const notificacion = {
+      correo_usuario: user.displayName,
+      nombre_usuario: user.email,
+      uid: user.uid,
+      mensaje:mensaje,
+      categoria: "Aforo",
+      id_punto: idPunto
+    };
+    let idNotificacion = db.collection("notificaciones").doc().id;
+    db.collection("notificaciones").doc(idNotificacion).set(notificacion);
   }
   return (
     <div

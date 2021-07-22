@@ -126,14 +126,14 @@ const Form = ({
             uid: user.uid,
             fotografia: url
           };
-          db.collection("denuncias").doc(denunciaFormated.id).set(denunciaFormated).then(nada => {
-            db.collection("conf").doc(denunciaFormated.id2).set(map)
+          db.collection("denuncias2").doc(denunciaFormated.id).set(denunciaFormated).then(nada => {
+            db.collection("conf2").doc(denunciaFormated.id2).set(map)
           })
         })
       })
   }
   const formaterDenuncia = (denu: any) => {
-    let iddenu = db.collection("denuncias").doc().id;
+    let iddenu = db.collection("denuncias2").doc().id;
     let data = {
       id: iddenu,
       descripcion: denu.descripcion,
@@ -143,9 +143,21 @@ const Form = ({
       fecha_incidente: dateFns.format(denu.fecha, "dd-MM-yyyy"),
       tipo_incidente: denu.tipoIncidente,
       longitud: denu.position[1],
-      id2: db.collection("conf").doc().id
+      id2: db.collection("conf2").doc().id
     };
     return data;
+  }
+  const sendNotificationDenuncia = (mensaje:String,idPunto:String) => {
+    const notificacion = {
+      correo_usuario: user.displayName,
+      nombre_usuario: user.email,
+      uid: user.uid,
+      mensaje:mensaje,
+      categoria: "Denuncia",
+      id_punto: idPunto
+    };
+    let idNotificacion = db.collection("notificaciones").doc().id;
+    db.collection("notificaciones").doc(idNotificacion).set(notificacion);
   }
   return (
     <div
