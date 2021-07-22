@@ -105,27 +105,84 @@ const Form = ({
         data.ref.getDownloadURL().then(url => {
           //Despues, Formatear la estructura del objeto con la url obtenida de la imagen
           let biciparqueoFormated = formaterBiciparqueo(object, url);
+          //Cambiando la estructura del biciparqueo
+          let idVersion = db.collection("biciparqueos2").doc().id;
+          let version = {
+            accesibilidad: object.accesibilidad,
+            senalizacion: object.senalizacion,
+            fotografia: url,
+            timestamp: new Date(),
+            seguridad_percibida: object.seguridadPercibida,
+            id2: db.collection("conf2").doc().id
+          };
+        let biciparqueoHistorial = {};
+        biciparqueoHistorial['historial.'+idVersion] = version;
           //Subir datos a Firestore
-          db.collection("biciparqueos").doc(biciparqueoFormated.id).set(biciparqueoFormated).then(nada => {
-            db.collection("conf").doc(biciparqueoFormated.id2).set(map)
+          //Primero subimos el biciparqueo con los datos que no cambian. Ej> id, latitud longitud
+          db.collection("biciparqueos2").doc(biciparqueoFormated.id).set(biciparqueoFormated).then(nada => {
+            //Ahora se sube el historial del biciparqueo como actualizacion solo del campo historial
+            db.collection("biciparqueos2").doc(biciparqueoFormated.id).update(biciparqueoHistorial);
+            db.collection("conf2").doc(version.id2).set(map);
           })
         })
       })
   }
   const formaterBiciparqueo = (bici: any, urlImage: string) => {
-    let idBici = db.collection("biciparqueos").doc().id;
+    let idBici = db.collection("biciparqueos2").doc().id;
     let data = {
       id: idBici,
-      accesibilidad: bici.accesibilidad,
-      senalizacion: bici.senalizacion,
-      fotografia: urlImage,
+      // accesibilidad: bici.accesibilidad,
+      // senalizacion: bici.senalizacion,
+      // fotografia: urlImage,
       latitud: bici.position[0],
-      timestamp: new Date(),
-      seguridad_percibida: bici.seguridadPercibida,
+      // timestamp: new Date(),
+      // seguridad_percibida: bici.seguridadPercibida,
       longitud: bici.position[1],
-      id2: db.collection("conf").doc().id
+      // id2: db.collection("conf").doc().id
     };
     return data;
+  }
+  const updateBiciparqueo = (actualizacion:any,idPunto:any)=>{
+    const map = {
+      correo_usuario: user.displayName,
+      nombre_usuario: user.email,
+      uid: user.uid
+    };
+    //Subir la imagen a Storage para obtener la url de la imagen
+    const uploadTask = storageRef.ref(`imagenesBiciparqueos/${new Date().getTime() + "_" + actualizacion.fotografia.name}`)
+      .put(actualizacion.fotografia).then(data => {
+        data.ref.getDownloadURL().then(url => {
+          //Estructura del biciparqueo
+          let idVersion = db.collection("biciparqueos2").doc().id;
+          let version = {
+            accesibilidad: actualizacion.accesibilidad,
+            senalizacion: actualizacion.senalizacion,
+            fotografia: url,
+            timestamp: new Date(),
+            seguridad_percibida: actualizacion.seguridadPercibida,
+            id2: db.collection("conf2").doc().id
+          };
+        let biciparqueoHistorial = {};
+        biciparqueoHistorial['historial.'+idVersion] = version;
+          //Subir datos a Firestore
+            //Se sube el historial del biciparqueo como actualizacion solo del campo historial
+            db.collection("biciparqueos2").doc(idPunto).update(biciparqueoHistorial);
+            db.collection("conf2").doc(version.id2).set(map);
+        
+        })
+      })
+  }
+  const sendNotificationBiciparqueo = (mensaje:String,idPunto:String) => {
+    const notificacion = {
+      correo_usuario: user.displayName,
+      nombre_usuario: user.email,
+      uid: user.uid,
+      mensaje:mensaje,
+      categoria: "Biciparqueo",
+      id_punto: idPunto
+    };
+    let idNotificacion = db.collection("notificaciones").doc().id;
+    db.collection("notificaciones").doc(idNotificacion).set(notificacion);
   }
   return (
     <div

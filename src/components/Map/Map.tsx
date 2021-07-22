@@ -73,6 +73,9 @@ const Map = ({
   setPlaceForPreview,
 }: any) => {
   const defaultPosition: LatLngExpression = [-17.396, -66.153]; // Cochabamba
+  const [aforos2, setAforos2] = useState([] as any);
+  const [biciparqueos2, setBiciparqueos2] = useState([] as any);
+  const [servicios2, setServicios2] = useState([] as any);
   const [aforos, setAforos] = useState([] as any);
   const [biciparqueos, setBiciparqueos] = useState([] as any);
   const [servicios, setServicios] = useState([] as any);
@@ -109,15 +112,18 @@ const Map = ({
         switch (e.name) {
           case "Biciparqueos":
             getBiciparqueosFromFirebase();
+            getBiciparqueos2FromFirebase();
             break;
           case "Servicios":
             getServiciosFromFirebase();
+            getServicios2FromFirebase();
             break;
           case "Denuncias":
             getDenunciasFromFirebase();
             break;
           case "Aforos":
             getAforosFromFirebase();
+            getAforos2FromFirebase();
             break;
           // case "Ciclovias":
           //   getCicloviasFromGithub();
@@ -146,7 +152,60 @@ const Map = ({
     setBiciparqueos(data);
     setLoading(false);
   };
-
+  const getBiciparqueos2FromFirebase = async () => {
+    const biciparqueosRef = db.collection('biciparqueos2');
+    setLoading(true);
+    const snapshot = await biciparqueosRef.get();
+    if (snapshot.empty) {
+      console.log('No se encontraron biciparqueos.');
+      setLoading(false);
+      return;
+    }
+    let arr: any = [];
+    snapshot.forEach(doc => {
+      arr.push(doc.data());
+    });
+    const data = await [...arr];
+    console.log(data);
+    setBiciparqueos2(data);
+    setLoading(false);
+  };
+  const getServicios2FromFirebase = async () => {
+    const serviciosRef = db.collection('servicios2');
+    setLoading(true);
+    const snapshot = await serviciosRef.get();
+    if (snapshot.empty) {
+      console.log('No se encontraron servicios.');
+      setLoading(false);
+      return;
+    }
+    let arr: any = [];
+    snapshot.forEach(doc => {
+      arr.push(doc.data());
+    });
+    const data = await [...arr];
+    console.log(data);
+    setServicios2(data)
+    setLoading(false);
+  };
+  const getAforos2FromFirebase = async () => {
+    const aforosRef = db.collection('aforos2');
+    setLoading(true);
+    const snapshot = await aforosRef.get();
+    if (snapshot.empty) {
+      console.log('No se encontraron aforos.');
+      setLoading(false);
+      return;
+    }
+    let arr: any = [];
+    snapshot.forEach(doc => {
+      arr.push(doc.data());
+    });
+    const data = await [...arr];
+    console.log(data);
+    setAforos2(data);
+    setLoading(false);
+  };
   const getServiciosFromFirebase = async () => {
     const serviciosRef = db.collection('servicios');
     setLoading(true);
