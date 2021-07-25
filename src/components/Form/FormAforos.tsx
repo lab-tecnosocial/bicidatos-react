@@ -110,8 +110,8 @@ const Form = ({
   }
   const uploadData = (object: any) => {
     const map = {
-      correo_usuario: user.displayName,
-      nombre_usuario: user.email,
+      nombre_usuario: user.displayName,
+      correo_usuario: user.email,
       uid: user.uid
     };
 
@@ -135,12 +135,18 @@ const Form = ({
     //Primero subimos el aforo con los datos que no cambian. Ej> id, latitud longitud
     db.collection("aforos2").doc(aforoFormated.id).set(aforoFormated).then((e) => {
       //Ahora se sube el historial del aforo como actualizacion solo del campo historial
-      db.collection("aforos2").doc(aforoFormated.id).update(aforoHistorial);
-      db.collection("conf2").doc(version.id2).set(map);
-    })
-      .then(element => {
-        window.location.reload()
+      db.collection("aforos2").doc(aforoFormated.id).update(aforoHistorial).then(e=>{
+         db.collection("conf2").doc(version.id2).set(map).then(element=>{
+            window.location.reload()
+         }).catch((error) =>
+         console.log(error)
+       )
       })
+     
+    })
+      // .then(element => {
+       
+      // })
       .catch((error) =>
         console.log(error)
       )
@@ -164,8 +170,8 @@ const Form = ({
   }
   const updateAforo = (actualizacion: any, idPunto: any) => {
     const map = {
-      correo_usuario: user.displayName,
-      nombre_usuario: user.email,
+      correo_usuario: user.email,
+      nombre_usuario: user.displayName,
       uid: user.uid
     };
     //Estructura del Aforo
@@ -184,11 +190,13 @@ const Form = ({
     aforoHistorial['historial.' + idVersion] = version;
     //Subir datos a Firestore
     //Se sube el historial del aforo como actualizacion solo del campo historial
-    db.collection("aforos2").doc(idPunto).update(aforoHistorial);
-    db.collection("conf2").doc(version.id2).set(map)
+    db.collection("aforos2").doc(idPunto).update(aforoHistorial).then(e=>{
+      db.collection("conf2").doc(version.id2).set(map)
       .then(element => {
         window.location.reload()
       })
+    })
+    
   }
 
   return (

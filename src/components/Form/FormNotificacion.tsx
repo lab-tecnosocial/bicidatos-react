@@ -72,8 +72,8 @@ export default function FormNotificacion() {
 
   const sendNotification = (mensaje: String, idPunto: String, categoria: String) => {
     const notificacion = {
-      correo_usuario: user.displayName,
-      nombre_usuario: user.email,
+      correo_usuario: user.email,
+      nombre_usuario: user.displayName,
       uid: user.uid,
       mensaje: mensaje,
       categoria: categoria,

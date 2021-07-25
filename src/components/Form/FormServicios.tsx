@@ -122,8 +122,8 @@ const Form = ({
   }
   const uploadPhotoAndData = (object: any) => {
     const map = {
-      correo_usuario: user.displayName,
-      nombre_usuario: user.email,
+      correo_usuario: user.email,
+      nombre_usuario: user.displayName,
       uid: user.uid
     };
     //Subir la imagen a Storage para obtener la url de la imagen
@@ -150,11 +150,13 @@ const Form = ({
           //Primero subimos el servicio con los datos que no cambian. Ej> id, latitud longitud
           db.collection("servicios2").doc(servicioFormated.id).set(servicioFormated).then(nada => {
             //Ahora se sube el historial del servicio como actualizacion solo del campo historial
-            db.collection("servicios2").doc(servicioFormated.id).update(servicioHistorial);
-            db.collection("conf2").doc(version.id2).set(map)
+            db.collection("servicios2").doc(servicioFormated.id).update(servicioHistorial).then(e=>{
+              db.collection("conf2").doc(version.id2).set(map)
               .then(element => {
                 window.location.reload()
               })
+            })
+            
           })
         })
       })
@@ -178,8 +180,8 @@ const Form = ({
   }
   const updateServicio = (actualizacion: any, idPunto: any) => {
     const map = {
-      correo_usuario: user.displayName,
-      nombre_usuario: user.email,
+      correo_usuario: user.email,
+      nombre_usuario: user.displayName,
       uid: user.uid
     };
     //Subir la imagen a Storage para obtener la url de la imagen
@@ -204,11 +206,13 @@ const Form = ({
           //Subir datos a Firestore
 
           //Se sube el historial del servicio como actualizacion solo del campo historial
-          db.collection("servicios2").doc(idPunto).update(servicioHistorial);
-          db.collection("conf2").doc(version.id2).set(map)
+          db.collection("servicios2").doc(idPunto).update(servicioHistorial).then(e=>{
+            db.collection("conf2").doc(version.id2).set(map)
             .then(element => {
               window.location.reload()
             })
+          })
+          
 
         })
       })
