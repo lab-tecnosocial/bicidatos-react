@@ -67,6 +67,13 @@ export default function FormNotificacion() {
       formik.resetForm();
       handleCloseNoti();
       alert('Notificacion enviada con éxito');
+    },
+    validate: values => {
+      let errors: any = {};
+      if (values.mensaje.length < 11) {
+        errors.mensaje = 'El mensaje debe tener más de 10 letras.'
+      };
+      return errors;
     }
   });
 
@@ -108,6 +115,8 @@ export default function FormNotificacion() {
                 fullWidth
                 rows="4"
                 variant="outlined"
+                error={formik.touched.mensaje && Boolean(formik.errors.mensaje)}
+                helperText={formik.touched.mensaje && formik.errors.mensaje}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
