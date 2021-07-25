@@ -9,16 +9,19 @@ import { useRef } from "react";
 import db, { storageRef } from "../../database/firebase";
 import { auth, provider } from "../../database/firebase";
 import { useEffect, useState } from "react";
+
 const Form = ({
   isVisible,
   position,
   closeForm,
-  addNewPlace
+  addNewPlace,
+  placeSelect
 }: {
   isVisible: boolean;
   position: LatLng;
   closeForm: Function;
   addNewPlace: Function;
+  placeSelect: any;
 }) => {
   const [user, setUser] = useState(null);
   useEffect(() => {
@@ -92,16 +95,25 @@ const Form = ({
         ...values,
         position: [position.lat, position.lng]
       };
-      console.log(newServicio);       // objeto a subir a backend
-      console.log(values.fotografia); // objeto de la imagen subida
-      uploadPhotoAndData(newServicio);
-      addNewPlace(newServicio);
-      actions.resetForm({});
-      fotoRef.current.value = null;
-      closeForm();
-      alert('Punto enviado correctamente');
+
+      if (placeSelect == null) {
+        uploadPhotoAndData(newServicio);
+        addNewPlace(newServicio);
+        actions.resetForm({});
+        fotoRef.current.value = null;
+        closeForm();
+        alert('Punto nuevo enviado correctamente');
+
+      } else {
+        updateServicio(newServicio, placeSelect.id)
+        actions.resetForm({});
+        fotoRef.current.value = null;
+        closeForm();
+        alert('Punto actualizado correctamente');
+      }
+
     } else {
-      alert("Necesitar iniciar sesión para subir datos.");
+      alert("Necesitas iniciar sesión para subir datos.");
     }
 
   }
@@ -129,11 +141,11 @@ const Form = ({
             tipo: object.tipoServicio,
             id2: db.collection("conf2").doc().id
           };
-        let servicioHistorial = {};
-        servicioHistorial['historial.'+idVersion] = version;
+          let servicioHistorial = {};
+          servicioHistorial['historial.' + idVersion] = version;
           //Subir datos a Firestore
-           //Primero subimos el servicio con los datos que no cambian. Ej> id, latitud longitud
-           db.collection("servicios2").doc(servicioFormated.id).set(servicioFormated).then(nada => {
+          //Primero subimos el servicio con los datos que no cambian. Ej> id, latitud longitud
+          db.collection("servicios2").doc(servicioFormated.id).set(servicioFormated).then(nada => {
             //Ahora se sube el historial del servicio como actualizacion solo del campo historial
             db.collection("servicios2").doc(servicioFormated.id).update(servicioHistorial);
             db.collection("conf2").doc(version.id2).set(map);
@@ -158,7 +170,7 @@ const Form = ({
     };
     return data;
   }
-  const updateServicio = (actualizacion: any, idPunto:any) => {
+  const updateServicio = (actualizacion: any, idPunto: any) => {
     const map = {
       correo_usuario: user.displayName,
       nombre_usuario: user.email,
@@ -181,29 +193,18 @@ const Form = ({
             tipo: actualizacion.tipoServicio,
             id2: db.collection("conf2").doc().id
           };
-        let servicioHistorial = {};
-        servicioHistorial['historial.'+idVersion] = version;
+          let servicioHistorial = {};
+          servicioHistorial['historial.' + idVersion] = version;
           //Subir datos a Firestore
-      
-            //Se sube el historial del servicio como actualizacion solo del campo historial
-            db.collection("servicios2").doc(idPunto).update(servicioHistorial);
-            db.collection("conf2").doc(version.id2).set(map);
-         
+
+          //Se sube el historial del servicio como actualizacion solo del campo historial
+          db.collection("servicios2").doc(idPunto).update(servicioHistorial);
+          db.collection("conf2").doc(version.id2).set(map);
+
         })
       })
   }
-  const sendNotificationServicio = (mensaje:String,idPunto:String) => {
-    const notificacion = {
-      correo_usuario: user.displayName,
-      nombre_usuario: user.email,
-      uid: user.uid,
-      mensaje:mensaje,
-      categoria: "Servicio",
-      id_punto: idPunto
-    };
-    let idNotificacion = db.collection("notificaciones").doc().id;
-    db.collection("notificaciones").doc(idNotificacion).set(notificacion);
-  }
+
   return (
     <div
       className={`subform__container form__container--${isVisible && "active"}`}
@@ -280,6 +281,7 @@ const mapStateToProps = (state: any) => {
   return {
     isVisible: places.placeFormIsVisible,
     position: places.prePlacePosition as LatLng,
+    placeSelect: places.selectedPlace
   };
 };
 

@@ -9,18 +9,19 @@ import { useRef } from "react";
 import db, { storageRef } from "../../database/firebase";
 import { auth, provider } from "../../database/firebase";
 import { useEffect, useState } from "react";
-import Toast from "../Header/Toast";
 
 const Form = ({
   isVisible,
   position,
   closeForm,
-  addNewPlace
+  addNewPlace,
+  placeSelect
 }: {
   isVisible: boolean;
   position: LatLng;
   closeForm: Function;
   addNewPlace: Function;
+  placeSelect: any;
 }) => {
   const [user, setUser] = useState(null);
   useEffect(() => {
@@ -80,16 +81,24 @@ const Form = ({
         ...values,
         position: [position.lat, position.lng]
       };
-      console.log(newBiciparqueo);    // objeto a subir a backend
-      console.log(values.fotografia); // objeto de la imagen subida
-      uploadPhotoAndData(newBiciparqueo);
-      addNewPlace(newBiciparqueo);
-      actions.resetForm({});
-      fotoRef.current.value = null;
-      closeForm();
-      alert('Punto enviado correctamente');
+
+      if (placeSelect == null) {
+        uploadPhotoAndData(newBiciparqueo);
+        addNewPlace(newBiciparqueo);
+        actions.resetForm({});
+        fotoRef.current.value = null;
+        closeForm();
+        alert('Punto nuevo enviado correctamente');
+
+      } else {
+        updateBiciparqueo(newBiciparqueo, placeSelect.id)
+        actions.resetForm({});
+        fotoRef.current.value = null;
+        closeForm();
+        alert('Punto actualizado correctamente');
+      }
     } else {
-      alert("Necesitar iniciar sesión para subir datos.");
+      alert("Necesitas iniciar sesión para subir datos.");
     }
 
   }
@@ -115,8 +124,8 @@ const Form = ({
             seguridad_percibida: object.seguridadPercibida,
             id2: db.collection("conf2").doc().id
           };
-        let biciparqueoHistorial = {};
-        biciparqueoHistorial['historial.'+idVersion] = version;
+          let biciparqueoHistorial = {};
+          biciparqueoHistorial['historial.' + idVersion] = version;
           //Subir datos a Firestore
           //Primero subimos el biciparqueo con los datos que no cambian. Ej> id, latitud longitud
           db.collection("biciparqueos2").doc(biciparqueoFormated.id).set(biciparqueoFormated).then(nada => {
@@ -142,7 +151,7 @@ const Form = ({
     };
     return data;
   }
-  const updateBiciparqueo = (actualizacion:any,idPunto:any)=>{
+  const updateBiciparqueo = (actualizacion: any, idPunto: any) => {
     const map = {
       correo_usuario: user.displayName,
       nombre_usuario: user.email,
@@ -162,28 +171,17 @@ const Form = ({
             seguridad_percibida: actualizacion.seguridadPercibida,
             id2: db.collection("conf2").doc().id
           };
-        let biciparqueoHistorial = {};
-        biciparqueoHistorial['historial.'+idVersion] = version;
+          let biciparqueoHistorial = {};
+          biciparqueoHistorial['historial.' + idVersion] = version;
           //Subir datos a Firestore
-            //Se sube el historial del biciparqueo como actualizacion solo del campo historial
-            db.collection("biciparqueos2").doc(idPunto).update(biciparqueoHistorial);
-            db.collection("conf2").doc(version.id2).set(map);
-        
+          //Se sube el historial del biciparqueo como actualizacion solo del campo historial
+          db.collection("biciparqueos2").doc(idPunto).update(biciparqueoHistorial);
+          db.collection("conf2").doc(version.id2).set(map);
+
         })
       })
   }
-  const sendNotificationBiciparqueo = (mensaje:String,idPunto:String) => {
-    const notificacion = {
-      correo_usuario: user.displayName,
-      nombre_usuario: user.email,
-      uid: user.uid,
-      mensaje:mensaje,
-      categoria: "Biciparqueo",
-      id_punto: idPunto
-    };
-    let idNotificacion = db.collection("notificaciones").doc().id;
-    db.collection("notificaciones").doc(idNotificacion).set(notificacion);
-  }
+
   return (
     <div
       className={`subform__container form__container--${isVisible && "active"}`}
@@ -253,6 +251,7 @@ const mapStateToProps = (state: any) => {
   return {
     isVisible: places.placeFormIsVisible,
     position: places.prePlacePosition as LatLng,
+    placeSelect: places.selectedPlace
   };
 };
 

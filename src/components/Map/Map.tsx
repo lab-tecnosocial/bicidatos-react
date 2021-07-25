@@ -76,9 +76,6 @@ const Map = ({
   const [aforos2, setAforos2] = useState([] as any);
   const [biciparqueos2, setBiciparqueos2] = useState([] as any);
   const [servicios2, setServicios2] = useState([] as any);
-  const [aforos, setAforos] = useState([] as any);
-  const [biciparqueos, setBiciparqueos] = useState([] as any);
-  const [servicios, setServicios] = useState([] as any);
   const [denuncias, setDenuncias] = useState([] as any);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
@@ -111,18 +108,15 @@ const Map = ({
         console.log(e.name)
         switch (e.name) {
           case "Biciparqueos":
-            getBiciparqueosFromFirebase();
             getBiciparqueos2FromFirebase();
             break;
           case "Servicios":
-            getServiciosFromFirebase();
             getServicios2FromFirebase();
             break;
           case "Denuncias":
             getDenunciasFromFirebase();
             break;
           case "Aforos":
-            getAforosFromFirebase();
             getAforos2FromFirebase();
             break;
           // case "Ciclovias":
@@ -135,23 +129,6 @@ const Map = ({
   }
 
 
-  const getBiciparqueosFromFirebase = async () => {
-    const biciparqueosRef = db.collection('biciparqueos');
-    setLoading(true);
-    const snapshot = await biciparqueosRef.get();
-    if (snapshot.empty) {
-      console.log('No se encontraron biciparqueos.');
-      setLoading(false);
-      return;
-    }
-    let arr: any = [];
-    snapshot.forEach(doc => {
-      arr.push(doc.data());
-    });
-    const data = await [...arr];
-    setBiciparqueos(data);
-    setLoading(false);
-  };
   const getBiciparqueos2FromFirebase = async () => {
     const biciparqueosRef = db.collection('biciparqueos2');
     setLoading(true);
@@ -206,23 +183,6 @@ const Map = ({
     setAforos2(data);
     setLoading(false);
   };
-  const getServiciosFromFirebase = async () => {
-    const serviciosRef = db.collection('servicios');
-    setLoading(true);
-    const snapshot = await serviciosRef.get();
-    if (snapshot.empty) {
-      console.log('No se encontraron servicios.');
-      setLoading(false);
-      return;
-    }
-    let arr: any = [];
-    snapshot.forEach(doc => {
-      arr.push(doc.data());
-    });
-    const data = await [...arr];
-    setServicios(data)
-    setLoading(false);
-  };
 
   const getDenunciasFromFirebase = async () => {
     const denunciasRef = db.collection('denuncias');
@@ -242,23 +202,6 @@ const Map = ({
     setLoading(false);
   };
 
-  const getAforosFromFirebase = async () => {
-    const aforosRef = db.collection('aforos');
-    setLoading(true);
-    const snapshot = await aforosRef.get();
-    if (snapshot.empty) {
-      console.log('No se encontraron aforos.');
-      setLoading(false);
-      return;
-    }
-    let arr: any = [];
-    snapshot.forEach(doc => {
-      arr.push(doc.data());
-    });
-    const data = await [...arr];
-    setAforos(data);
-    setLoading(false);
-  };
 
   const getCicloviasFromGithub = async () => {
     const url = 'https://raw.githubusercontent.com/lab-tecnosocial/bicidatos/main/data2/ciclovias.geojson';
@@ -328,7 +271,7 @@ const Map = ({
 
               <LayersControl.Overlay name="Biciparqueos">
                 <LayerGroup>
-                  {biciparqueos.map((biciparqueo: any) =>
+                  {biciparqueos2.map((biciparqueo: any) =>
                     <Marker
                       key={biciparqueo.id}
                       position={[biciparqueo.latitud, biciparqueo.longitud]}
@@ -344,7 +287,7 @@ const Map = ({
 
               <LayersControl.Overlay name="Servicios">
                 <LayerGroup>
-                  {servicios.map((servicio: any) =>
+                  {servicios2.map((servicio: any) =>
                     <Marker
                       key={servicio.id}
                       position={[servicio.latitud, servicio.longitud]}
@@ -376,7 +319,7 @@ const Map = ({
 
               <LayersControl.Overlay name="Aforos">
                 <LayerGroup>
-                  {aforos.map((aforo: any) =>
+                  {aforos2.map((aforo: any) =>
                     <Marker
                       key={aforo.id}
                       position={[aforo.latitud, aforo.longitud]}
