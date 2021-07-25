@@ -11,6 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import UpdateIcon from '@material-ui/icons/Update';
+import FormDenuncias from "../Form/FormDenuncias";
 
 
 const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
@@ -73,7 +74,7 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
         {place?.historial[Object.keys(place?.historial)[index]].tipo_incidente && <div className=""><b>Tipo de incidente:</b> {place?.historial[Object.keys(place?.historial)[index]].tipo_incidente}</div>}
         {place?.historial[Object.keys(place?.historial)[index]].enlace && <div className=""><b>Enlace:</b> {place?.historial[Object.keys(place?.historial)[index]].enlace}</div>}
 
-        {place?.historial[Object.keys(place?.historial)[index]].fecha_observacion && <div className=""><b>Fecha:</b> {place?.fecha_observacion}</div>}
+        {place?.historial[Object.keys(place?.historial)[index]].fecha_observacion && <div className=""><b>Fecha:</b> {place?.historial[Object.keys(place?.historial)[index]].fecha_observacion}</div>}
         {place?.historial[Object.keys(place?.historial)[index]].hora_inicio_observacion && <div className=""><b>Tiempo de inicio:</b> {place?.historial[Object.keys(place?.historial)[index]].hora_inicio_observacion}</div>}
         {place?.historial[Object.keys(place?.historial)[index]].hora_fin_observacion && <div className=""><b>Tiempo de fin:</b> {place?.historial[Object.keys(place?.historial)[index]].hora_fin_observacion}</div>}
         {place?.historial[Object.keys(place?.historial)[index]].nro_ciclistas_observados && <div className=""><b>Número de ciclistas:</b> {place?.historial[Object.keys(place?.historial)[index]].nro_ciclistas_observados}</div>}
@@ -87,9 +88,10 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
         </IconButton>
       </div>
 
-      {actualizar && place?.historial[Object.keys(place?.historial)[index]].accesibilidad && <div className=""><b>Accesibilidad:</b> {place?.historial[Object.keys(place?.historial)[index]].accesibilidad}</div> && <FormBiciparqueos />}
-      {actualizar && place?.historial[Object.keys(place?.historial)[index]].nombre && <div className=""><b>Accesibilidad:</b> {place?.historial[Object.keys(place?.historial)[index]].nombre}</div> && <FormServicios />}
-      {actualizar && place?.historial[Object.keys(place?.historial)[index]].fecha_observacion && <div className=""><b>Accesibilidad:</b> {place?.historial[Object.keys(place?.historial)[index]].fecha_observacion}</div> && <FormAforos />}
+      {actualizar && place?.historial[Object.keys(place?.historial)[index]].accesibilidad && <FormBiciparqueos />}
+      {actualizar && place?.historial[Object.keys(place?.historial)[index]].nombre && <FormServicios />}
+      {actualizar && place?.historial[Object.keys(place?.historial)[index]].fecha_observacion && <FormAforos />}
+      {actualizar && place?.historial[Object.keys(place?.historial)[index]].tipo_incidente && <FormDenuncias />}
 
     </div>
   );

@@ -33,12 +33,14 @@ const Form = ({
   isVisible,
   position,
   closeForm,
-  addNewPlace
+  addNewPlace,
+  placeSelect
 }: {
   isVisible: boolean;
   position: LatLng;
   closeForm: Function;
   addNewPlace: Function;
+  placeSelect: any;
 }) => {
   const [user, setUser] = useState(null);
   useEffect(() => {
@@ -95,16 +97,28 @@ const Form = ({
 
   const handleOnSubmit = (values: PlaceFormDenunciasProps, actions: any) => {
     if (user) {
-      const newDenuncia = {
-        ...values,
-        position: [position.lat, position.lng]
-      };
-      uploadPhotoAndData(newDenuncia);
-      addNewPlace(newDenuncia);
-      actions.resetForm({});
-      fotoRef.current.value = null;
-      closeForm();
-      alert('Punto enviado correctamente');
+      if (placeSelect == null) {
+        const newDenuncia = {
+          ...values,
+          position: [position.lat, position.lng]
+        };
+        uploadPhotoAndData(newDenuncia);
+        addNewPlace(newDenuncia);
+        actions.resetForm({});
+        fotoRef.current.value = null;
+        closeForm();
+        alert('Punto nuevo enviado correctamente');
+
+      } else {
+        const newDenuncia = {
+          ...values
+        };
+        updateDenuncia(newDenuncia, placeSelect.id)
+        actions.resetForm({});
+        fotoRef.current.value = null;
+        closeForm();
+        alert('Punto actualizado correctamente');
+      }
     } else {
       alert("Necesitar iniciar sesión para subir datos.");
     }
@@ -118,17 +132,17 @@ const Form = ({
           //Despues, Formatear la estructura del objeto con la url obtenida de la imagen
           let denunciaFormated = formaterDenuncia(object);
           //Estructura de la denuncia
-            let idVersion = db.collection("denuncias2").doc().id;
-            let version = {
-              descripcion: object.descripcion,
-              enlace: object.enlace,
-              timestamp: new Date(),
-              fecha_incidente: dateFns.format(object.fecha, "dd-MM-yyyy"),
-              tipo_incidente: object.tipoIncidente,
-              id2: db.collection("conf2").doc().id
-            };
-            let denunciaHistorial = {};
-            denunciaHistorial['historial.' + idVersion] = version;
+          let idVersion = db.collection("denuncias2").doc().id;
+          let version = {
+            descripcion: object.descripcion,
+            enlace: object.enlace,
+            timestamp: new Date(),
+            fecha_incidente: dateFns.format(object.fecha, "dd-MM-yyyy"),
+            tipo_incidente: object.tipoIncidente,
+            id2: db.collection("conf2").doc().id
+          };
+          let denunciaHistorial = {};
+          denunciaHistorial['historial.' + idVersion] = version;
           //Subir datos a Firestore
           const map = {
             correo_usuario: user.email,
@@ -138,12 +152,12 @@ const Form = ({
           };
           db.collection("denuncias2").doc(denunciaFormated.id).set(denunciaFormated).then(nada => {
             //Ahora se sube el historial de la denuncia como actualizacion solo del campo historial
-            db.collection("denuncias2").doc(denunciaFormated.id).update(denunciaHistorial).then(e=>{
+            db.collection("denuncias2").doc(denunciaFormated.id).update(denunciaHistorial).then(e => {
               db.collection("conf2").doc(version.id2).set(map)
-             .then(element => {
-               window.location.reload()
-             })
-           })
+                .then(element => {
+                  window.location.reload()
+                })
+            })
           })
         })
       })
@@ -165,7 +179,7 @@ const Form = ({
   }
   const updateDenuncia = (actualizacion: any, idPunto: any) => {
     //Subir la imagen a Storage para obtener la url de la imagen
-    const uploadTask = storageRef.ref(`imagenesDenuncias/${new Date().getTime() + "_" + actualizacion.fotografia.name}`)
+    const uploadTask = storageRef.ref(`imagenesDenuncias/${new Date().getTime() + "_" + actualizacion.fotografiaConf.name}`)
       .put(actualizacion.fotografia).then(data => {
         data.ref.getDownloadURL().then(url => {
           //Estructura del biciparqueo
@@ -188,13 +202,13 @@ const Form = ({
           };
           //Subir datos a Firestore
           //Se sube el historial de la denuncia como actualizacion solo del campo historial
-          db.collection("denuncias2").doc(idPunto).update(denunciaHistorial).then(e=>{
-             db.collection("conf2").doc(version.id2).set(map)
-            .then(element => {
-              window.location.reload()
-            })
+          db.collection("denuncias2").doc(idPunto).update(denunciaHistorial).then(e => {
+            db.collection("conf2").doc(version.id2).set(map)
+              .then(element => {
+                window.location.reload()
+              })
           })
-         
+
 
         })
       })
@@ -294,6 +308,7 @@ const mapStateToProps = (state: any) => {
   return {
     isVisible: places.placeFormIsVisible,
     position: places.prePlacePosition as LatLng,
+    placeSelect: places.selectedPlace
   };
 };
 
