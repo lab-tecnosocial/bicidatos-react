@@ -117,6 +117,18 @@ const Form = ({
         data.ref.getDownloadURL().then(url => {
           //Despues, Formatear la estructura del objeto con la url obtenida de la imagen
           let denunciaFormated = formaterDenuncia(object);
+          //Estructura de la denuncia
+            let idVersion = db.collection("denuncias2").doc().id;
+            let version = {
+              descripcion: object.descripcion,
+              enlace: object.enlace,
+              timestamp: new Date(),
+              fecha_incidente: dateFns.format(object.fecha, "dd-MM-yyyy"),
+              tipo_incidente: object.tipoIncidente,
+              id2: db.collection("conf2").doc().id
+            };
+            let denunciaHistorial = {};
+            denunciaHistorial['historial.' + idVersion] = version;
           //Subir datos a Firestore
           const map = {
             correo_usuario: user.email,
@@ -125,10 +137,13 @@ const Form = ({
             fotografia: url
           };
           db.collection("denuncias2").doc(denunciaFormated.id).set(denunciaFormated).then(nada => {
-            db.collection("conf2").doc(denunciaFormated.id2).set(map)
-              .then(element => {
-                window.location.reload()
-              })
+            //Ahora se sube el historial de la denuncia como actualizacion solo del campo historial
+            db.collection("denuncias2").doc(denunciaFormated.id).update(denunciaHistorial).then(e=>{
+              db.collection("conf2").doc(version.id2).set(map)
+             .then(element => {
+               window.location.reload()
+             })
+           })
           })
         })
       })
@@ -137,16 +152,52 @@ const Form = ({
     let iddenu = db.collection("denuncias2").doc().id;
     let data = {
       id: iddenu,
-      descripcion: denu.descripcion,
-      enlace: denu.enlace,
+      // descripcion: denu.descripcion,
+      // enlace: denu.enlace,
       latitud: denu.position[0],
-      timestamp: new Date(),
-      fecha_incidente: dateFns.format(denu.fecha, "dd-MM-yyyy"),
-      tipo_incidente: denu.tipoIncidente,
+      // timestamp: new Date(),
+      // fecha_incidente: dateFns.format(denu.fecha, "dd-MM-yyyy"),
+      // tipo_incidente: denu.tipoIncidente,
       longitud: denu.position[1],
-      id2: db.collection("conf2").doc().id
+      // id2: db.collection("conf2").doc().id
     };
     return data;
+  }
+  const updateDenuncia = (actualizacion: any, idPunto: any) => {
+    //Subir la imagen a Storage para obtener la url de la imagen
+    const uploadTask = storageRef.ref(`imagenesDenuncias/${new Date().getTime() + "_" + actualizacion.fotografia.name}`)
+      .put(actualizacion.fotografia).then(data => {
+        data.ref.getDownloadURL().then(url => {
+          //Estructura del biciparqueo
+          let idVersion = db.collection("denuncias2").doc().id;
+          let version = {
+            descripcion: actualizacion.descripcion,
+            enlace: actualizacion.enlace,
+            timestamp: new Date(),
+            fecha_incidente: dateFns.format(actualizacion.fecha, "dd-MM-yyyy"),
+            tipo_incidente: actualizacion.tipoIncidente,
+            id2: db.collection("conf2").doc().id
+          };
+          let denunciaHistorial = {};
+          denunciaHistorial['historial.' + idVersion] = version;
+          const map = {
+            correo_usuario: user.email,
+            nombre_usuario: user.displayName,
+            uid: user.uid,
+            fotografia: url
+          };
+          //Subir datos a Firestore
+          //Se sube el historial de la denuncia como actualizacion solo del campo historial
+          db.collection("denuncias2").doc(idPunto).update(denunciaHistorial).then(e=>{
+             db.collection("conf2").doc(version.id2).set(map)
+            .then(element => {
+              window.location.reload()
+            })
+          })
+         
+
+        })
+      })
   }
 
   return (
