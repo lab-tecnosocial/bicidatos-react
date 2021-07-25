@@ -52,6 +52,7 @@ export default function FormNotificacion() {
       mensaje: ''
     },
     onSubmit: (values) => {
+
       console.log(place.id);
       let categoria;
       if ('accesibilidad' in place.historial[Object.keys(place?.historial)[0]]) {
@@ -63,10 +64,14 @@ export default function FormNotificacion() {
       } else if ('tipo_incidente' in place.historial[Object.keys(place?.historial)[0]]) {
         categoria = 'Denuncia'
       }
-      sendNotification(values.mensaje, place.id, categoria);
-      formik.resetForm();
-      handleCloseNoti();
-      alert('Notificacion enviada con éxito');
+      if (user) {
+        sendNotification(values.mensaje, place.id, categoria);
+        formik.resetForm();
+        handleCloseNoti();
+        alert('Notificacion enviada con éxito');
+      } else {
+        alert("Necesitas iniciar sesión para subir datos.");
+      }
     },
     validate: values => {
       let errors: any = {};
