@@ -106,8 +106,8 @@ const Form = ({
   }
   const uploadPhotoAndData = (object: any) => {
     const map = {
-      correo_usuario: user.displayName,
-      nombre_usuario: user.email,
+      correo_usuario: user.email,
+      nombre_usuario: user.displayName,
       uid: user.uid
     };
     //Subir la imagen a Storage para obtener la url de la imagen
@@ -132,11 +132,13 @@ const Form = ({
           //Primero subimos el biciparqueo con los datos que no cambian. Ej> id, latitud longitud
           db.collection("biciparqueos2").doc(biciparqueoFormated.id).set(biciparqueoFormated).then(nada => {
             //Ahora se sube el historial del biciparqueo como actualizacion solo del campo historial
-            db.collection("biciparqueos2").doc(biciparqueoFormated.id).update(biciparqueoHistorial);
-            db.collection("conf2").doc(version.id2).set(map)
+            db.collection("biciparqueos2").doc(biciparqueoFormated.id).update(biciparqueoHistorial).then(e=>{
+               db.collection("conf2").doc(version.id2).set(map)
               .then(element => {
                 window.location.reload()
               })
+            })
+           
           })
         })
       })
@@ -158,8 +160,8 @@ const Form = ({
   }
   const updateBiciparqueo = (actualizacion: any, idPunto: any) => {
     const map = {
-      correo_usuario: user.displayName,
-      nombre_usuario: user.email,
+      correo_usuario: user.email,
+      nombre_usuario: user.displayName,
       uid: user.uid
     };
     //Subir la imagen a Storage para obtener la url de la imagen
@@ -180,11 +182,13 @@ const Form = ({
           biciparqueoHistorial['historial.' + idVersion] = version;
           //Subir datos a Firestore
           //Se sube el historial del biciparqueo como actualizacion solo del campo historial
-          db.collection("biciparqueos2").doc(idPunto).update(biciparqueoHistorial);
-          db.collection("conf2").doc(version.id2).set(map)
+          db.collection("biciparqueos2").doc(idPunto).update(biciparqueoHistorial).then(e=>{
+             db.collection("conf2").doc(version.id2).set(map)
             .then(element => {
               window.location.reload()
             })
+          })
+         
 
         })
       })

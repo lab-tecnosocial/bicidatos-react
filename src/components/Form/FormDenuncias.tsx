@@ -119,8 +119,8 @@ const Form = ({
           let denunciaFormated = formaterDenuncia(object);
           //Subir datos a Firestore
           const map = {
-            correo_usuario: user.displayName,
-            nombre_usuario: user.email,
+            correo_usuario: user.email,
+            nombre_usuario: user.displayName,
             uid: user.uid,
             fotografia: url
           };

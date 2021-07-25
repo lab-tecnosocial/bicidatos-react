@@ -76,7 +76,7 @@ const Map = ({
   const [aforos2, setAforos2] = useState([] as any);
   const [biciparqueos2, setBiciparqueos2] = useState([] as any);
   const [servicios2, setServicios2] = useState([] as any);
-  const [denuncias, setDenuncias] = useState([] as any);
+  const [denuncias2, setDenuncias2] = useState([] as any);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
   const [ciclovias, setCiclovias] = useState({} as any);
@@ -114,7 +114,7 @@ const Map = ({
             getServicios2FromFirebase();
             break;
           case "Denuncias":
-            getDenunciasFromFirebase();
+            getDenuncias2FromFirebase();
             break;
           case "Aforos":
             getAforos2FromFirebase();
@@ -184,8 +184,8 @@ const Map = ({
     setLoading(false);
   };
 
-  const getDenunciasFromFirebase = async () => {
-    const denunciasRef = db.collection('denuncias');
+  const getDenuncias2FromFirebase = async () => {
+    const denunciasRef = db.collection('denuncias2');
     setLoading(true);
     const snapshot = await denunciasRef.get();
     if (snapshot.empty) {
@@ -198,7 +198,7 @@ const Map = ({
       arr.push(doc.data());
     });
     const data = await [...arr];
-    setDenuncias(data)
+    setDenuncias2(data)
     setLoading(false);
   };
 
@@ -303,7 +303,7 @@ const Map = ({
 
               <LayersControl.Overlay name="Denuncias">
                 <LayerGroup>
-                  {denuncias.map((denuncia: any) =>
+                  {denuncias2.map((denuncia: any) =>
                     <Marker
                       key={denuncia.id}
                       position={[denuncia.latitud, denuncia.longitud]}
