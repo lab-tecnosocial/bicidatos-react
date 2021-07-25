@@ -23,7 +23,7 @@
   right: 1rem;
   top: 1rem;
   font-size: 2rem;
-  color: black;
+  color: white;
   cursor: pointer;
 }
 
@@ -65,4 +65,14 @@
     top: auto;
     width: 33%;
   }
+}
+
+.seccion-flechas {
+  display: flex ;
+  justify-content: space-between ;
+}
+
+.seccion-notificar-actualizar  {
+  display: flex ;
+  justify-content: space-between ;
 }

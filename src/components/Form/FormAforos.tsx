@@ -33,12 +33,14 @@ const Form = ({
   isVisible,
   position,
   closeForm,
-  addNewPlace
+  addNewPlace,
+  placeSelect
 }: {
   isVisible: boolean;
   position: LatLng;
   closeForm: Function;
   addNewPlace: Function;
+  placeSelect: any;
 }) => {
   const [user, setUser] = useState(null);
   useEffect(() => {
@@ -84,12 +86,21 @@ const Form = ({
         ...values,
         position: [position.lat, position.lng]
       };
-      console.log(newAforo); // objeto a subir a backend
-      uploadData(newAforo);
-      addNewPlace(newAforo);
-      actions.resetForm({});
-      closeForm();
-      alert('Punto enviado correctamente');
+
+      if (placeSelect == null) {
+        uploadData(newAforo);
+        addNewPlace(newAforo);
+        actions.resetForm({});
+        closeForm();
+        alert('Punto nuevo enviado correctamente');
+
+      } else {
+        updateAforo(newAforo, placeSelect.id)
+        actions.resetForm({});
+        closeForm();
+        alert('Punto actualizado correctamente');
+      }
+
     } else {
       alert("Necesitar iniciar sesión para subir datos.");
     }
@@ -104,9 +115,9 @@ const Form = ({
 
     //Formatear la estructura del objeto
     let aforoFormated = formaterAforo(object);
-     //Cambiando la estructura del Aforo
-     let idVersion = db.collection("aforos2").doc().id;
-     let version = {
+    //Cambiando la estructura del Aforo
+    let idVersion = db.collection("aforos2").doc().id;
+    let version = {
       hora_fin_observacion: dateFns.format(object.tiempoFin, "HH:mm"),
       hora_inicio_observacion: dateFns.format(object.tiempoInicio, "HH:mm"),
       nro_ciclistas_observados: object.numCiclistas,
@@ -114,16 +125,16 @@ const Form = ({
       fecha_observacion: dateFns.format(object.fecha, "dd-MM-yyyy"),
       nro_hombres: object.numHombres,
       nro_mujeres: object.numMujeres,
-       id2: db.collection("conf2").doc().id
-     };
-   let aforoHistorial = {};
-   aforoHistorial['historial.'+idVersion] = version;
+      id2: db.collection("conf2").doc().id
+    };
+    let aforoHistorial = {};
+    aforoHistorial['historial.' + idVersion] = version;
     //Subir datos a Firestore
     //Primero subimos el aforo con los datos que no cambian. Ej> id, latitud longitud
     db.collection("aforos2").doc(aforoFormated.id).set(aforoFormated).then((e) => {
-       //Ahora se sube el historial del aforo como actualizacion solo del campo historial
-       db.collection("aforos2").doc(aforoFormated.id).update(aforoHistorial);
-       db.collection("conf2").doc(version.id2).set(map);
+      //Ahora se sube el historial del aforo como actualizacion solo del campo historial
+      db.collection("aforos2").doc(aforoFormated.id).update(aforoHistorial);
+      db.collection("conf2").doc(version.id2).set(map);
     }).catch((error) =>
       console.log(error)
     )
@@ -145,15 +156,15 @@ const Form = ({
     };
     return data;
   }
-  const updateAforo = (actualizacion: any,idPunto:any) => {
+  const updateAforo = (actualizacion: any, idPunto: any) => {
     const map = {
       correo_usuario: user.displayName,
       nombre_usuario: user.email,
       uid: user.uid
     };
-     //Estructura del Aforo
-     let idVersion = db.collection("aforos2").doc().id;
-     let version = {
+    //Estructura del Aforo
+    let idVersion = db.collection("aforos2").doc().id;
+    let version = {
       hora_fin_observacion: dateFns.format(actualizacion.tiempoFin, "HH:mm"),
       hora_inicio_observacion: dateFns.format(actualizacion.tiempoInicio, "HH:mm"),
       nro_ciclistas_observados: actualizacion.numCiclistas,
@@ -161,27 +172,16 @@ const Form = ({
       fecha_observacion: dateFns.format(actualizacion.fecha, "dd-MM-yyyy"),
       nro_hombres: actualizacion.numHombres,
       nro_mujeres: actualizacion.numMujeres,
-       id2: db.collection("conf2").doc().id
-     };
-   let aforoHistorial = {};
-   aforoHistorial['historial.'+idVersion] = version;
-    //Subir datos a Firestore
-       //Se sube el historial del aforo como actualizacion solo del campo historial
-       db.collection("aforos2").doc(idPunto).update(aforoHistorial);
-       db.collection("conf2").doc(version.id2).set(map);
-  }
-  const sendNotificationAforo = (mensaje:String,idPunto:String) => {
-    const notificacion = {
-      correo_usuario: user.displayName,
-      nombre_usuario: user.email,
-      uid: user.uid,
-      mensaje:mensaje,
-      categoria: "Aforo",
-      id_punto: idPunto
+      id2: db.collection("conf2").doc().id
     };
-    let idNotificacion = db.collection("notificaciones").doc().id;
-    db.collection("notificaciones").doc(idNotificacion).set(notificacion);
+    let aforoHistorial = {};
+    aforoHistorial['historial.' + idVersion] = version;
+    //Subir datos a Firestore
+    //Se sube el historial del aforo como actualizacion solo del campo historial
+    db.collection("aforos2").doc(idPunto).update(aforoHistorial);
+    db.collection("conf2").doc(version.id2).set(map);
   }
+
   return (
     <div
       className={`subform__container form__container--${isVisible && "active"}`}
@@ -295,6 +295,7 @@ const mapStateToProps = (state: any) => {
   return {
     isVisible: places.placeFormIsVisible,
     position: places.prePlacePosition as LatLng,
+    placeSelect: places.selectedPlace
   };
 };
 

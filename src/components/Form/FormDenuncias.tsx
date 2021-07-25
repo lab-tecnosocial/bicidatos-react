@@ -99,8 +99,6 @@ const Form = ({
         ...values,
         position: [position.lat, position.lng]
       };
-      console.log(newDenuncia);       // objeto a subir a backend
-      console.log(values.fotografiaConf); // objeto de la imagen subida
       uploadPhotoAndData(newDenuncia);
       addNewPlace(newDenuncia);
       actions.resetForm({});
@@ -147,18 +145,7 @@ const Form = ({
     };
     return data;
   }
-  const sendNotificationDenuncia = (mensaje:String,idPunto:String) => {
-    const notificacion = {
-      correo_usuario: user.displayName,
-      nombre_usuario: user.email,
-      uid: user.uid,
-      mensaje:mensaje,
-      categoria: "Denuncia",
-      id_punto: idPunto
-    };
-    let idNotificacion = db.collection("notificaciones").doc().id;
-    db.collection("notificaciones").doc(idNotificacion).set(notificacion);
-  }
+
   return (
     <div
       className={`subform__container form__container--${isVisible && "active"}`}
