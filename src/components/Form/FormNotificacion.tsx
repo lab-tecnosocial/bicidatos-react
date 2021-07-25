@@ -45,6 +45,7 @@ export default function FormNotificacion() {
 
   const handleCloseNoti = () => {
     setOpenNoti(false);
+    formik.resetForm();
   };
   const formik = useFormik({
     initialValues: {
@@ -52,20 +53,30 @@ export default function FormNotificacion() {
     },
     onSubmit: (values) => {
       console.log(place.id);
-      sendNotification(values.mensaje, place.id);
+      let categoria;
+      if ('accesibilidad' in place.historial[Object.keys(place?.historial)[0]]) {
+        categoria = 'Biciparqueo'
+      } else if ('nombre' in place.historial[Object.keys(place?.historial)[0]]) {
+        categoria = 'Servicio'
+      } else if ('fecha_observacion' in place.historial[Object.keys(place?.historial)[0]]) {
+        categoria = 'Aforo'
+      } else if ('tipo_incidente' in place.historial[Object.keys(place?.historial)[0]]) {
+        categoria = 'Denuncia'
+      }
+      sendNotification(values.mensaje, place.id, categoria);
       formik.resetForm();
       handleCloseNoti();
       alert('Notificacion enviada con éxito');
     }
   });
 
-  const sendNotification = (mensaje: String, idPunto: String) => {
+  const sendNotification = (mensaje: String, idPunto: String, categoria: String) => {
     const notificacion = {
       correo_usuario: user.displayName,
       nombre_usuario: user.email,
       uid: user.uid,
       mensaje: mensaje,
-      categoria: "Biciparqueo",
+      categoria: categoria,
       id_punto: idPunto
     };
     let idNotificacion = db.collection("notificaciones").doc().id;

@@ -2,7 +2,7 @@
   z-index: 1000;
   position: fixed;
   width: 100%;
-  height: 90vh;
+  height: 100vh;
   background-color: white;
   top: 0;
   right: -100%;
@@ -107,7 +107,7 @@ input:focus, textarea:focus, select:focus{
 @media only screen and (min-width: 1440px) {
   .form__container {
     top: auto;
-    width: 22%;
+    width: 20%;
   }
   .formGroup {
     /* padding: 0.2rem 0rem 0.2rem 4rem; */

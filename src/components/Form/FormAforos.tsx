@@ -82,19 +82,21 @@ const Form = ({
 
   const handleOnSubmit = (values: PlaceFormAforosProps, actions: any) => {
     if (user) {
-      const newAforo = {
-        ...values,
-        position: [position.lat, position.lng]
-      };
-
       if (placeSelect == null) {
-        uploadData(newAforo);
+        const newAforo = {
+          ...values,
+          position: [position.lat, position.lng]
+        };
+        uploadData(newAforo)
         addNewPlace(newAforo);
         actions.resetForm({});
         closeForm();
         alert('Punto nuevo enviado correctamente');
 
       } else {
+        const newAforo = {
+          ...values
+        };
         updateAforo(newAforo, placeSelect.id)
         actions.resetForm({});
         closeForm();
@@ -135,9 +137,13 @@ const Form = ({
       //Ahora se sube el historial del aforo como actualizacion solo del campo historial
       db.collection("aforos2").doc(aforoFormated.id).update(aforoHistorial);
       db.collection("conf2").doc(version.id2).set(map);
-    }).catch((error) =>
-      console.log(error)
-    )
+    })
+      .then(element => {
+        window.location.reload()
+      })
+      .catch((error) =>
+        console.log(error)
+      )
   }
   const formaterAforo = (afo: any) => {
     let idafo = db.collection("aforos2").doc().id;
@@ -179,7 +185,10 @@ const Form = ({
     //Subir datos a Firestore
     //Se sube el historial del aforo como actualizacion solo del campo historial
     db.collection("aforos2").doc(idPunto).update(aforoHistorial);
-    db.collection("conf2").doc(version.id2).set(map);
+    db.collection("conf2").doc(version.id2).set(map)
+      .then(element => {
+        window.location.reload()
+      })
   }
 
   return (

@@ -91,12 +91,12 @@ const Form = ({
 
   const handleOnSubmit = (values: PlaceFormServiciosProps, actions: any) => {
     if (user) {
-      const newServicio = {
-        ...values,
-        position: [position.lat, position.lng]
-      };
 
       if (placeSelect == null) {
+        const newServicio = {
+          ...values,
+          position: [position.lat, position.lng]
+        };
         uploadPhotoAndData(newServicio);
         addNewPlace(newServicio);
         actions.resetForm({});
@@ -105,6 +105,9 @@ const Form = ({
         alert('Punto nuevo enviado correctamente');
 
       } else {
+        const newServicio = {
+          ...values
+        };
         updateServicio(newServicio, placeSelect.id)
         actions.resetForm({});
         fotoRef.current.value = null;
@@ -148,7 +151,10 @@ const Form = ({
           db.collection("servicios2").doc(servicioFormated.id).set(servicioFormated).then(nada => {
             //Ahora se sube el historial del servicio como actualizacion solo del campo historial
             db.collection("servicios2").doc(servicioFormated.id).update(servicioHistorial);
-            db.collection("conf2").doc(version.id2).set(map);
+            db.collection("conf2").doc(version.id2).set(map)
+              .then(element => {
+                window.location.reload()
+              })
           })
         })
       })
@@ -199,7 +205,10 @@ const Form = ({
 
           //Se sube el historial del servicio como actualizacion solo del campo historial
           db.collection("servicios2").doc(idPunto).update(servicioHistorial);
-          db.collection("conf2").doc(version.id2).set(map);
+          db.collection("conf2").doc(version.id2).set(map)
+            .then(element => {
+              window.location.reload()
+            })
 
         })
       })

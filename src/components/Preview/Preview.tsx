@@ -26,10 +26,15 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
     var primerObjeto = index === 0;
     var ultimoObjeto = index === Object.keys(place.historial).length - 1;
     var largoObjeto = Object.keys(place.historial).length;
+    var puntos = [...Array(largoObjeto)].map(number =>
+      <li key={number}>&bull;&nbsp;</li>
+    )
     console.log('id del lugar: ', place.id);
+    console.log(place);
     closeForm();
-
   }
+
+
 
   return (
     <div
@@ -47,7 +52,9 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
         <IconButton type="button" onClick={decrementIndex} disabled={primerObjeto} >
           <ArrowBackIosIcon />
         </IconButton>
-        <p>{largoObjeto}</p>
+        <ul className="puntos">
+          {puntos}
+        </ul>
         <IconButton type="button" onClick={incrementIndex} disabled={ultimoObjeto}>
           <ArrowForwardIosIcon />
         </IconButton>
