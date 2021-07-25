@@ -126,6 +126,9 @@ const Form = ({
           };
           db.collection("denuncias2").doc(denunciaFormated.id).set(denunciaFormated).then(nada => {
             db.collection("conf2").doc(denunciaFormated.id2).set(map)
+              .then(element => {
+                window.location.reload()
+              })
           })
         })
       })

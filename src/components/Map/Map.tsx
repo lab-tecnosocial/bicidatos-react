@@ -32,7 +32,7 @@ var iconoBiciparqueo = L.icon({
 });
 
 var iconoServicio = L.icon({
-  iconUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-tienda-e1617504984871.png',
+  iconUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-taller-e1617504970484.png',
   shadowUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-shadow.png',
   iconSize: [35, 35],
   shadowSize: [30, 30],

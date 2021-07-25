@@ -77,12 +77,11 @@ const Form = ({
 
   const handleOnSubmit = (values: PlaceFormBiciparqueosProps, actions) => {
     if (user) {
-      const newBiciparqueo = {
-        ...values,
-        position: [position.lat, position.lng]
-      };
-
       if (placeSelect == null) {
+        const newBiciparqueo = {
+          ...values,
+          position: [position.lat, position.lng]
+        };
         uploadPhotoAndData(newBiciparqueo);
         addNewPlace(newBiciparqueo);
         actions.resetForm({});
@@ -91,6 +90,9 @@ const Form = ({
         alert('Punto nuevo enviado correctamente');
 
       } else {
+        const newBiciparqueo = {
+          ...values
+        };
         updateBiciparqueo(newBiciparqueo, placeSelect.id)
         actions.resetForm({});
         fotoRef.current.value = null;
@@ -131,7 +133,10 @@ const Form = ({
           db.collection("biciparqueos2").doc(biciparqueoFormated.id).set(biciparqueoFormated).then(nada => {
             //Ahora se sube el historial del biciparqueo como actualizacion solo del campo historial
             db.collection("biciparqueos2").doc(biciparqueoFormated.id).update(biciparqueoHistorial);
-            db.collection("conf2").doc(version.id2).set(map);
+            db.collection("conf2").doc(version.id2).set(map)
+              .then(element => {
+                window.location.reload()
+              })
           })
         })
       })
@@ -176,7 +181,10 @@ const Form = ({
           //Subir datos a Firestore
           //Se sube el historial del biciparqueo como actualizacion solo del campo historial
           db.collection("biciparqueos2").doc(idPunto).update(biciparqueoHistorial);
-          db.collection("conf2").doc(version.id2).set(map);
+          db.collection("conf2").doc(version.id2).set(map)
+            .then(element => {
+              window.location.reload()
+            })
 
         })
       })
