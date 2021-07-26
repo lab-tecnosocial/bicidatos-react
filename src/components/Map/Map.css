@@ -12,3 +12,7 @@
 .leaflet-control-layers {
   padding-bottom: 25px;
 }
+
+.MuiCircularProgress-colorPrimary {
+  color: #21DFDF !important;
+}

@@ -18,6 +18,9 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from "@material-ui/core";
+
 
 const dateFns = new DateFnsUtils();
 
@@ -28,6 +31,17 @@ const theme = createMuiTheme({
     }
   }
 });
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '10em'
+  }
+}));
+
 
 const Form = ({
   isVisible,
@@ -52,6 +66,10 @@ const Form = ({
       }
     })
   }, [])
+
+  const [loading, setLoading] = useState(false);
+  const classes = useStyles();
+
   const initialValues = {
     tipo: "denuncias",
     fecha: null,
@@ -107,7 +125,7 @@ const Form = ({
         actions.resetForm({});
         fotoRef.current.value = null;
         closeForm();
-        alert('Punto nuevo enviado correctamente');
+        // alert('Punto nuevo enviado correctamente');
 
       } else {
         const newDenuncia = {
@@ -117,14 +135,15 @@ const Form = ({
         actions.resetForm({});
         fotoRef.current.value = null;
         closeForm();
-        alert('Punto actualizado correctamente');
+        // alert('Punto actualizado correctamente');
       }
     } else {
-      alert("Necesitar iniciar sesión para subir datos.");
+      alert("Necesitas iniciar sesión para subir datos.");
     }
 
   }
   const uploadPhotoAndData = (object: any) => {
+    setLoading(true);
     //Subir la imagen a Storage para obtener la url de la imagen
     const uploadTask = storageRef.ref(`imagenesDenuncias/${new Date().getTime() + "_" + object.fotografiaConf.name}`)
       .put(object.fotografiaConf).then(data => {
@@ -155,7 +174,9 @@ const Form = ({
             db.collection("denuncias2").doc(denunciaFormated.id).update(denunciaHistorial).then(e => {
               db.collection("conf2").doc(version.id2).set(map)
                 .then(element => {
+                  setLoading(false);
                   window.location.reload()
+                  alert('Punto nuevo enviado correctamente');
                 })
             })
           })
@@ -178,6 +199,7 @@ const Form = ({
     return data;
   }
   const updateDenuncia = (actualizacion: any, idPunto: any) => {
+    setLoading(true);
     //Subir la imagen a Storage para obtener la url de la imagen
     const uploadTask = storageRef.ref(`imagenesDenuncias/${new Date().getTime() + "_" + actualizacion.fotografiaConf.name}`)
       .put(actualizacion.fotografia).then(data => {
@@ -205,7 +227,9 @@ const Form = ({
           db.collection("denuncias2").doc(idPunto).update(denunciaHistorial).then(e => {
             db.collection("conf2").doc(version.id2).set(map)
               .then(element => {
-                window.location.reload()
+                setLoading(false);
+                window.location.reload();
+                alert('Punto actualizado correctamente');
               })
           })
 
@@ -215,91 +239,93 @@ const Form = ({
   }
 
   return (
-    <div
-      className={`subform__container form__container--${isVisible && "active"}`}
-    >
+    loading ? <div className={classes.root}><CircularProgress /><p>Enviando...</p></div> :
 
-      <Formik
-        initialValues={initialValues}
-        validate={validator}
-        onSubmit={handleOnSubmit}
+      <div
+        className={`subform__container form__container--${isVisible && "active"}`}
       >
-        {({ errors, touched, isValidating, setFieldValue, values }) => (
-          <FormikForm>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="fecha">Fecha del incidente</label>
-                <MuiThemeProvider theme={theme}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
-                    <Field
-                      autoOk
-                      cancelLabel="Cancelar"
-                      component={DatePicker}
-                      id="fecha"
-                      name="fecha"
-                      value={values.fecha}
-                      format="dd-MM-yyyy"
-                      invalidDateMessage=""
-                      placeholder=""
-                      maxDate={new Date()}
-                      maxDateMessage="La fecha no puede estar en el futuro"
-                      onChange={
-                        value => {
-                          setFieldValue("fecha", value)
-                        }
-                      } />
-                  </MuiPickersUtilsProvider>
-                </MuiThemeProvider>
-              </div>
-              <div className="errors">{errors.fecha}</div>
-            </div>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="tipoIncidente">Tipo de incidente</label>
-                <Field id="tipoIncidente" name="tipoIncidente" as="select" >
-                  <option hidden >Selecciona una opción</option>
-                  <option value="Invasión vehicular">Invasión vehicular</option>
-                  <option value="Invasión comercial">Invasión comercial</option>
-                  <option value="Atropello a ciclista">Atropello a ciclista</option>
-                  <option value="Agresión física<">Agresión física</option>
-                  <option value="Agresión verbal">Agresión verbal</option>
-                  <option value="Manoseo">Manoseo</option>
-                  <option value="Daño a infraestructura ciclista">Daño a infrestructura ciclista</option>
-                </Field>
-              </div>
-              <div className="errors">{errors.tipoIncidente}</div>
-            </div>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="descripcion">Descripción</label>
-                <Field id="descripcion" name="descripcion" as="textarea" />
-              </div>
-              <div className="errors">{errors.descripcion}</div>
-            </div>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="enlace">Enlace</label>
-                <Field id="enlace" name="enlace" />
-              </div>
-              <div className="errors">{errors.enlace}</div>
-            </div>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="fotografiaConf">Fotografía</label>
-                <input id="fotografiaConf" name="fotografiaConf" type="file" className="form-control" onChange={(event) => {
-                  setFieldValue("fotografiaConf", event.currentTarget.files![0]);
-                }} ref={fotoRef} />
-              </div>
-              <div className="errors">{errors.fotografiaConf}</div>
-            </div>
 
-            <div className="button__container">
-              <button className="form__button" type="submit">Enviar</button>
-            </div>
-          </FormikForm>
-        )}
-      </Formik>
-    </div>
+        <Formik
+          initialValues={initialValues}
+          validate={validator}
+          onSubmit={handleOnSubmit}
+        >
+          {({ errors, touched, isValidating, setFieldValue, values }) => (
+            <FormikForm>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="fecha">Fecha del incidente</label>
+                  <MuiThemeProvider theme={theme}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
+                      <Field
+                        autoOk
+                        cancelLabel="Cancelar"
+                        component={DatePicker}
+                        id="fecha"
+                        name="fecha"
+                        value={values.fecha}
+                        format="dd-MM-yyyy"
+                        invalidDateMessage=""
+                        placeholder=""
+                        maxDate={new Date()}
+                        maxDateMessage="La fecha no puede estar en el futuro"
+                        onChange={
+                          value => {
+                            setFieldValue("fecha", value)
+                          }
+                        } />
+                    </MuiPickersUtilsProvider>
+                  </MuiThemeProvider>
+                </div>
+                <div className="errors">{errors.fecha}</div>
+              </div>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="tipoIncidente">Tipo de incidente</label>
+                  <Field id="tipoIncidente" name="tipoIncidente" as="select" >
+                    <option hidden >Selecciona una opción</option>
+                    <option value="Invasión vehicular">Invasión vehicular</option>
+                    <option value="Invasión comercial">Invasión comercial</option>
+                    <option value="Atropello a ciclista">Atropello a ciclista</option>
+                    <option value="Agresión física<">Agresión física</option>
+                    <option value="Agresión verbal">Agresión verbal</option>
+                    <option value="Manoseo">Manoseo</option>
+                    <option value="Daño a infraestructura ciclista">Daño a infrestructura ciclista</option>
+                  </Field>
+                </div>
+                <div className="errors">{errors.tipoIncidente}</div>
+              </div>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="descripcion">Descripción</label>
+                  <Field id="descripcion" name="descripcion" as="textarea" />
+                </div>
+                <div className="errors">{errors.descripcion}</div>
+              </div>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="enlace">Enlace</label>
+                  <Field id="enlace" name="enlace" />
+                </div>
+                <div className="errors">{errors.enlace}</div>
+              </div>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="fotografiaConf">Fotografía</label>
+                  <input id="fotografiaConf" name="fotografiaConf" type="file" className="form-control" onChange={(event) => {
+                    setFieldValue("fotografiaConf", event.currentTarget.files![0]);
+                  }} ref={fotoRef} />
+                </div>
+                <div className="errors">{errors.fotografiaConf}</div>
+              </div>
+
+              <div className="button__container">
+                <button className="form__button" type="submit">Enviar</button>
+              </div>
+            </FormikForm>
+          )}
+        </Formik>
+      </div>
   );
 };
 
