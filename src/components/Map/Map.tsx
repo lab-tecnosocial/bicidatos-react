@@ -143,7 +143,6 @@ const Map = ({
       arr.push(doc.data());
     });
     const data = await [...arr];
-    console.log(data);
     setBiciparqueos2(data);
     setLoading(false);
   };
@@ -161,7 +160,6 @@ const Map = ({
       arr.push(doc.data());
     });
     const data = await [...arr];
-    console.log(data);
     setServicios2(data)
     setLoading(false);
   };
@@ -179,7 +177,6 @@ const Map = ({
       arr.push(doc.data());
     });
     const data = await [...arr];
-    console.log(data);
     setAforos2(data);
     setLoading(false);
   };
