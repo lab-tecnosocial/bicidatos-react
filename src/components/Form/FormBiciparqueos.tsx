@@ -9,6 +9,20 @@ import { useRef } from "react";
 import db, { storageRef } from "../../database/firebase";
 import { auth, provider } from "../../database/firebase";
 import { useEffect, useState } from "react";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from "@material-ui/core";
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '10em'
+  }
+}));
+
 
 const Form = ({
   isVisible,
@@ -33,6 +47,10 @@ const Form = ({
       }
     })
   }, [])
+
+  const [loading, setLoading] = useState(false);
+  const classes = useStyles();
+
   const initialValues = {
     tipo: "biciparqueos",
     accesibilidad: "",
@@ -87,7 +105,6 @@ const Form = ({
         actions.resetForm({});
         fotoRef.current.value = null;
         closeForm();
-        alert('Punto nuevo enviado correctamente');
 
       } else {
         const newBiciparqueo = {
@@ -97,7 +114,6 @@ const Form = ({
         actions.resetForm({});
         fotoRef.current.value = null;
         closeForm();
-        alert('Punto actualizado correctamente');
       }
     } else {
       alert("Necesitas iniciar sesión para subir datos.");
@@ -105,6 +121,7 @@ const Form = ({
 
   }
   const uploadPhotoAndData = (object: any) => {
+    setLoading(true);
     const map = {
       correo_usuario: user.email,
       nombre_usuario: user.displayName,
@@ -132,13 +149,15 @@ const Form = ({
           //Primero subimos el biciparqueo con los datos que no cambian. Ej> id, latitud longitud
           db.collection("biciparqueos2").doc(biciparqueoFormated.id).set(biciparqueoFormated).then(nada => {
             //Ahora se sube el historial del biciparqueo como actualizacion solo del campo historial
-            db.collection("biciparqueos2").doc(biciparqueoFormated.id).update(biciparqueoHistorial).then(e=>{
-               db.collection("conf2").doc(version.id2).set(map)
-              .then(element => {
-                window.location.reload()
-              })
+            db.collection("biciparqueos2").doc(biciparqueoFormated.id).update(biciparqueoHistorial).then(e => {
+              db.collection("conf2").doc(version.id2).set(map)
+                .then(element => {
+                  setLoading(false);
+                  window.location.reload()
+                  alert('Punto nuevo enviado correctamente');
+                })
             })
-           
+
           })
         })
       })
@@ -159,6 +178,7 @@ const Form = ({
     return data;
   }
   const updateBiciparqueo = (actualizacion: any, idPunto: any) => {
+    setLoading(true);
     const map = {
       correo_usuario: user.email,
       nombre_usuario: user.displayName,
@@ -182,79 +202,82 @@ const Form = ({
           biciparqueoHistorial['historial.' + idVersion] = version;
           //Subir datos a Firestore
           //Se sube el historial del biciparqueo como actualizacion solo del campo historial
-          db.collection("biciparqueos2").doc(idPunto).update(biciparqueoHistorial).then(e=>{
-             db.collection("conf2").doc(version.id2).set(map)
-            .then(element => {
-              window.location.reload()
-            })
+          db.collection("biciparqueos2").doc(idPunto).update(biciparqueoHistorial).then(e => {
+            db.collection("conf2").doc(version.id2).set(map)
+              .then(element => {
+                setLoading(false);
+                window.location.reload();
+                alert('Punto actualizado correctamente');
+              })
           })
-         
+
 
         })
       })
   }
 
   return (
-    <div
-      className={`subform__container form__container--${isVisible && "active"}`}
-    >
-      <Formik
-        initialValues={initialValues}
-        validate={validator}
-        onSubmit={handleOnSubmit}
+    loading ? <div className={classes.root}><CircularProgress /><p>Enviando...</p></div> :
+      <div
+        className={`subform__container form__container--${isVisible && "active"}`}
       >
-        {({ errors, touched, isValidating, setFieldValue }) => (
-          <FormikForm>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="accesibilidad">Accesibilidad</label>
-                <Field id="accesibilidad" name="accesibilidad" as="select" >
-                  <option hidden >Selecciona una opción</option>
-                  <option value="Público">Público</option>
-                  <option value="Privado">Privado</option>
-                </Field>
+        <Formik
+          initialValues={initialValues}
+          validate={validator}
+          onSubmit={handleOnSubmit}
+        >
+          {({ errors, touched, isValidating, setFieldValue }) => (
+            <FormikForm>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="accesibilidad">Accesibilidad</label>
+                  <Field id="accesibilidad" name="accesibilidad" as="select" >
+                    <option hidden >Selecciona una opción</option>
+                    <option value="Público">Público</option>
+                    <option value="Privado">Privado</option>
+                  </Field>
+                </div>
+                <div className="errors">{errors.accesibilidad}</div>
               </div>
-              <div className="errors">{errors.accesibilidad}</div>
-            </div>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="senalizacion">Señalización</label>
-                <Field id="senalizacion" name="senalizacion" as="select" >
-                  <option hidden >Selecciona una opción</option>
-                  <option value="Cuenta">Cuenta</option>
-                  <option value="No cuenta">No cuenta</option>
-                </Field>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="senalizacion">Señalización</label>
+                  <Field id="senalizacion" name="senalizacion" as="select" >
+                    <option hidden >Selecciona una opción</option>
+                    <option value="Cuenta">Cuenta</option>
+                    <option value="No cuenta">No cuenta</option>
+                  </Field>
+                </div>
+                <div className="errors">{errors.senalizacion}</div>
               </div>
-              <div className="errors">{errors.senalizacion}</div>
-            </div>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="seguridadPercibida">Seguridad percibida</label>
-                <Field id="seguridadPercibida" name="seguridadPercibida" as="select">
-                  <option hidden >Selecciona una opción</option>
-                  <option value="Seguro">Seguro</option>
-                  <option value="No seguro">No seguro</option>
-                </Field>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="seguridadPercibida">Seguridad percibida</label>
+                  <Field id="seguridadPercibida" name="seguridadPercibida" as="select">
+                    <option hidden >Selecciona una opción</option>
+                    <option value="Seguro">Seguro</option>
+                    <option value="No seguro">No seguro</option>
+                  </Field>
+                </div>
+                <div className="errors">{errors.seguridadPercibida}</div>
               </div>
-              <div className="errors">{errors.seguridadPercibida}</div>
-            </div>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="fotografia">Fotografía</label>
-                <input id="fotografia" name="fotografia" type="file" className="form-control" onChange={(event) => {
-                  setFieldValue("fotografia", event.currentTarget.files![0]);
-                }} ref={fotoRef} />
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="fotografia">Fotografía</label>
+                  <input id="fotografia" name="fotografia" type="file" className="form-control" onChange={(event) => {
+                    setFieldValue("fotografia", event.currentTarget.files![0]);
+                  }} ref={fotoRef} />
+                </div>
+                <div className="errors">{errors.fotografia}</div>
               </div>
-              <div className="errors">{errors.fotografia}</div>
-            </div>
 
-            <div className="button__container">
-              <button className="form__button" type="submit">Enviar</button>
-            </div>
-          </FormikForm>
-        )}
-      </Formik>
-    </div>
+              <div className="button__container">
+                <button className="form__button" type="submit">Enviar</button>
+              </div>
+            </FormikForm>
+          )}
+        </Formik>
+      </div>
   );
 };
 

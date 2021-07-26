@@ -9,6 +9,18 @@ import { useRef } from "react";
 import db, { storageRef } from "../../database/firebase";
 import { auth, provider } from "../../database/firebase";
 import { useEffect, useState } from "react";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '10em'
+  }
+}));
 
 const Form = ({
   isVisible,
@@ -33,6 +45,10 @@ const Form = ({
       }
     })
   }, [])
+
+  const [loading, setLoading] = useState(false);
+  const classes = useStyles();
+
   const initialValues = {
     tipo: "servicios",
     nombre: "",
@@ -102,7 +118,7 @@ const Form = ({
         actions.resetForm({});
         fotoRef.current.value = null;
         closeForm();
-        alert('Punto nuevo enviado correctamente');
+        // alert('Punto nuevo enviado correctamente');
 
       } else {
         const newServicio = {
@@ -112,7 +128,7 @@ const Form = ({
         actions.resetForm({});
         fotoRef.current.value = null;
         closeForm();
-        alert('Punto actualizado correctamente');
+        // alert('Punto actualizado correctamente');
       }
 
     } else {
@@ -121,6 +137,7 @@ const Form = ({
 
   }
   const uploadPhotoAndData = (object: any) => {
+    setLoading(true);
     const map = {
       correo_usuario: user.email,
       nombre_usuario: user.displayName,
@@ -150,13 +167,15 @@ const Form = ({
           //Primero subimos el servicio con los datos que no cambian. Ej> id, latitud longitud
           db.collection("servicios2").doc(servicioFormated.id).set(servicioFormated).then(nada => {
             //Ahora se sube el historial del servicio como actualizacion solo del campo historial
-            db.collection("servicios2").doc(servicioFormated.id).update(servicioHistorial).then(e=>{
+            db.collection("servicios2").doc(servicioFormated.id).update(servicioHistorial).then(e => {
               db.collection("conf2").doc(version.id2).set(map)
-              .then(element => {
-                window.location.reload()
-              })
+                .then(element => {
+                  setLoading(false);
+                  window.location.reload()
+                  alert('Punto nuevo enviado correctamente');
+                })
             })
-            
+
           })
         })
       })
@@ -179,6 +198,7 @@ const Form = ({
     return data;
   }
   const updateServicio = (actualizacion: any, idPunto: any) => {
+    setLoading(true);
     const map = {
       correo_usuario: user.email,
       nombre_usuario: user.displayName,
@@ -206,86 +226,89 @@ const Form = ({
           //Subir datos a Firestore
 
           //Se sube el historial del servicio como actualizacion solo del campo historial
-          db.collection("servicios2").doc(idPunto).update(servicioHistorial).then(e=>{
+          db.collection("servicios2").doc(idPunto).update(servicioHistorial).then(e => {
             db.collection("conf2").doc(version.id2).set(map)
-            .then(element => {
-              window.location.reload()
-            })
+              .then(element => {
+                setLoading(false);
+                window.location.reload();
+                alert('Punto actualizado correctamente');
+              })
           })
-          
+
 
         })
       })
   }
 
   return (
-    <div
-      className={`subform__container form__container--${isVisible && "active"}`}
-    >
-      <Formik
-        initialValues={initialValues}
-        validate={validator}
-        onSubmit={handleOnSubmit}
+    loading ? <div className={classes.root}><CircularProgress /><p>Enviando...</p></div> :
+      <div
+        className={`subform__container form__container--${isVisible && "active"}`}
       >
-        {({ errors, touched, isValidating, setFieldValue }) => (
-          <FormikForm>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="nombre">Nombre</label>
-                <Field id="nombre" name="nombre" />
+        <Formik
+          initialValues={initialValues}
+          validate={validator}
+          onSubmit={handleOnSubmit}
+        >
+          {({ errors, touched, isValidating, setFieldValue }) => (
+            <FormikForm>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="nombre">Nombre</label>
+                  <Field id="nombre" name="nombre" />
+                </div>
+                <div className="errors">{errors.nombre}</div>
               </div>
-              <div className="errors">{errors.nombre}</div>
-            </div>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="tipoServicio">Tipo de servicio</label>
-                <Field id="tipoServicio" name="tipoServicio" as="select" >
-                  <option hidden >Selecciona una opción</option>
-                  <option value="Tienda de bicicleta">Tienda de bicicleta</option>
-                  <option value="Taller de repuestos">Taller de repuestos</option>
-                  <option value="Llantería de bicicleta">Llantería de bicicleta</option>
-                </Field>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="tipoServicio">Tipo de servicio</label>
+                  <Field id="tipoServicio" name="tipoServicio" as="select" >
+                    <option hidden >Selecciona una opción</option>
+                    <option value="Tienda de bicicleta">Tienda de bicicleta</option>
+                    <option value="Taller de repuestos">Taller de repuestos</option>
+                    <option value="Llantería de bicicleta">Llantería de bicicleta</option>
+                  </Field>
+                </div>
+                <div className="errors">{errors.tipoServicio}</div>
               </div>
-              <div className="errors">{errors.tipoServicio}</div>
-            </div>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="descripcion">Descripción</label>
-                <Field id="descripcion" name="descripcion" as="textarea" />
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="descripcion">Descripción</label>
+                  <Field id="descripcion" name="descripcion" as="textarea" />
+                </div>
+                <div className="errors">{errors.descripcion}</div>
               </div>
-              <div className="errors">{errors.descripcion}</div>
-            </div>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="sitioWeb">Sitio web</label>
-                <Field id="sitioWeb" name="sitioWeb" />
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="sitioWeb">Sitio web</label>
+                  <Field id="sitioWeb" name="sitioWeb" />
+                </div>
+                <div className="errors">{errors.sitioWeb}</div>
               </div>
-              <div className="errors">{errors.sitioWeb}</div>
-            </div>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="telefono">Telefono</label>
-                <Field id="telefono" name="telefono" type="number" min="1" />
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="telefono">Telefono</label>
+                  <Field id="telefono" name="telefono" type="number" min="1" />
+                </div>
+                <div className="errors">{errors.telefono}</div>
               </div>
-              <div className="errors">{errors.telefono}</div>
-            </div>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="fotografia">Fotografía</label>
-                <input id="fotografia" name="fotografia" type="file" className="form-control" onChange={(event) => {
-                  setFieldValue("fotografia", event.currentTarget.files![0]);
-                }} ref={fotoRef} />
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="fotografia">Fotografía</label>
+                  <input id="fotografia" name="fotografia" type="file" className="form-control" onChange={(event) => {
+                    setFieldValue("fotografia", event.currentTarget.files![0]);
+                  }} ref={fotoRef} />
+                </div>
+                <div className="errors">{errors.fotografia}</div>
               </div>
-              <div className="errors">{errors.fotografia}</div>
-            </div>
 
-            <div className="button__container">
-              <button className="form__button" type="submit">Enviar</button>
-            </div>
-          </FormikForm>
-        )}
-      </Formik>
-    </div>
+              <div className="button__container">
+                <button className="form__button" type="submit">Enviar</button>
+              </div>
+            </FormikForm>
+          )}
+        </Formik>
+      </div>
   );
 };
 
