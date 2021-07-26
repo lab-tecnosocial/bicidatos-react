@@ -64,8 +64,8 @@ export interface PlaceAforos {
   fecha: string;
   tiempoInicio: string;
   tiempoFin: string;
-  numCiclistas: string;
-  numMujeres: string;
-  numHombres: string;
+  numCiclistas: number;
+  numMujeres: number;
+  numHombres: number;
   position: LatLngExpression;
 }

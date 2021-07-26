@@ -57,9 +57,9 @@ const Form = ({
     fecha: null,
     tiempoInicio: null,
     tiempoFin: null,
-    numCiclistas: "",
-    numMujeres: "",
-    numHombres: ""
+    numCiclistas: 0,
+    numMujeres: 0,
+    numHombres: 0
   };
 
   const validator = (values: PlaceFormAforosProps) => {
@@ -135,17 +135,17 @@ const Form = ({
     //Primero subimos el aforo con los datos que no cambian. Ej> id, latitud longitud
     db.collection("aforos2").doc(aforoFormated.id).set(aforoFormated).then((e) => {
       //Ahora se sube el historial del aforo como actualizacion solo del campo historial
-      db.collection("aforos2").doc(aforoFormated.id).update(aforoHistorial).then(e=>{
-         db.collection("conf2").doc(version.id2).set(map).then(element=>{
-            window.location.reload()
-         }).catch((error) =>
-         console.log(error)
-       )
+      db.collection("aforos2").doc(aforoFormated.id).update(aforoHistorial).then(e => {
+        db.collection("conf2").doc(version.id2).set(map).then(element => {
+          window.location.reload()
+        }).catch((error) =>
+          console.log(error)
+        )
       })
-     
+
     })
       // .then(element => {
-       
+
       // })
       .catch((error) =>
         console.log(error)
@@ -190,13 +190,13 @@ const Form = ({
     aforoHistorial['historial.' + idVersion] = version;
     //Subir datos a Firestore
     //Se sube el historial del aforo como actualizacion solo del campo historial
-    db.collection("aforos2").doc(idPunto).update(aforoHistorial).then(e=>{
+    db.collection("aforos2").doc(idPunto).update(aforoHistorial).then(e => {
       db.collection("conf2").doc(version.id2).set(map)
-      .then(element => {
-        window.location.reload()
-      })
+        .then(element => {
+          window.location.reload()
+        })
     })
-    
+
   }
 
   return (
@@ -284,14 +284,14 @@ const Form = ({
               <div className="formGroup">
                 <div className="formGroupInput">
                   <label htmlFor="numMujeres">Número de mujeres</label>
-                  <Field id="numMujeres" name="numMujeres" type="number" min="1" />
+                  <Field id="numMujeres" name="numMujeres" type="number" min="0" />
                 </div>
                 <div className="errors">{errors.numMujeres}</div>
               </div>
               <div className="formGroup">
                 <div className="formGroupInput">
                   <label htmlFor="numHombres">Número de hombres</label>
-                  <Field id="numHombres" name="numHombres" type="number" min="1" />
+                  <Field id="numHombres" name="numHombres" type="number" min="0" />
                 </div>
                 <div className="errors">{errors.numHombres}</div>
               </div>
@@ -329,12 +329,11 @@ const mapDispatchToProps = (dispatch: any) => {
 export default connect(mapStateToProps, mapDispatchToProps)(Form);
 
 interface PlaceFormAforosProps {
-  [key: string]: string;
   tipo: string;
   fecha: string;
   tiempoInicio: string;
   tiempoFin: string;
-  numCiclistas: string;
-  numMujeres: string;
-  numHombres: string;
+  numCiclistas: number;
+  numMujeres: number;
+  numHombres: number;
 }
