@@ -12,12 +12,17 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import UpdateIcon from '@material-ui/icons/Update';
 import FormDenuncias from "../Form/FormDenuncias";
+import { useEffect } from "react";
 
 
 const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
 
   const [index, setIndex] = useState(0);
   const [actualizar, setActualizar] = useState(false);
+
+  useEffect(() => {
+    setIndex(0);
+  }, [place]);
 
   const handleActualizar = () => setActualizar(prevActualizar => !prevActualizar);
   const incrementIndex = () => setIndex(prevIndex => prevIndex + 1);
