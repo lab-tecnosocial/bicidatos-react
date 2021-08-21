@@ -87,8 +87,8 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
         {arregloOrd && arregloOrd[index].sitioweb && <div className=""><b>Sitio web:</b> <a href={arregloOrd[index].sitioweb} target="_blank">{arregloOrd[index].sitioweb}</a></div>}
         {arregloOrd && arregloOrd[index].telefono && <div className=""><b>Telefono:</b> {arregloOrd[index].telefono}</div>}
 
-        {arregloOrd && arregloOrd[index].fecha_incidente && <div className=""><b>Fecha:</b> {arregloOrd[index].accesibilidad}</div>}
-        {arregloOrd && arregloOrd[index].tipo_incidente && <div className=""><b>Tipo de incidente:</b> {arregloOrd[index].senalizacion}</div>}
+        {arregloOrd && arregloOrd[index].fecha_incidente && <div className=""><b>Fecha:</b> {arregloOrd[index].fecha_incidente}</div>}
+        {arregloOrd && arregloOrd[index].tipo_incidente && <div className=""><b>Tipo de incidente:</b> {arregloOrd[index].tipo_incidente}</div>}
         {arregloOrd && arregloOrd[index].enlace && <div className=""><b>Enlace:</b> <a href={arregloOrd[index].enlace} target="_blank">{arregloOrd[index].enlace}</a></div>}
 
         {arregloOrd && arregloOrd[index].fecha_observacion && <div className=""><b>Fecha:</b> {arregloOrd[index].fecha_observacion}</div>}
