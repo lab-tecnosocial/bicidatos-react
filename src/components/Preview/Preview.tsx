@@ -62,10 +62,31 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
       <div className="preview__close" onClick={() => closePreview()}>
         <AiFillCloseCircle></AiFillCloseCircle>
       </div>
-      {arregloOrd && <div
-        className="preview__picture"
-        style={{ backgroundImage: `url(${arregloOrd[index]?.fotografia})` }}
-      ></div>}
+      {
+        (arregloOrd && arregloOrd[index]?.fotografia &&
+          <div
+            className="preview__picture"
+            style={{ backgroundImage: `url(${arregloOrd[index]?.fotografia})` }}
+          ></div>)
+
+        ||
+
+        (arregloOrd && arregloOrd[index].fecha_incidente &&
+          <div
+            className="preview__picture"
+            style={{ backgroundImage: `url(https://bicidatos.org/wp-content/uploads/2021/04/seguridad_cuadrado.png)` }}
+          ></div>)
+
+        ||
+
+        (arregloOrd && arregloOrd[index].fecha_observacion &&
+          <div
+            className="preview__picture"
+            style={{ backgroundImage: `url(https://bicidatos.org/wp-content/uploads/2021/04/aforo_cuadrado.png)` }}
+          ></div>)
+
+      }
+
       <div className="seccion-flechas">
         <IconButton type="button" onClick={decrementIndex} disabled={primerObjeto} >
           <ArrowBackIosIcon />
