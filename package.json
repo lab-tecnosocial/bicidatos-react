@@ -21,6 +21,7 @@
     "formik-material-ui": "^3.0.1",
     "formik-material-ui-pickers": "0.0.12",
     "leaflet": "^1.7.1",
+    "leaflet-geosearch": "^3.6.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-icons": "^4.1.0",

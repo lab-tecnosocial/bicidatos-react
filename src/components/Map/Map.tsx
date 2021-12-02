@@ -10,6 +10,11 @@ import { auth, provider } from "../../database/firebase";
 import { Button, LinearProgress, makeStyles, withStyles } from "@material-ui/core";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
 import * as L from "leaflet";
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import { useMap } from 'react-leaflet';
+import '../../../node_modules/leaflet-geosearch/dist/geosearch.css';
+
+
 
 const theme = createMuiTheme({
   palette: {
@@ -18,6 +23,29 @@ const theme = createMuiTheme({
     }
   }
 });
+
+
+const SearchField = () => {
+  const provider = new OpenStreetMapProvider();
+
+  // @ts-ignore
+  const searchControl = new GeoSearchControl({
+    provider: provider,
+    notFoundMessage: 'Lo sentimos, no encontramos el lugar',
+    showMarker: false,
+    searchLabel: 'Buscar ciudad',
+    style: 'bar'
+  });
+
+  const map = useMap();
+  useEffect(() => {
+    map.addControl(searchControl);
+    return () => map.removeControl(searchControl);
+  }, []);
+
+  return null;
+};
+
 
 // Iconos de markers
 
@@ -60,9 +88,6 @@ var iconoAforo = L.icon({
   iconAnchor: [15, 30]
 
 });
-
-
-
 
 
 const Map = ({
@@ -251,11 +276,12 @@ const Map = ({
 
           <MapContainer
             center={defaultPosition}
-            zoom={12}
+            zoom={6}
             scrollWheelZoom={true}
             style={{ height: "100vh" }}
             zoomControl={true}
           >
+            <SearchField />
             <LayersControl position="bottomleft" collapsed={false} >
               <LayersControl.BaseLayer checked name="Base">
 
