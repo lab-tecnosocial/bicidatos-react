@@ -19,7 +19,7 @@ import Flag from '@material-ui/icons/Flag';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#21DFDF'
+      main: '#15C0EA'
     }
   }
 });

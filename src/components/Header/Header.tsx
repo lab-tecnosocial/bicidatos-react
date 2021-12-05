@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1
   },
   header: {
-    backgroundColor: '#21DFDF',
+    backgroundColor: '#15C0EA',
   }
 }));
 

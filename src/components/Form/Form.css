@@ -24,7 +24,7 @@
 
 .form__header {
   padding: 1rem 0.5rem;
-  background-color: #21DFDF;
+  background-color: #15C0EA;
   text-align: center;
   position: relative;
   color: white;
@@ -48,7 +48,7 @@
 .form__button {
   text-decoration: none;
   font-weight: bold;
-  background-color: #21DFDF;
+  background-color: #15C0EA;
   border-radius: 0.5rem;
   appearance: none;
   border: none;
@@ -78,8 +78,8 @@ input {
   height: 2rem;
 }
 input:focus, textarea:focus, select:focus{
-  border-color: #21DFDF !important;
-  outline-color: #21DFDF !important;
+  border-color: #15C0EA !important;
+  outline-color: #15C0EA !important;
 
 }
 
