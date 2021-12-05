@@ -19,7 +19,7 @@ import '../../../node_modules/leaflet-geosearch/dist/geosearch.css';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#21DFDF'
+      main: '#15C0EA'
     }
   }
 });

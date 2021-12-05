@@ -26,7 +26,7 @@ const dateFns = new DateFnsUtils();
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#21DFDF'
+      main: '#15C0EA'
     }
   }
 });
