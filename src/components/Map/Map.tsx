@@ -40,7 +40,7 @@ const SearchField = () => {
   const map = useMap();
   useEffect(() => {
     map.addControl(searchControl);
-    return () => map.removeControl(searchControl);
+    // return () => map.removeControl(searchControl);
   }, []);
 
   return null;
