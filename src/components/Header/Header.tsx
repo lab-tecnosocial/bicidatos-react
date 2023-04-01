@@ -37,6 +37,7 @@ export default function Header() {
             <Typography variant="h6" className={classes.title} >
               BiciDatos
             </Typography>
+            
           </Toolbar>
         </Container>
       </AppBar>

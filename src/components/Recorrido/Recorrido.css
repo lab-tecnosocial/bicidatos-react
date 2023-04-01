@@ -1,0 +1,26 @@
+.view-total-distance{
+    width: 100vw;
+    display: flex;
+    text-align: center !important;
+    flex-direction: column;
+    font-size: 0.8rem !important;
+
+}
+.map-view-total-distance{
+    margin-left: auto;
+    margin-right: auto;
+    height: 70vh;
+    width: 80vw;
+}
+button{
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px 10px;
+    border-radius: 10px;
+    color: white;
+}
+button:hover{
+    background-color: white !important;
+    color: black;
+}
