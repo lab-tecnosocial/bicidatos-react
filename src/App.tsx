@@ -6,6 +6,7 @@ import Map from "./components/Map/Map";
 import Preview from "./components/Preview/Preview";
 import Form from "./components/Form/Form";
 import Recorrido from "./components/Recorrido/Recorrido";
+import DatosRecorridos from "./components/DatosRecorridos/DatosRecorridos";
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
         {/* <Map />
         <Preview />
         <Form /> */}
-        <Recorrido /> 
+        {/* <Recorrido />  */}
+        <DatosRecorridos />
       </main>
     </>
   );
