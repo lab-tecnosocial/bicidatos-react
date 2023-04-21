@@ -7,21 +7,52 @@ import Preview from "./components/Preview/Preview";
 import Form from "./components/Form/Form";
 import Recorrido from "./components/Recorrido/Recorrido";
 import DatosRecorridos from "./components/DatosRecorridos/DatosRecorridos";
+import Login from "./components/Login/Login";
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import store from './aux/store';
+import { Provider } from 'react-redux';
 
 function App() {
   return (
+    
     <>
       <nav>
         <Header />
       </nav>
+
       <main>
         {/* <Map />
         <Preview />
         <Form /> */}
         {/* <Recorrido />  */}
-        <DatosRecorridos />
+        {/* <DatosRecorridos /> */}
+        {/* <Login /> */}
+        <Router>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/mapa" element={<Recorrido />} />
+            <Route path="/datosPersonales" element={<DatosRecorridos />} />
+
+          </Routes>
+        </Router>
       </main>
     </>
+
+    // <>
+    //   <nav>
+    //     <Header />
+    //   </nav>
+
+    //   <main>
+    //     {/* <Map />
+    //     <Preview />
+    //     <Form /> */}
+    //     {/* <Recorrido />  */}
+    //     {/* <DatosRecorridos /> */}
+    //     <Login />
+    //   </main>
+    // </>
   );
 }
 

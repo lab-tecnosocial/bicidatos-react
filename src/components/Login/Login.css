@@ -1,0 +1,61 @@
+/* Ajustar el ancho del formulario */
+form {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  /* Ajustar el tamaño de los campos de entrada */
+  input {
+    width: 98%;
+    padding: 1%;
+    margin-bottom: 20px;
+  }
+  
+  /* Ajustar el tamaño del botón de enviar */
+  button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Ajustar el margen inferior del botón de enviar */
+  button[type="submit"]:last-child {
+    margin-bottom: 0;
+  }
+  
+  /* Ajustar el tamaño del encabezado */
+  h1 {
+    font-size: 24px;
+    text-align: center;
+  }
+  
+  /* Ajustar el tamaño del botón de mostrar/ocultar */
+  button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  
+  /* Ajustar el margen inferior del último botón */
+  button:last-child {
+    margin-bottom: 0;
+  }
+  main{
+    width: 100%;
+    text-align: center;
+}
+  #login{
+    margin-right: auto;
+    margin-left: auto;
+  }

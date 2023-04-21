@@ -1,0 +1,80 @@
+
+main{
+    width: 100%;
+}
+#datos-recorridos-div{
+    font-size: 12px !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    padding-left: auto;
+    padding-right: auto;
+    padding-top: 20px;
+}
+#datos-recorridos-div>*{
+    margin-bottom: 2vh;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #15c0ea;
+    color: white;
+  }
+  button,select{
+    width: 10vw;
+  }
+  button{
+    background-color: greenyellow;
+    border-radius: 5px;
+    height: 4vh;
+  }
+  button:hover{
+    background-color: rgba(172, 255, 47, 0.533);
+    border-radius: 5px;
+    height: 4vh;
+    border: 2px solid greenyellow;
+  }
+  select{
+    height: 4vh;
+    border: none;
+    border-bottom: 2px solid black !important;
+  }
+
+  .profile {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+img {
+	width: 200px;
+	height: 200px;
+	object-fit: cover;
+	border-radius: 50%;
+	margin-bottom: 20px;
+}
+
+h1 {
+	font-size: 36px;
+	margin-bottom: 10px;
+}
+
+p {
+	font-size: 24px;
+	margin-bottom: 5px;
+}
