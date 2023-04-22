@@ -1,6 +1,6 @@
 import { SET_USER } from './store';
 
-export function setUser(user) {
+export function guardarUsuario(user) {
     console.log("SET USER---------------------------------------------------------------------------------------------------------------------------------------")
     console.log(user)
   return {

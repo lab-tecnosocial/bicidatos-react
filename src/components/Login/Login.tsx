@@ -3,7 +3,7 @@ import "./Login.css";
 import { firebase, googleAuthProvider } from "../../database/firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setUser } from '../../aux/action';
+import { guardarUsuario } from '../../aux/action';
 
 
 function Login() {
@@ -21,7 +21,7 @@ function Login() {
       .then((value) => {
         console.log(value);
         console.log("DISPATCH LOGIN-------------------------------------------------------------------------------------------------------")
-        dispatch(setUser((value.user)));
+        dispatch(guardarUsuario((value.user)));
         // dispatch( {
         //     type: 'SET_USER',
         //     payload: JSON.stringify(user),

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { LatLngExpression } from "leaflet";
 import { MapContainer, useMapEvents, TileLayer, Marker, Tooltip, LayersControl, LayerGroup, GeoJSON } from "react-leaflet";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { setPlacePreviewVisibility, setSelectedPlace } from "../../store/actions";
 import AddMarker from "./AddMarker";
 import "./Map.css";
@@ -13,6 +13,11 @@ import * as L from "leaflet";
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import { useMap } from 'react-leaflet';
 import '../../../node_modules/leaflet-geosearch/dist/geosearch.css';
+
+import { firebase, googleAuthProvider } from "../../database/firebase";
+import { useNavigate } from "react-router-dom";
+import { guardarUsuario } from '../../aux/action';
+
 
 
 
@@ -26,6 +31,7 @@ const theme = createMuiTheme({
 
 
 const SearchField = () => {
+
   const provider = new OpenStreetMapProvider();
 
   // @ts-ignore
@@ -249,18 +255,26 @@ const Map = ({
     setPlaceForPreview(place);
     togglePreview(true);
   };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const signInWithGoogle = async () => {
-    try {
-      await auth.signInWithPopup(provider)
-    }
-    catch (error) {
-      console.log(error);
-    }
-  }
+  const signInWithGoogle = (e) => {
+    e.preventDefault();
+    firebase
+      .auth()
+      .signInWithPopup(googleAuthProvider)
+      .then((value) => {
+        console.log(value);
+        console.log("DISPATCH LOGIN-------------------------------------------------------------------------------------------------------")
+        dispatch(guardarUsuario((value.user)));
+
+          navigate('/menu-principal');    
+      });
+  };
+
 
   const signOut = async () => {
-    auth.signOut();
+    firebase.auth().signOut();
   }
   return (
     <div className="map__container">

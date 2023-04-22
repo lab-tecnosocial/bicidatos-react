@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 
 import Header from "./components/Header/Header";
@@ -9,34 +9,73 @@ import Recorrido from "./components/Recorrido/Recorrido";
 import DatosRecorridos from "./components/DatosRecorridos/DatosRecorridos";
 import Login from "./components/Login/Login";
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import store from './aux/store';
-import { Provider } from 'react-redux';
+import {
+  Routes,
+  BrowserRouter as Router,
+  Route,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
+import store from "./aux/store";
+import { Provider } from "react-redux";
+
+import AuthRouter from "./routers/AuthRouter";
+import PublicRouter from "./routers/PublicRouter";
+import MenuPrincipal from "./components/MenuPrincipal/MenuPrincipal";
+import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
+import ComponentNotFound from "./components/404NotFound/ComponentNotFound";
+import Sidebar from './components/Sidebar/Sidebar';
 
 function App() {
+  const [log, setLog] = useState(false);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+
   return (
-    
     <>
-      <nav>
-        <Header />
-      </nav>
-
-      <main>
-        {/* <Map />
-        <Preview />
-        <Form /> */}
-        {/* <Recorrido />  */}
-        {/* <DatosRecorridos /> */}
-        {/* <Login /> */}
+      
         <Router>
+          
+          <nav>
+            <Header isSidebarVisible={isSidebarVisible} setIsSidebarVisible={setIsSidebarVisible} log={log} setLog={setLog}/>
+          </nav>
+          
+          <main>
+          {isSidebarVisible?<Sidebar/>:<></>}
           <Routes>
-            <Route path="/" element={<Login />} />
+            {/* <Route path="/" element={<Login />} />
             <Route path="/mapa" element={<Recorrido />} />
-            <Route path="/datosPersonales" element={<DatosRecorridos />} />
-
+            <Route path="/datosPersonales" element={<DatosRecorridos />} /> */}
+            {/* <PublicRouter path="/auth" component={AuthRouter} log={log} /> */}
+            <Route path="/mapabicidatos" element={<Map/>} />
+            <Route
+              path="/recorrido"
+              element={
+                <ProtectedRoute redirectPath="/auth/login" isAllowed={log}>
+                  <Recorrido />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/datos-recorridos"
+              element={
+                <ProtectedRoute redirectPath="/auth/login" isAllowed={log}>
+                  <DatosRecorridos />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/menu-principal"
+              element={
+                <ProtectedRoute redirectPath="/auth/login" isAllowed={log}>
+                  <MenuPrincipal />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<Map />} />
           </Routes>
+          </main>
         </Router>
-      </main>
     </>
 
     // <>
@@ -55,7 +94,12 @@ function App() {
     // </>
   );
 }
-
+const ProtectedRoute = ({ isAllowed, redirectPath = "/landing", children }) => {
+  if (!isAllowed) {
+    return <Navigate to={redirectPath} replace />;
+  }
+  return children ? children : <Outlet />;
+};
 export default App;
 
 // // Archivo App.tsx
