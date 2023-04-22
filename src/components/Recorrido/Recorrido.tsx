@@ -82,14 +82,23 @@ import math from "mathjs";
 import mathp from "mathp";
 import RecenterAutomatically from "./RecenterAutomatically";
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 
 import "./Recorrido.css";
+import db from "../../database/firebase";
+import Cronometro from "../Cronometro/Cronometro";
+import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 
-
-let estadoSumarTotal=false;
+let estadoSumarTotal = false;
 
 const Recorrido = () => {
+  const user = useSelector((state:any) => {
+    return state.userReducer.user;
+  });;
+  let [time, setTime] = useState(0);
+  let [isRunning, setIsRunning] = useState(false);
+
   let [distanciaRecorrida, setDistanciaRecorrida] = useState(0);
   // let [punto1, setPunto1] = useState([0, 0]);
   // let [punto2, setPunto2] = useState([0, 0]);
@@ -107,7 +116,10 @@ const Recorrido = () => {
         longitud2 = position.coords.longitude;
         latitud1 = position.coords.latitude;
         latitud2 = position.coords.latitude;
-        setPosicionActual([position.coords.latitude, position.coords.longitude]);
+        setPosicionActual([
+          position.coords.latitude,
+          position.coords.longitude,
+        ]);
 
         recorrido();
 
@@ -120,6 +132,10 @@ const Recorrido = () => {
     );
   }
   // Función que actualiza la posición en el navegador cada 5 segundos
+  let puntos=[];
+  const guardarPuntos = () => {
+    
+  }
   const recorrido = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       // console.log("recorrido")
@@ -129,7 +145,7 @@ const Recorrido = () => {
       longitud2 = position.coords.longitude;
       // setPunto2([position.coords.latitude, position.coords.longitude]);
       // console.log(sumarTotal)
-      if(estadoSumarTotal){
+      if (estadoSumarTotal) {
         acumularDistancia();
       }
       latitud1 = latitud2;
@@ -139,6 +155,8 @@ const Recorrido = () => {
       // setPunto1([latitud2, longitud2]);
     });
     setTimeout(recorrido, 4000);
+    setTimeout(guardarPuntos, 60000);
+
   };
   function acumularDistancia() {
     // console.log("acumular distancia");
@@ -185,7 +203,7 @@ const Recorrido = () => {
     -17.396,
     -66.153,
   ]);
-  let [sumarTotal,setSumarTotal]=useState(false);
+  let [sumarTotal, setSumarTotal] = useState(false);
   const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -202,25 +220,86 @@ const Recorrido = () => {
   }));
   const classes = useStyles();
   const handleSumarTotal = (e) => {
-    console.log("cambiar estado")
-    console.log("anterior "+estadoSumarTotal);
-    estadoSumarTotal=!estadoSumarTotal;
+    setIsRunning(!isRunning);
+    console.log("cambiar estado");
+    console.log("anterior " + estadoSumarTotal);
+    estadoSumarTotal = !estadoSumarTotal;
     setSumarTotal(!sumarTotal);
-    console.log("actualizado "+estadoSumarTotal)
-  }
-  const handleGuardarInformacion=(e)=> {
-    console.log("Guardar informacion")
-    document.getElementById('guardar_distancia').setAttribute('href', "./../DatosPersonales/pagina.html");
-  }
-  
-  return (
+    console.log("actualizado " + estadoSumarTotal);
+  };
+  const navigate=useNavigate();
+
+  const handleGuardarInformacion = (e) => {
+    console.log("Guardar informacion");
+    const miDocumento = {
+      distanciaKilometros: distanciaRecorrida * 1000,
+      fecha: new Date(),
+      tiempoHoras: time / 3600,
+    };
+    db.collection("recorridos")
+      .where("UIDUsuario", "==", user.uid)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          insertarRecorrido(doc.id,miDocumento)
+        });
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
+    console.log(miDocumento);
     
+    document
+      .getElementById("guardar_distancia")
+      .setAttribute("href", "./../DatosPersonales/pagina.html");
+    setTime(0);
+    setIsRunning(false);
+    navigate("/datos-recorridos")
+  };
+  const handleReset = () => {
+    setTime(0);
+    setIsRunning(false);
+    total=0;
+    setDistanciaRecorrida(0);
+  };
+
+  function insertarRecorrido(id_documento: string,documento:any) {
+    const miColeccionPrincipal = db.collection("recorridos");
+    const miSubColeccion = miColeccionPrincipal
+      .doc(id_documento)
+      .collection("historial");
+    miSubColeccion
+      .add(documento)
+      .then((docRef) => {
+        console.log("Documento registrado con ID:", docRef.id);
+      })
+      .catch((error) => {
+        console.error("Error al registrar el documento:", error);
+      });  }
+  return (
     <div className="view-total-distance">
       <h1>Controlador de distancia</h1>
-      <p>Distancia en metros = {distanciaRecorrida*1000}</p>
-      <button onClick={handleSumarTotal} style={{backgroundColor:(sumarTotal)?"red":"green"}}>{(sumarTotal?"Apagar":"Encender")}</button>
-      <button id="guardar_distancia" onClick={handleGuardarInformacion} style={{backgroundColor:"#15C0EA"}}>Guardar distancia recorrida</button>
-
+      <p>Distancia en metros = {distanciaRecorrida * 1000}</p>
+      <button
+        onClick={handleSumarTotal}
+        style={{ backgroundColor: sumarTotal ? "red" : "green" }}
+      >
+        {sumarTotal ? "Pausar" : "Encender"}
+      </button>
+      {/* <button onClick={handleReset}>Reset</button> */}
+      <button
+        id="guardar_distancia"
+        onClick={handleGuardarInformacion}
+        style={{ backgroundColor: "#15C0EA" }}
+      >
+        Guardar distancia recorrida
+      </button>
+      <Cronometro
+        time={time}
+        setTime={setTime}
+        isRunning={isRunning}
+        setIsRunning={setIsRunning}
+      />
       <MapContainer
         center={posicionActual}
         zoom={16}
@@ -242,4 +321,5 @@ const Recorrido = () => {
 };
 
 export default Recorrido;
+
 

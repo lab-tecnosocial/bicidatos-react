@@ -41,7 +41,7 @@ function App() {
           </nav>
           
           <main>
-          {isSidebarVisible?<Sidebar/>:<></>}
+          {isSidebarVisible && log?<Sidebar/>:<></>}
           <Routes>
             {/* <Route path="/" element={<Login />} />
             <Route path="/mapa" element={<Recorrido />} />
@@ -51,7 +51,7 @@ function App() {
             <Route
               path="/recorrido"
               element={
-                <ProtectedRoute redirectPath="/auth/login" isAllowed={log}>
+                <ProtectedRoute redirectPath="/" isAllowed={log}>
                   <Recorrido />
                 </ProtectedRoute>
               }
@@ -59,7 +59,7 @@ function App() {
             <Route
               path="/datos-recorridos"
               element={
-                <ProtectedRoute redirectPath="/auth/login" isAllowed={log}>
+                <ProtectedRoute redirectPath="/" isAllowed={log}>
                   <DatosRecorridos />
                 </ProtectedRoute>
               }
@@ -67,7 +67,7 @@ function App() {
             <Route
               path="/menu-principal"
               element={
-                <ProtectedRoute redirectPath="/auth/login" isAllowed={log}>
+                <ProtectedRoute redirectPath="/" isAllowed={log}>
                   <MenuPrincipal />
                 </ProtectedRoute>
               }

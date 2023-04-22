@@ -17,51 +17,51 @@ main{
     margin-bottom: 2vh;
 }
 
-table {
+#datos-recorridos-div table {
     border-collapse: collapse;
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
   }
   
-  th, td {
+  #datos-recorridos-div  th, td {
     border: 1px solid black;
     padding: 8px;
     text-align: left;
   }
   
-  th {
+  #datos-recorridos-div  th {
     background-color: #15c0ea;
     color: white;
   }
-  button,select{
+  #datos-recorridos-div button,select{
     width: 10vw;
   }
-  button{
+  #datos-recorridos-div button{
     background-color: greenyellow;
     border-radius: 5px;
     height: 4vh;
   }
-  button:hover{
+  #datos-recorridos-div button:hover{
     background-color: rgba(172, 255, 47, 0.533);
     border-radius: 5px;
     height: 4vh;
     border: 2px solid greenyellow;
   }
-  select{
+  #datos-recorridos-div select{
     height: 4vh;
     border: none;
     border-bottom: 2px solid black !important;
   }
 
-  .profile {
+  #datos-recorridos-div .profile {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	text-align: center;
 }
 
-img {
+#datos-recorridos-div img {
 	width: 200px;
 	height: 200px;
 	object-fit: cover;
@@ -69,12 +69,12 @@ img {
 	margin-bottom: 20px;
 }
 
-h1 {
+#datos-recorridos-div h1 {
 	font-size: 36px;
 	margin-bottom: 10px;
 }
 
-p {
+#datos-recorridos-div p {
 	font-size: 24px;
 	margin-bottom: 5px;
 }

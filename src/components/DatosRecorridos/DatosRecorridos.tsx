@@ -26,7 +26,6 @@ const DatosRecorridos = () => {
   let [promedioRecorridos, setPromedioRecorridos] = useState(0);
   let [promedioTiempos, setPromedioTiempos] = useState(0);
   useEffect(() => {
-    // Leer los datos desde Firebase
     console.log(user);
     const obtenerUsuarios = async () => {
       const snapshot = await db
@@ -50,6 +49,7 @@ const DatosRecorridos = () => {
             setRecorridos(datosEncontradosRecorridos);
             calcularPromedioRecorridos()
             calcularPromedioTiempos()
+            
           });
         });
       });
@@ -127,13 +127,26 @@ const DatosRecorridos = () => {
 
   };
   const [userData, setUserData] = useState({
-    labels: recorridos.map((data)=>{
-      return ""
+    labels: recorridos.map((data) => {
+      let fechas = [];
+      const fecha = new Date(Date.parse(data.date));
+      console.log(fecha);
+      console.log(fechaInicial);
+      console.log(fechaFinal);
+
+      if (new Date(data.fecha.toDate()) >= fechaInicial && new Date(data.fecha.toDate()) <= fechaFinal) {
+        return convertirFormatoFecha(data);
+      }
     }),
     datasets: [
       {
         label: "Recorridos",
-        data: recorridos.map(({distanciaKilometros}) => distanciaKilometros),
+        data: recorridos.map((data) => {
+          if (new Date(data.fecha.toDate()) >= fechaInicial && new Date(data.fecha.toDate()) <= fechaFinal) {
+            return data.distanciaKilometros;
+          }
+        }),
+
         backgroundColor: recorridos.map(
           () =>
             "rgb(" +
@@ -160,7 +173,10 @@ const DatosRecorridos = () => {
     //     console.log("imprime");
     //   }
     // })
-          setUserData({
+    establecerDatosEnGraficaEstadistica()
+  }, [fechaInicial, fechaFinal]);
+  function establecerDatosEnGraficaEstadistica(){
+    setUserData({
       labels: recorridos.map((data) => {
         let fechas = [];
         const fecha = new Date(Date.parse(data.date));
@@ -199,7 +215,7 @@ const DatosRecorridos = () => {
         },
       ],
     });
-  }, [fechaInicial, fechaFinal]);
+  }
   const handleChangeFechaFinal = (e) => {
     console.log(e);
     setFechaFinal(e);
