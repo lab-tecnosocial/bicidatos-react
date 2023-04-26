@@ -26,17 +26,18 @@ import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import ComponentNotFound from "./components/404NotFound/ComponentNotFound";
 import Sidebar from './components/Sidebar/Sidebar';
+import VerRecorridosMapa from "./components/VerRecorridosMapa/VerRecorridosMapa";
 
 function App() {
   const [log, setLog] = useState(false);
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
-
+  const [verNav,setVerNav]=useState(true);
   return (
     <>
       
         <Router>
           
-          <nav>
+          <nav style={{display:(verNav)?"block":"none"}}>
             <Header isSidebarVisible={isSidebarVisible} setIsSidebarVisible={setIsSidebarVisible} log={log} setLog={setLog}/>
           </nav>
           
@@ -52,7 +53,7 @@ function App() {
               path="/recorrido"
               element={
                 <ProtectedRoute redirectPath="/" isAllowed={log}>
-                  <Recorrido />
+                  <Recorrido setVerNav={setVerNav} verNav={verNav} setIsSidebarVisible={setIsSidebarVisible}/>
                 </ProtectedRoute>
               }
             />
@@ -72,6 +73,15 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/recorridos-mapa"
+              element={
+                <ProtectedRoute redirectPath="/" isAllowed={log}>
+                  <VerRecorridosMapa />
+                </ProtectedRoute>
+              }
+            />
+            
             <Route path="*" element={<Map />} />
           </Routes>
           </main>
@@ -94,7 +104,9 @@ function App() {
     // </>
   );
 }
-const ProtectedRoute = ({ isAllowed, redirectPath = "/landing", children }) => {
+const ProtectedRoute = ({ isAllowed, redirectPath = "/", children }) => {
+  console.log("PROTECTED ROUTE------------------------------------------------------------------------------------")
+  console.log(isAllowed);
   if (!isAllowed) {
     return <Navigate to={redirectPath} replace />;
   }

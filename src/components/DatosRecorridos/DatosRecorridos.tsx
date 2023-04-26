@@ -250,11 +250,11 @@ const DatosRecorridos = () => {
           </tr>
           <tr>
             <th>Promedio recorridos:</th>
-            <td>{promedioRecorridos.toFixed(1)} km</td>
+            <td>{promedioRecorridos.toFixed(2)} km</td>
           </tr>
           <tr>
             <th>Promedio tiempos</th>
-            <td>{promedioTiempos.toFixed(1)} hrs</td>
+            <td>{promedioTiempos.toFixed(2)} hrs</td>
           </tr>
         </table>
       </div>
@@ -277,8 +277,8 @@ const DatosRecorridos = () => {
             return (
               <tr key={index}>
                 <td>{formattedDate}</td>
-                <td>{data.distanciaKilometros} km</td>
-                <td>{data.tiempoHoras} hrs</td>
+                <td>{data.distanciaKilometros.toFixed(2)} km</td>
+                <td>{data.tiempoHoras.toFixed(2)} hrs</td>
               </tr>
             );
           })}

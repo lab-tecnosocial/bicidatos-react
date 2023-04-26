@@ -22,6 +22,7 @@ main{
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
+
   }
   
   #datos-recorridos-div  th, td {
@@ -35,7 +36,7 @@ main{
     color: white;
   }
   #datos-recorridos-div button,select{
-    width: 10vw;
+    width: auto;
   }
   #datos-recorridos-div button{
     background-color: greenyellow;

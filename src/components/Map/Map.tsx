@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { LatLngExpression } from "leaflet";
-import { MapContainer, useMapEvents, TileLayer, Marker, Tooltip, LayersControl, LayerGroup, GeoJSON } from "react-leaflet";
+import { MapContainer, useMapEvents, TileLayer, Marker, Tooltip, LayersControl, LayerGroup, GeoJSON, Polyline } from 'react-leaflet';
 import { connect, useDispatch } from "react-redux";
 import { setPlacePreviewVisibility, setSelectedPlace } from "../../store/actions";
 import AddMarker from "./AddMarker";
@@ -276,6 +276,7 @@ const Map = ({
   const signOut = async () => {
     firebase.auth().signOut();
   }
+ 
   return (
     <div className="map__container">
       {

@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import {useState} from 'react';
 
 const useStyles = makeStyles((theme) => ({
+
   root: {
     flexGrow: 1,
   },
@@ -39,7 +40,7 @@ const navigate= useNavigate();
     e.preventDefault();
     firebase
       .auth()
-      .signInWithPopup(googleAuthProvider)
+      .signInWithPopup(new firebase.auth.GoogleAuthProvider())
       .then((value) => {
         console.log(value);
         console.log("DISPATCH LOGIN-------------------------------------------------------------------------------------------------------")
@@ -53,8 +54,12 @@ const navigate= useNavigate();
 
   const signOut = async () => {
     firebase.auth().signOut();
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      window.localStorage.removeItem("firebase:authUser");
+    }
     setLogeo(false);
-      props.setLog(false);
+    props.setLog(false);
   }
   const classes = useStyles();
   const handleToggleSidebar = () => {
@@ -66,12 +71,12 @@ const navigate= useNavigate();
         <Container maxWidth="lg">
           <Toolbar>
             {!logeo?
-            <IconButton href="https://bicidatos.org/" edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <IconButton href="https://bicidatos.org/" edge="start" className={classes.menuButton} color="inherit" aria-label="menu" style={{width:"auto"}}>
                <HomeIcon />
             </IconButton>
             :
             <>
-            <IconButton onClick={handleToggleSidebar} edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <IconButton onClick={handleToggleSidebar} edge="start" className={classes.menuButton} color="inherit" aria-label="menu" style={{width:"auto"}}>
                <MenuIcon />
             </IconButton>
             </>}
@@ -80,8 +85,8 @@ const navigate= useNavigate();
               BiciDatos
             </Typography>
             {
-            logeo ? <Button size="small" onClick={signOut} variant="outlined" style={{ fontSize: '0.7rem' }} >Cerrar sesión</Button> :
-              <Button size="small" onClick={signInWithGoogle} variant="outlined" style={{ fontSize: '0.7rem' }} >Iniciar sesión</Button>
+            logeo ? <Button size="small" className="button-header" onClick={signOut} variant="outlined" style={{ fontSize: '0.7rem',width:"auto"}} >Cerrar sesión</Button> :
+              <Button size="small" className="button-header" onClick={signInWithGoogle} variant="outlined" style={{ fontSize: '0.7rem' }} >Iniciar sesión</Button>
             }
           </Toolbar>
         </Container>
