@@ -1,9 +1,9 @@
-
 .map__container {
   width: 100vw;
   height: 50vh;
   font-size: 0.5rem !important;
 }
+
 .leaflet-container {
   width: 100%;
   height: 91vh !important;
@@ -15,4 +15,143 @@
 
 .MuiCircularProgress-colorPrimary {
   color: #15C0EA !important;
+}
+
+/* Add news Styles */
+.leaflet-touch .leaflet-bar a:first-child {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.leaflet-touch .leaflet-bar a:last-child {
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.leaflet-bar {
+  border-radius: 70px 70px 70px 70px;
+}
+
+.leaflet-control {
+  background: none;
+  border: none;
+}
+
+.leaflet-bottom {
+  bottom: 40px;
+}
+
+.leaflet-control-layers {
+  padding: 0;
+  border-radius: 70px 70px 70px 70px;
+  height: 400px;
+}
+
+.leaflet-control-layers-overlays {
+  background: #fff !important;
+  bottom: 31px;
+  opacity: 1;
+  height: 353px;
+  border-radius: 70px 70px 70px 70px;
+  bottom: 6rem;
+  left: 2rem;
+  padding-top: 46px;
+}
+
+.leaflet-control-layers-overlays label {
+  background-size: 27px;
+  background-repeat: no-repeat;
+  background-position: 50% 15%;
+  height: 60px;
+}
+
+.leaflet-control-layers-overlays label:nth-of-type(1) {
+  color: #006dff;
+  background-image: url("http://localhost:3000/img/flotante-parqueo.svg");
+  transition: opacity 0.5s ease-in-out;
+}
+
+.leaflet-control-layers-overlays label:nth-of-type(1):hover {
+  opacity: 0.8;
+}
+
+.leaflet-control-layers-overlays label:nth-of-type(2) {
+  color: #44740e;
+  background-image: url("http://localhost:3000/img/flotante-taller.svg");
+  transition: opacity 0.5s ease-in-out;
+}
+.leaflet-control-layers-overlays label:nth-of-type(2):hover {
+  opacity: 0.8;
+}
+
+.leaflet-control-layers-overlays label:nth-of-type(3) {
+  color: #e20000;
+  background-image: url("http://localhost:3000/img/flotante-seguridad.svg");
+  transition: opacity 0.5s ease-in-out;
+}
+.leaflet-control-layers-overlays label:nth-of-type(3):hover {
+  opacity: 0.8;
+}
+
+.leaflet-control-layers-overlays label:nth-of-type(4) {
+  color: #ffbb22;
+  background-image: url("http://localhost:3000/img/flotante-aforos.svg");
+  transition: opacity 0.5s ease-in-out;
+}
+.leaflet-control-layers-overlays label:nth-of-type(4):hover {
+  opacity: 0.8;
+}
+
+.leaflet-control-layers-overlays label:nth-of-type(5) {
+  color: #569af4;
+  background-image: url("http://localhost:3000/img/flotante-ruta.svg");
+  transition: opacity 0.5s ease-in-out;
+}
+.leaflet-control-layers-overlays label:nth-of-type(5):hover {
+  opacity: 0.8;
+}
+
+.leaflet-control-layers-selector {
+  display: none;
+}
+
+.leaflet-control-layers-base label:first-of-type,
+.leaflet-control-layers-separator {
+  display: none;
+}
+
+.leaflet-control-layers leaflet-control-layers-expanded leaflet-control {
+  padding: 0;
+}
+
+.leaflet-control-layers-base label {
+  text-align: center;
+}
+
+.leaflet-control-layers-overlays {
+  background-color: #eceff1;
+  width: 100%;
+}
+
+.leaflet-control-layers-overlays label {
+  margin: 0;
+  cursor: pointer;
+}
+
+.leaflet-control-layers-overlays label:hover {
+  background-color: #f1f2f7;
+}
+
+.leaflet-control-layers-overlays label span {
+  display: inline-block;
+  text-align: center;
+  width: 95%;
+  padding: 3px 3px;
+  margin-top: 13px;
+  font-weight: normal;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.leaflet-control-attribution {
+  display: none !important;
 }
