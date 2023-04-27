@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -13,23 +12,9 @@ interface Props {
   departamentos: Departamento[]
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-      zIndex: 10000,
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-    },
-  }),
-);
-
 export const FormDepartamento = ({ departamentos }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const map = useMap();
-  const classes = useStyles();
   const [selectedDepartamento, setSelectedDepartamento] = useState<{ nombre: string; latitud: number; longitud: number } | null>(null);
 
 
@@ -58,18 +43,19 @@ export const FormDepartamento = ({ departamentos }: Props) => {
   }, [map, selectedDepartamento]);
 
   return (
-    <FormControl ref={ref} variant="filled" className={classes.formControl} onClick={(e) => e.stopPropagation()} >
+    <FormControl ref={ref} variant="filled" className="form-departamento">
       <InputLabel htmlFor="filled-age-native-simple">Departamento</InputLabel>
       <Select
         native
         value={selectedDepartamento ? selectedDepartamento.nombre : ''}
         onChange={handleChange}
+        style={{borderRadius: '50px'}}
         inputProps={{
           name: 'nombre',
           id: 'filled-age-native-simple',
         }}
       >
-        <option aria-label="None" value="" />
+        <option aria-label="None" value=""/>
         {
           departamentos.map(option => (
             <option key={option.id} value={option.nombre}>{option.nombre}</option>

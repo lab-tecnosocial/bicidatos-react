@@ -1,12 +1,16 @@
-div .makeStyles-formControl-5 {
-  width: 66%;
+.form-departamento {
+  z-index: 1000;
+  min-width: 120px;
   max-width: 400px;
+  width: 66%;
   position: absolute;
   left: 50%;
   top: 0;
   transform: translateX(-50%);
   margin-left: 45px;
   cursor: auto;
+  /* rounded borders */
+  border-radius: 20px;
 }
 
 .MuiFilledInput-root {
@@ -25,4 +29,9 @@ div .makeStyles-formControl-5 {
 .MuiFilledInput-underline:before,
 .MuiFilledInput-underline:after {
   border-bottom: none !important;
+}
+
+
+.MuiInputBase-input{
+  border-radius: 50px;
 }
