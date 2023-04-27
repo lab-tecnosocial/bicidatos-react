@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { LatLngExpression } from "leaflet";
 import { MapContainer, useMapEvents, TileLayer, Marker, Tooltip, LayersControl, LayerGroup, GeoJSON } from "react-leaflet";
 import { connect } from "react-redux";
@@ -7,12 +7,9 @@ import AddMarker from "./AddMarker";
 import "./Map.css";
 import db from "../../database/firebase";
 import { auth, provider } from "../../database/firebase";
-import { Button, LinearProgress, makeStyles, withStyles } from "@material-ui/core";
+import { Button, LinearProgress } from "@material-ui/core";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
 import * as L from "leaflet";
-import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
-import { useMap } from 'react-leaflet';
-import '../../../node_modules/leaflet-geosearch/dist/geosearch.css';
 import { FormDepartamento } from "../Form/FormDepartamento";
 import { type Departamentos } from "../../types.d";
 
@@ -23,29 +20,6 @@ const theme = createMuiTheme({
     }
   }
 });
-
-
-const SearchField = () => {
-  const provider = new OpenStreetMapProvider();
-
-  // @ts-ignore
-  const searchControl = new GeoSearchControl({
-    provider: provider,
-    notFoundMessage: 'Lo sentimos, no encontramos el lugar',
-    showMarker: false,
-    searchLabel: 'Buscar ciudad',
-    style: 'bar'
-  });
-
-  const map = useMap();
-  useEffect(() => {
-    map.addControl(searchControl);
-    // return () => map.removeControl(searchControl);
-  }, []);
-
-  return null;
-};
-
 
 const departamentos: Departamentos = [
   {
