@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -6,6 +6,7 @@ import Select from '@material-ui/core/Select';
 import { useMap } from 'react-leaflet';
 import { Departamento } from '../../types.d';
 import './FormDepartamento.css'
+import L from 'leaflet';
 
 
 interface Props {
@@ -26,6 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const FormDepartamento = ({ departamentos }: Props) => {
+  const ref = useRef<HTMLDivElement>(null);
   const map = useMap();
   const classes = useStyles();
   const [selectedDepartamento, setSelectedDepartamento] = useState<{ nombre: string; latitud: number; longitud: number } | null>(null);
@@ -42,10 +44,13 @@ export const FormDepartamento = ({ departamentos }: Props) => {
   };
 
   useEffect(() => {
+    if (ref.current) {
+      L.DomEvent.disableClickPropagation(ref.current);
+    }
     if (selectedDepartamento && map) {
       const { latitud, longitud } = selectedDepartamento;
       console.log({ latitud, longitud });
-      map.flyTo([latitud, longitud], 15, {
+      map.flyTo([latitud, longitud], 12, {
         duration: 1, // duración de la animación en segundos
         easeLinearity: 0.25, // suavidad de la animación
       });
@@ -53,7 +58,7 @@ export const FormDepartamento = ({ departamentos }: Props) => {
   }, [map, selectedDepartamento]);
 
   return (
-    <FormControl variant="filled" className={classes.formControl} onClick={(e) => e.stopPropagation()} >
+    <FormControl ref={ref} variant="filled" className={classes.formControl} onClick={(e) => e.stopPropagation()} >
       <InputLabel htmlFor="filled-age-native-simple">Departamento</InputLabel>
       <Select
         native
