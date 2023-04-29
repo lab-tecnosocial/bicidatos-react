@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { LatLngExpression } from "leaflet";
 import { MapContainer, useMapEvents, TileLayer, Marker, Tooltip, LayersControl, LayerGroup, GeoJSON, Polyline } from 'react-leaflet';
 import { connect, useDispatch } from "react-redux";
@@ -7,7 +7,7 @@ import AddMarker from "./AddMarker";
 import "./Map.css";
 import db from "../../database/firebase";
 import { auth, provider } from "../../database/firebase";
-import { Button, LinearProgress, makeStyles, withStyles } from "@material-ui/core";
+import { Button, LinearProgress } from "@material-ui/core";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
 import * as L from "leaflet";
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
@@ -20,6 +20,8 @@ import { guardarUsuario } from '../../aux/action';
 
 
 
+import { FormDepartamento } from "../Form/FormDepartamento";
+import { type Departamentos } from "../../types.d";
 
 const theme = createMuiTheme({
   palette: {
@@ -52,6 +54,62 @@ const SearchField = () => {
   return null;
 };
 
+const departamentos: Departamentos = [
+  {
+    id: 1,
+    nombre: "La Paz",
+    latitud: -16.499,
+    longitud: -68.125
+  },
+  {
+    id: 2,
+    nombre: "Cochabamba",
+    latitud: -17.3895,
+    longitud: -66.1568
+  },
+  {
+    id: 3,
+    nombre: "Santa Cruz",
+    latitud: -17.7861,
+    longitud: -63.1806
+  },
+  {
+    id: 4,
+    nombre: "Oruro",
+    latitud: -17.9551,
+    longitud: -67.1060
+  },
+  {
+    id: 5,
+    nombre: "Chuquisaca",
+    latitud: -19.0351,
+    longitud: -65.2593
+  },
+  {
+    id: 6,
+    nombre: "Potosí",
+    latitud: -19.5783,
+    longitud: -65.7561
+  },
+  {
+    id: 7,
+    nombre: "Tarija",
+    latitud: -21.5327,
+    longitud: -64.7296
+  },
+  {
+    id: 8,
+    nombre: "Beni",
+    latitud: -14.8251,
+    longitud: -64.9000
+  },
+  {
+    id: 9,
+    nombre: "Pando",
+    latitud: -10.6500,
+    longitud: -66.1667
+  }
+];
 
 // Iconos de markers
 
@@ -281,7 +339,6 @@ const Map = ({
           <MuiThemeProvider theme={theme}>
             {loading ? <LinearProgress style={{ height: '0.5em' }} /> : null}
           </MuiThemeProvider>
-
           <MapContainer
             center={defaultPosition}
             zoom={6}
@@ -289,13 +346,14 @@ const Map = ({
             style={{ height: "100vh" }}
             zoomControl={true}
           >
-            <SearchField />
+            <FormDepartamento departamentos={departamentos} />
+            {/* <SearchField /> */}
             <LayersControl position="bottomleft" collapsed={false} >
               <LayersControl.BaseLayer checked name="Base">
 
                 <TileLayer
                   attribution='Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
-                  url="https://api.mapbox.com/styles/v1/labtecnosocial/ckmrvd5jx2gbu17p7atlk1xay/tiles/{z}/{x}/{y}?access_token=sk.eyJ1IjoibGFidGVjbm9zb2NpYWwiLCJhIjoiY2ttcnBlcG53MDl4ejJxcnMyc3N2dGpoYSJ9.MaXq1p4n25cMQ6gXIN14Eg"
+                  url="https://api.mapbox.com/styles/v1/labtecnosocial/ckmrvd5jx2gbu17p7atlk1xay/tiles/{z}/{x}/{y}?access_token=sk.eyJ1IjoibGFidGVjbm9zb2NpYWwiLCJhIjoiY2ttcnBlcG53MDl4ejJxcnMyc3N2dGpoYSJ9.MaXq1p4n25cMQ6gXIN14Eg" maxZoom={19} tileSize={512} zoomOffset={-1}
                 />
 
               </LayersControl.BaseLayer>

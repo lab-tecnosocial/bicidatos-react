@@ -1,0 +1,37 @@
+.form-departamento {
+  z-index: 1000;
+  min-width: 120px;
+  max-width: 400px;
+  width: 66%;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  margin-left: 45px;
+  cursor: auto;
+  /* rounded borders */
+  border-radius: 20px;
+}
+
+.MuiFilledInput-root {
+  background-color: rgb(255 255 255) !important;
+  border: 2px solid rgba(0, 0, 0, .2);
+}
+
+.MuiFormLabel-root.Mui-focused {
+  color: rgb(67, 69, 69) !important;
+}
+
+.MuiSelect-select:focus {
+  background-color: rgba(255, 255, 255, 1) !important;
+}
+
+.MuiFilledInput-underline:before,
+.MuiFilledInput-underline:after {
+  border-bottom: none !important;
+}
+
+
+.MuiInputBase-input{
+  border-radius: 50px;
+}
