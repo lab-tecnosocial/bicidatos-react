@@ -94,6 +94,8 @@ import NoSleep from "nosleep.js";
 let estadoSumarTotal = false;
 let datos = [];
 
+let latitud_2=0;
+let longitud_2=0;
 const Recorrido = (props) => {
   const user = useSelector((state: any) => {
     return state.userReducer.user;
@@ -110,6 +112,11 @@ const Recorrido = (props) => {
   let latitud1 = 0;
   let latitud2 = 0;
   let total = 0;
+
+
+
+  let latitud=0;
+  let longitud=0;
   function inicializarPuntos() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -118,11 +125,16 @@ const Recorrido = (props) => {
         longitud2 = position.coords.longitude;
         latitud1 = position.coords.latitude;
         latitud2 = position.coords.latitude;
+
+        longitud = position.coords.longitude;
+        longitud_2 = position.coords.longitude;
+        latitud = position.coords.latitude;
+        latitud_2 = position.coords.latitude;
         setPosicionActual([
           position.coords.latitude,
           position.coords.longitude,
         ]);
-
+        guardarPuntos();
         recorrido();
         // setPunto1([position.coords.latitude, position.coords.longitude]);
 
@@ -165,22 +177,23 @@ const Recorrido = (props) => {
       return () => clearTimeout(timeoutId);
     }
   }, [isWaiting]);
-  let latitud_2=0;
-  let longitud_2=0;
+  
   useEffect(() => {
     if (!isWaiting) {
       if (acumular) {
         navigator.geolocation.getCurrentPosition((position) => {
-          let latitud = position.coords.latitude;
-          let longitud = position.coords.longitude;
+          latitud = position.coords.latitude;
+          longitud = position.coords.longitude;
+          console.log("lat2 "+ (latitud_2==0));
+          console.log("lon2"+ (longitud_2==0));
           latitud_2=latitud_2==0?latitud:latitud_2;
           longitud_2=longitud_2==0?longitud:longitud_2;
-
-          if(calcularDistanciaDosPuntos(latitud_2,longitud_2,latitud,longitud)>11.11){
-            datos.push({
-              latitud,
-              longitud,
-            });
+          console.log("lat1 "+ latitud);
+          console.log("lon1"+ longitud);
+         
+          console.log("calcularDistancia"+calcularDistanciaDosPuntos(latitud_2,longitud_2,latitud,longitud))
+          if(calcularDistanciaDosPuntos(latitud_2,longitud_2,latitud,longitud)>0){
+            datos.push([longitud,latitud]);
           }
           latitud_2=latitud;
           longitud_2=longitud;
@@ -190,6 +203,22 @@ const Recorrido = (props) => {
       setIsWaiting(true);
     }
   }, [isWaiting]);
+  const guardarPuntos = () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      latitud_2 = position.coords.latitude;
+      longitud_2 = position.coords.longitude;
+      console.log("calcularDistancia"+calcularDistanciaDosPuntos(latitud_2,longitud_2,latitud,longitud))
+
+      if(calcularDistanciaDosPuntos(latitud_2,longitud_2,latitud,longitud)>0){
+        datos.push([longitud,latitud]);
+      }
+      latitud=latitud_2;
+      longitud=longitud_2;
+    });
+    setTimeout(guardarPuntos, 4000);
+  };
+
+
   //------------------------------------------------------------------------------------------------------------------------------------------
 
   const recorrido = () => {
@@ -209,14 +238,17 @@ const Recorrido = (props) => {
       // let latitud2=punto2[0]
       // let longitud2=punto2[1]
       // setPunto1([latitud2, longitud2]);
-    });
+    },
+    (error) => {},
+    { enableHighAccuracy: true }
+    )
     setTimeout(recorrido, 4000);
   };
   function acumularDistancia() {
     console.log("DISTANCIA ENTRE DOS PUNTOS---------------------------------------------------------------------------------------------------");
     let distancia=calcularDistanciaDosPuntos(latitud1,longitud1,latitud2,longitud2)
     console.log(distancia);
-    if(distancia>11.11){
+    if(distancia>0){
       total = total + distancia;
       setDistanciaRecorrida(total);
     }
@@ -326,30 +358,33 @@ const Recorrido = (props) => {
     const miSubColeccion = miColeccionPrincipal
       .doc(id_documento)
       .collection("historial");
+    documento={...documento,puntosRecorridos:JSON.stringify({
+      "data":datos
+    })}
     miSubColeccion
       .add(documento)
       .then((docRef) => {
         console.log("Documento registrado con ID:", docRef.id);
-        const miSubSubColeccion = miSubColeccion
-          .doc(docRef.id)
-          .collection("puntosRecorridos");
+        // const miSubSubColeccion = miSubColeccion
+        //   .doc(docRef.id)
+        //   .collection("puntosRecorridos");
 
-        datos.map(({ latitud, longitud }) => {
-          miSubSubColeccion
-            .add({
-              latitud: longitud,
-              longitud: latitud,
-            })
-            .then(function (docRef) {
-              console.log(
-                "PUNTO AGREGADO------------------------------------------------: ",
-                docRef.id
-              );
-            })
-            .catch(function (error) {
-              console.error("Error al agregar PUNTO el documento: ", error);
-            });
-        });
+        // datos.map(({ latitud, longitud }) => {
+        //   miSubSubColeccion
+        //     .add({
+        //       latitud: longitud,
+        //       longitud: latitud,
+        //     })
+        //     .then(function (docRef) {
+        //       console.log(
+        //         "PUNTO AGREGADO------------------------------------------------: ",
+        //         docRef.id
+        //       );
+        //     })
+        //     .catch(function (error) {
+        //       console.error("Error al agregar PUNTO el documento: ", error);
+        //     });
+        // });
       })
       .catch((error) => {
         console.error("Error al registrar el documento:", error);
@@ -564,7 +599,8 @@ const Recorrido = (props) => {
           />
         </div>
       </div>
-      <div id="boton-cambio-estado" style={{paddingBottom:"5px", height:"20%"}}>
+      <div id="boton-cambio-estado" style={{paddingBottom:"5px", height:"20%",display: isPaginaNormal ? "none" : "flex"}}>
+        <p>Mantener presionado para pausar</p>
         <button onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onTouchStart={handlePresion} onTouchEnd={handleTouchEnd} style={{height:"40px"}}>{isFullscreen ? "Pausar" : ""}</button>
       </div>
     </div>
