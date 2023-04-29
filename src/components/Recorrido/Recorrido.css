@@ -26,6 +26,10 @@ button:hover{
     background-color: white !important;
     color: black;
 }
+#boton-cambio-estado button:hover{
+    background-color: white;
+    border: rgba(255, 0, 0, 0.62) solid 1px !important;
+}
 div.imagen_registrando{
     text-align: center;
 }
@@ -38,7 +42,7 @@ div.imagen_registrando img{
 }
 #boton-cambio-estado{
     width: 100%;
-    background-color: #343537;
+    background-color: #15c0ea;
     text-align: center;
     flex-direction: column;
 }
@@ -49,8 +53,8 @@ div.imagen_registrando img{
 
 }
 #boton-cambio-estado{
-    color: #f1662d;
+    color: white;
 }
 #registrando-recorrido h1{
-    color: #f1662d;
+    color: white;
 }

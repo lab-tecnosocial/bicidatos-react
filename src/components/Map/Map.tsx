@@ -124,10 +124,7 @@ const Map = ({
         setUser(null);
       }
     });
-    // getBiciparqueosFromFirebase();
-    // getServiciosFromFirebase();
-    // getDenunciasFromFirebase();
-    // getAforosFromFirebase();
+
     getCicloviasFromGithub();
     console.log(ciclovias);
   }, [])
@@ -151,9 +148,7 @@ const Map = ({
           case "Aforos":
             getAforos2FromFirebase();
             break;
-          // case "Ciclovias":
-          //   getCicloviasFromGithub();
-          //   break;
+
         }
       }
     });
@@ -283,10 +278,6 @@ const Map = ({
     <div className="map__container">
       {
         <div>
-          {
-            user ? <Button size="small" onClick={signOut} variant="outlined" style={{ fontSize: '0.7rem' }} >Cerrar sesión</Button> :
-              <Button size="small" onClick={signInWithGoogle} variant="outlined" style={{ fontSize: '0.7rem' }} >Iniciar sesión</Button>
-          }
           <MuiThemeProvider theme={theme}>
             {loading ? <LinearProgress style={{ height: '0.5em' }} /> : null}
           </MuiThemeProvider>
