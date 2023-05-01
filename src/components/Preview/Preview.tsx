@@ -1,4 +1,4 @@
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { useState } from "react";
 import FormBiciparqueos from "../Form/FormBiciparqueos";
 import { setPlaceFormVisibility, setPlacePreviewVisibility } from "../../store/actions";

@@ -1,7 +1,5 @@
 import { connect } from "react-redux";
 import { addNewPlace as addNewPlaceAction, setPlaceFormVisibility } from "../../store/actions";
-import { Place, PlaceDenuncias } from "../../store/models";
-import { AiFillCloseCircle } from "react-icons/ai";
 import "./Form.css";
 import { Field, Formik, Form as FormikForm } from "formik";
 import { LatLng } from "leaflet";
@@ -10,27 +8,18 @@ import DateFnsUtils from '@date-io/date-fns';
 import esLocale from "date-fns/locale/es";
 
 import db, { storageRef } from "../../database/firebase";
-import { auth, provider } from "../../database/firebase";
+import { auth } from "../../database/firebase";
 import { useEffect, useState } from "react";
 import {
   DatePicker,
-  TimePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from "@material-ui/core";
 
 
 const dateFns = new DateFnsUtils();
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#15C0EA'
-    }
-  }
-});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -255,7 +244,6 @@ const Form = ({
               <div className="formGroup">
                 <div className="formGroupInput">
                   <label htmlFor="fecha">Fecha del incidente</label>
-                  <MuiThemeProvider theme={theme}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
                       <Field
                         autoOk
@@ -275,7 +263,6 @@ const Form = ({
                           }
                         } />
                     </MuiPickersUtilsProvider>
-                  </MuiThemeProvider>
                 </div>
                 <div className="errors">{errors.fecha}</div>
               </div>
