@@ -7,7 +7,7 @@ import { Field, Formik, Form as FormikForm } from "formik";
 import { LatLng } from "leaflet";
 import { useRef } from "react";
 import db, { storageRef } from "../../database/firebase";
-import { auth, provider } from "../../database/firebase";
+import { auth } from "../../database/firebase";
 import { useEffect, useState } from "react";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from "@material-ui/core";

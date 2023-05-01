@@ -1,124 +1,22 @@
+// react
 import { useEffect, useState } from "react";
+// mui and style
+import { LinearProgress } from "@material-ui/core";
+import "./Map.css";
+// leaflet
 import { LatLngExpression } from "leaflet";
 import { MapContainer, useMapEvents, TileLayer, Marker, Tooltip, LayersControl, LayerGroup, GeoJSON } from "react-leaflet";
+import { iconoBiciparqueo, iconoServicio, iconoDenuncia, iconoAforo } from "./icons";
+// redux
 import { connect } from "react-redux";
 import { setPlacePreviewVisibility, setSelectedPlace } from "../../store/actions";
-import AddMarker from "./AddMarker";
-import "./Map.css";
+// firebase
 import db from "../../database/firebase";
-import { auth, provider } from "../../database/firebase";
-import { Button, LinearProgress } from "@material-ui/core";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
-import * as L from "leaflet";
+// aux components
+import AddMarker from "./AddMarker";
 import { FormDepartamento } from "../Form/FormDepartamento";
-import { type Departamentos } from "../../types.d";
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#15C0EA'
-    }
-  }
-});
-
-const departamentos: Departamentos = [
-  {
-    id: 1,
-    nombre: "La Paz",
-    latitud: -16.499,
-    longitud: -68.125
-  },
-  {
-    id: 2,
-    nombre: "Cochabamba",
-    latitud: -17.3895,
-    longitud: -66.1568
-  },
-  {
-    id: 3,
-    nombre: "Santa Cruz",
-    latitud: -17.7861,
-    longitud: -63.1806
-  },
-  {
-    id: 4,
-    nombre: "Oruro",
-    latitud: -17.9551,
-    longitud: -67.1060
-  },
-  {
-    id: 5,
-    nombre: "Chuquisaca",
-    latitud: -19.0351,
-    longitud: -65.2593
-  },
-  {
-    id: 6,
-    nombre: "Potosí",
-    latitud: -19.5783,
-    longitud: -65.7561
-  },
-  {
-    id: 7,
-    nombre: "Tarija",
-    latitud: -21.5327,
-    longitud: -64.7296
-  },
-  {
-    id: 8,
-    nombre: "Beni",
-    latitud: -14.8251,
-    longitud: -64.9000
-  },
-  {
-    id: 9,
-    nombre: "Pando",
-    latitud: -10.6500,
-    longitud: -66.1667
-  }
-];
-
-// Iconos de markers
-
-var iconoBiciparqueo = L.icon({
-  iconUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-parqueo-e1617504997591.png',
-  shadowUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-shadow.png',
-  iconSize: [35, 35],
-  shadowSize: [30, 30],
-  shadowAnchor: [8, 25],
-  iconAnchor: [15, 30]
-
-});
-
-var iconoServicio = L.icon({
-  iconUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-taller-e1617504970484.png',
-  shadowUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-shadow.png',
-  iconSize: [35, 35],
-  shadowSize: [30, 30],
-  shadowAnchor: [8, 25],
-  iconAnchor: [15, 30]
-
-});
-
-var iconoDenuncia = L.icon({
-  iconUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-seguridad-e1617505231488.png',
-  shadowUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-shadow.png',
-  iconSize: [35, 35],
-  shadowSize: [30, 30],
-  shadowAnchor: [8, 25],
-  iconAnchor: [15, 30]
-
-});
-
-var iconoAforo = L.icon({
-  iconUrl: 'https://bicidatos.org/wp-content/uploads/2021/04/location-aforos.png',
-  shadowUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-shadow.png',
-  iconSize: [35, 35],
-  shadowSize: [30, 30],
-  shadowAnchor: [8, 25],
-  iconAnchor: [15, 30]
-
-});
+// aux data
+import { departamentos } from "./local-places";
 
 
 const Map = ({
@@ -134,25 +32,9 @@ const Map = ({
   const [servicios2, setServicios2] = useState([] as any);
   const [denuncias2, setDenuncias2] = useState([] as any);
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState(null);
   const [ciclovias, setCiclovias] = useState({} as any);
-  if (user) {
-    // console.log(user);
-  } else {
-    // console.log(null);
-  }
+ 
   useEffect(() => {
-    auth.onAuthStateChanged(persona => {
-      if (persona) {
-        setUser(persona);
-      } else {
-        setUser(null);
-      }
-    });
-    // getBiciparqueosFromFirebase();
-    // getServiciosFromFirebase();
-    // getDenunciasFromFirebase();
-    // getAforosFromFirebase();
     getCicloviasFromGithub();
   }, [])
 
@@ -281,29 +163,14 @@ const Map = ({
     togglePreview(true);
   };
 
-  const signInWithGoogle = async () => {
-    try {
-      await auth.signInWithPopup(provider)
-    }
-    catch (error) {
-      console.log(error);
-    }
-  }
+  
 
-  const signOut = async () => {
-    auth.signOut();
-  }
   return (
     <div className="map__container">
       {
         <div>
-          {
-            user ? <Button size="small" onClick={signOut} variant="outlined" style={{ fontSize: '0.7rem' }} >Cerrar sesión</Button> :
-              <Button size="small" onClick={signInWithGoogle} variant="outlined" style={{ fontSize: '0.7rem' }} >Iniciar sesión</Button>
-          }
-          <MuiThemeProvider theme={theme}>
+          
             {loading ? <LinearProgress style={{ height: '0.5em' }} /> : null}
-          </MuiThemeProvider>
           <MapContainer
             center={defaultPosition}
             zoom={6}
@@ -312,7 +179,6 @@ const Map = ({
             zoomControl={true}
           >
             <FormDepartamento departamentos={departamentos} />
-            {/* <SearchField /> */}
             <LayersControl position="bottomleft" collapsed={false} >
               <LayersControl.BaseLayer checked name="Base">
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { LatLng, LatLngExpression } from "leaflet";
 import { Marker, useMapEvents } from "react-leaflet";
 import { connect } from "react-redux";

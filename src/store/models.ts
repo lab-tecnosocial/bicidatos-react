@@ -69,3 +69,10 @@ export interface PlaceAforos {
   numHombres: number;
   position: LatLngExpression;
 }
+
+export interface Departamento {
+  id: number
+  nombre: string
+  latitud: number
+  longitud: number
+}

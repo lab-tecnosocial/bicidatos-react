@@ -1,35 +1,25 @@
 import { connect } from "react-redux";
 import { addNewPlace as addNewPlaceAction, setPlaceFormVisibility } from "../../store/actions";
-import { Place, PlaceAforos } from "../../store/models";
-import { AiFillCloseCircle } from "react-icons/ai";
 import "./Form.css";
-import { Field, Formik, Form as FormikForm, validateYupSchema } from "formik";
+import { Field, Formik, Form as FormikForm } from "formik";
 import { LatLng } from "leaflet";
 import DateFnsUtils from '@date-io/date-fns';
 import esLocale from "date-fns/locale/es";
 
-import db, { storageRef } from "../../database/firebase";
-import { auth, provider } from "../../database/firebase";
+import db from "../../database/firebase";
+import { auth } from "../../database/firebase";
 import {
   DatePicker,
   TimePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import { useEffect, useState } from "react";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from "@material-ui/core";
 
 
 const dateFns = new DateFnsUtils();
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#15C0EA'
-    }
-  }
-});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -234,7 +224,6 @@ const Form = ({
           onSubmit={handleOnSubmit}
         >
           {({ errors, touched, isValidating, setFieldValue, values }) => (
-            <MuiThemeProvider theme={theme}>
 
               <FormikForm>
                 <div className="formGroup">
@@ -324,7 +313,6 @@ const Form = ({
                   <button className="form__button" type="submit">Enviar</button>
                 </div>
               </FormikForm>
-            </MuiThemeProvider>
           )}
         </Formik>
       </div>

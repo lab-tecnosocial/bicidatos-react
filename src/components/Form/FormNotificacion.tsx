@@ -1,4 +1,3 @@
-import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -10,19 +9,10 @@ import db, { auth } from '../../database/firebase';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import FlagIcon from '@material-ui/icons/Flag';
 import { IconButton } from '@material-ui/core';
-import Flag from '@material-ui/icons/Flag';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#15C0EA'
-    }
-  }
-});
 
 export default function FormNotificacion() {
   const [user, setUser] = useState(null);
@@ -99,7 +89,6 @@ export default function FormNotificacion() {
 
   return (
     <div>
-      <MuiThemeProvider theme={theme}>
         <IconButton type="button" onClick={handleClickOpenNoti}>
           <FlagIcon />
         </IconButton>
@@ -136,7 +125,6 @@ export default function FormNotificacion() {
             </DialogActions>
           </form>
         </Dialog>
-      </MuiThemeProvider>
     </div>
   );
 }

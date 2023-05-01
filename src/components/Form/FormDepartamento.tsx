@@ -3,10 +3,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { useMap } from 'react-leaflet';
-import { Departamento } from '../../types.d';
 import './FormDepartamento.css'
 import L from 'leaflet';
-
+import { Departamento } from '../../store/models';
 
 interface Props {
   departamentos: Departamento[]
@@ -35,7 +34,7 @@ export const FormDepartamento = ({ departamentos }: Props) => {
     if (selectedDepartamento && map) {
       const { latitud, longitud } = selectedDepartamento;
       console.log({ latitud, longitud });
-      map.flyTo([latitud, longitud], 12, {
+      map.flyTo([latitud, longitud], selectedDepartamento['nombre'] == 'Todos' ? 6 : 12, {
         duration: 1, // duración de la animación en segundos
         easeLinearity: 0.25, // suavidad de la animación
       });
@@ -49,13 +48,13 @@ export const FormDepartamento = ({ departamentos }: Props) => {
         native
         value={selectedDepartamento ? selectedDepartamento.nombre : ''}
         onChange={handleChange}
-        style={{borderRadius: '50px'}}
+        style={{ borderRadius: '50px' }}
         inputProps={{
           name: 'nombre',
           id: 'filled-age-native-simple',
         }}
       >
-        <option aria-label="None" value=""/>
+        <option aria-label="None" value="" />
         {
           departamentos.map(option => (
             <option key={option.id} value={option.nombre}>{option.nombre}</option>
