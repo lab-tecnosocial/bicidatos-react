@@ -31,6 +31,10 @@ const Sidebar = (props) => {
                 <li className="elemento-link">
                   <Link to="/recorridos-mapa">Recorridos en mapa</Link>
                 </li>
+                <li className="elemento-link">
+                  <Link to="/opciones-recorridos">Opciones recorridos</Link>
+                </li>
+                
               </ul>
             ) : (
               <></>
