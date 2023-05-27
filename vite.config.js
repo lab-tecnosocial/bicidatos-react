@@ -3,10 +3,10 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig(() => {
   return {
-    build: {
-      server: {
+    server: {
       open: true,
     },
+    build: {
       outDir: 'build',
     },
     plugins: [react()],
