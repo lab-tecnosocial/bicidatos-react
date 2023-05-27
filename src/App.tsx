@@ -25,6 +25,7 @@ import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import Sidebar from './components/Sidebar/Sidebar';
 import VerRecorridosMapa from "./components/VerRecorridosMapa/VerRecorridosMapa";
+import OpcionesRecorridos from "./components/OpcionesRecorridos/OpcionesRecorridos";
 
 function App() {
   const [log, setLog] = useState(false);
@@ -76,6 +77,14 @@ function App() {
               element={
                 <ProtectedRoute redirectPath="/" isAllowed={log}>
                   <VerRecorridosMapa />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/opciones-recorridos"
+              element={
+                <ProtectedRoute redirectPath="/" isAllowed={log}>
+                  <OpcionesRecorridos />
                 </ProtectedRoute>
               }
             />

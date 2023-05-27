@@ -1,5 +1,3 @@
-
-
 import { LatLngExpression } from "leaflet";
 import React, { useEffect, useState } from "react";
 import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
@@ -19,8 +17,8 @@ import NoSleep from "nosleep.js";
 let estadoSumarTotal = false;
 let datos = [];
 
-let latitud_2=0;
-let longitud_2=0;
+let latitud_2 = 0;
+let longitud_2 = 0;
 const Recorrido = (props) => {
   const user = useSelector((state: any) => {
     return state.userReducer.user;
@@ -36,10 +34,8 @@ const Recorrido = (props) => {
   let latitud2 = 0;
   let total = 0;
 
-
-
-  let latitud=0;
-  let longitud=0;
+  let latitud = 0;
+  let longitud = 0;
   function inicializarPuntos() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -59,7 +55,6 @@ const Recorrido = (props) => {
         ]);
         guardarPuntos();
         recorrido();
-
       },
       (error) => {},
       { enableHighAccuracy: true }
@@ -81,26 +76,41 @@ const Recorrido = (props) => {
       return () => clearTimeout(timeoutId);
     }
   }, [isWaiting]);
-  
+
   useEffect(() => {
     if (!isWaiting) {
       if (acumular) {
         navigator.geolocation.getCurrentPosition((position) => {
           latitud = position.coords.latitude;
           longitud = position.coords.longitude;
-          console.log("lat2 "+ (latitud_2==0));
-          console.log("lon2"+ (longitud_2==0));
-          latitud_2=latitud_2==0?latitud:latitud_2;
-          longitud_2=longitud_2==0?longitud:longitud_2;
-          console.log("lat1 "+ latitud);
-          console.log("lon1"+ longitud);
-         
-          console.log("calcularDistancia"+calcularDistanciaDosPuntos(latitud_2,longitud_2,latitud,longitud))
-          if(calcularDistanciaDosPuntos(latitud_2,longitud_2,latitud,longitud)>0){
-            datos.push([longitud,latitud]);
+          console.log("lat2 " + (latitud_2 == 0));
+          console.log("lon2" + (longitud_2 == 0));
+          latitud_2 = latitud_2 == 0 ? latitud : latitud_2;
+          longitud_2 = longitud_2 == 0 ? longitud : longitud_2;
+          console.log("lat1 " + latitud);
+          console.log("lon1" + longitud);
+
+          console.log(
+            "calcularDistancia" +
+              calcularDistanciaDosPuntos(
+                latitud_2,
+                longitud_2,
+                latitud,
+                longitud
+              )
+          );
+          if (
+            calcularDistanciaDosPuntos(
+              latitud_2,
+              longitud_2,
+              latitud,
+              longitud
+            ) > 0
+          ) {
+            datos.push([longitud, latitud]);
           }
-          latitud_2=latitud;
-          longitud_2=longitud;
+          latitud_2 = latitud;
+          longitud_2 = longitud;
         });
       }
       console.log(datos);
@@ -111,53 +121,73 @@ const Recorrido = (props) => {
     navigator.geolocation.getCurrentPosition((position) => {
       latitud_2 = position.coords.latitude;
       longitud_2 = position.coords.longitude;
-      console.log("calcularDistancia"+calcularDistanciaDosPuntos(latitud_2,longitud_2,latitud,longitud))
+      console.log(
+        "calcularDistancia" +
+          calcularDistanciaDosPuntos(latitud_2, longitud_2, latitud, longitud)
+      );
 
-      if(calcularDistanciaDosPuntos(latitud_2,longitud_2,latitud,longitud)>0){
-        datos.push([longitud,latitud]);
+      if (
+        calcularDistanciaDosPuntos(latitud_2, longitud_2, latitud, longitud) > 0
+      ) {
+        datos.push([longitud, latitud]);
       }
-      latitud=latitud_2;
-      longitud=longitud_2;
+      latitud = latitud_2;
+      longitud = longitud_2;
     });
     setTimeout(guardarPuntos, 4000);
   };
 
-
   //------------------------------------------------------------------------------------------------------------------------------------------
 
   const recorrido = () => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      // console.log("recorrido")
-      setPosicionActual([position.coords.latitude, position.coords.longitude]);
-      //setPunto2([position.coords.latitude, position.coords.longitude]);
-      latitud2 = position.coords.latitude;
-      longitud2 = position.coords.longitude;
-      // setPunto2([position.coords.latitude, position.coords.longitude]);
-      // console.log(sumarTotal)
-      if (estadoSumarTotal) {
-        acumularDistancia();
-      }
-      latitud1 = latitud2;
-      longitud1 = longitud2;
-      // let latitud2=punto2[0]
-      // let longitud2=punto2[1]
-      // setPunto1([latitud2, longitud2]);
-    },
-    (error) => {},
-    { enableHighAccuracy: true }
-    )
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        // console.log("recorrido")
+        setPosicionActual([
+          position.coords.latitude,
+          position.coords.longitude,
+        ]);
+        //setPunto2([position.coords.latitude, position.coords.longitude]);
+        latitud2 = position.coords.latitude;
+        longitud2 = position.coords.longitude;
+        // setPunto2([position.coords.latitude, position.coords.longitude]);
+        // console.log(sumarTotal)
+        if (estadoSumarTotal) {
+          acumularDistancia();
+        }
+        latitud1 = latitud2;
+        longitud1 = longitud2;
+        // let latitud2=punto2[0]
+        // let longitud2=punto2[1]
+        // setPunto1([latitud2, longitud2]);
+      },
+      (error) => {},
+      { enableHighAccuracy: true }
+    );
     setTimeout(recorrido, 4000);
   };
   function acumularDistancia() {
-    console.log("DISTANCIA ENTRE DOS PUNTOS---------------------------------------------------------------------------------------------------");
-    let distancia=calcularDistanciaDosPuntos(latitud1,longitud1,latitud2,longitud2)
+    console.log(
+      "DISTANCIA ENTRE DOS PUNTOS---------------------------------------------------------------------------------------------------"
+    );
+    let distancia = calcularDistanciaDosPuntos(
+      latitud1,
+      longitud1,
+      latitud2,
+      longitud2
+    );
     console.log(distancia);
-    if(distancia>0){
+    if (distancia > 0) {
       total = total + distancia;
       setDistanciaRecorrida(total);
     }
   }
-  function calcularDistanciaDosPuntos(latitud1,longitud1,latitud2,longitud2) {
+  function calcularDistanciaDosPuntos(
+    latitud1,
+    longitud1,
+    latitud2,
+    longitud2
+  ) {
     // console.log(
     //   "---------------------------------------------------------------------------"
     // );
@@ -166,9 +196,9 @@ const Recorrido = (props) => {
     // console.log(latitud2);
     // console.log(longitud2);
 
-    var R = 6371000; 
+    var R = 6371000;
 
-    var R = 6371000; 
+    var R = 6371000;
     var x1 = latitud2 - latitud1;
     var dLat = mathp.toRadians(x1);
     var x2 = longitud2 - longitud1;
@@ -223,7 +253,7 @@ const Recorrido = (props) => {
     setAcumular(false);
     console.log("Guardar informacion");
     const miDocumento = {
-      distanciaKilometros: distanciaRecorrida/1000,
+      distanciaKilometros: distanciaRecorrida / 1000,
       fecha: new Date(),
       tiempoHoras: time / 3600,
     };
@@ -231,21 +261,43 @@ const Recorrido = (props) => {
       .where("UIDUsuario", "==", user.uid)
       .get()
       .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          insertarRecorrido(doc.id, miDocumento);
-        });
+        console.log("Insertando------------------------------------------------------------------------------------------------------------------------")
+        console.log(querySnapshot.docs);
+        if(querySnapshot.docs.length!=0){
+          querySnapshot.forEach((doc) => {
+            console.log("Insertando documento de recorrido con el id------------------------------------------------------------------------------------------------------------------------")
+            console.log(doc.id);
+            insertarRecorrido(doc.id, miDocumento);
+          });
+          navigate("/datos-recorridos");
+
+        }
+        else{
+          console.log("Insertando nuevo doc recorrido--------------------------------------------------------------------------------------------------------------")
+          db.collection("recorridos").add({
+            UIDUsuario: user.uid,
+          });
+          db.collection("recorridos")
+            .where("UIDUsuario", "==", user.uid)
+            .get()
+            .then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                insertarRecorrido(doc.id, miDocumento);
+              });
+              navigate("/datos-recorridos");
+
+            });
+        }
       })
       .catch((error) => {
-        console.log("Error getting documents: ", error);
+       
       });
-    console.log(miDocumento);
 
-    document
-      .getElementById("guardar_distancia")
-      .setAttribute("href", "./../DatosPersonales/pagina.html");
+    // document
+    //   .getElementById("guardar_distancia")
+    //   .setAttribute("href", "./../DatosPersonales/pagina.html");
     setTime(0);
     setIsRunning(false);
-    navigate("/datos-recorridos");
   };
   const handleReset = () => {
     setTime(0);
@@ -259,14 +311,16 @@ const Recorrido = (props) => {
     const miSubColeccion = miColeccionPrincipal
       .doc(id_documento)
       .collection("historial");
-    documento={...documento,puntosRecorridos:JSON.stringify({
-      "data":datos
-    })}
+    documento = {
+      ...documento,
+      puntosRecorridos: JSON.stringify({
+        data: datos,
+      }),
+    };
     miSubColeccion
       .add(documento)
       .then((docRef) => {
         console.log("Documento registrado con ID:", docRef.id);
-        
       })
       .catch((error) => {
         console.error("Error al registrar el documento:", error);
@@ -284,18 +338,23 @@ const Recorrido = (props) => {
   //FULL SCREEN----------------------------------------------------------------------------------------------------------------------------------------------------
 
   const toggleFullscreen = () => {
-    console.log("FULL SCREEN INITIAL STATE--------------------------------------------------------"+isFullscreen)
+    console.log(
+      "FULL SCREEN INITIAL STATE--------------------------------------------------------" +
+        isFullscreen
+    );
     setIsFullscreen(!isFullscreen);
-    
+
     if (!isFullscreen) {
       setIsFullscreen(!isFullscreen);
       document.documentElement.requestFullscreen();
-
     } else {
       document.exitFullscreen();
       setIsFullscreen(false);
     }
-    console.log("FULL SCREEN STATE--------------------------------------------------------"+isFullscreen)
+    console.log(
+      "FULL SCREEN STATE--------------------------------------------------------" +
+        isFullscreen
+    );
   };
 
   useEffect(() => {
@@ -383,40 +442,40 @@ const Recorrido = (props) => {
   //----------------------------------------------------------------------------------------------------------------------------------------------------
   let interval;
 
-    const handlePresion = () => {
-      interval = setTimeout(() => {
-        handleState()
-      }, 5000);
-    };
+  const handlePresion = () => {
+    interval = setTimeout(() => {
+      handleState();
+    }, 5000);
+  };
 
-    const handleTouchEnd = () => {
-      clearTimeout(interval);
-    };
+  const handleTouchEnd = () => {
+    clearTimeout(interval);
+  };
 
-  
-    const handleMouseDown = () => {
-      interval = setTimeout(() => {
-        handleState()
-      }, 5000);
-    };
+  const handleMouseDown = () => {
+    interval = setTimeout(() => {
+      handleState();
+    }, 5000);
+  };
 
-    const handleMouseUp = () => {
-      clearTimeout(interval);
-    };
-
-
+  const handleMouseUp = () => {
+    clearTimeout(interval);
+  };
 
   return (
-    <div className="total" style={{background: isPaginaNormal?"white":"#343537"}}>
+    <div
+      className="total"
+      style={{ background: isPaginaNormal ? "white" : "#343537" }}
+    >
       <div
         style={{
           width: "100vw",
           display: isPaginaNormal ? "flex" : "none",
-          minHeight:"100vh",
+          minHeight: "100vh",
           textAlign: "center",
           flexDirection: "column",
           fontSize: "0.8rem",
-          background: "white"
+          background: "white",
         }}
       >
         <h1>Controlador de distancia</h1>
@@ -481,9 +540,24 @@ const Recorrido = (props) => {
           />
         </div>
       </div>
-      <div id="boton-cambio-estado" style={{paddingBottom:"5px", height:"20%",display: isPaginaNormal ? "none" : "flex"}}>
+      <div
+        id="boton-cambio-estado"
+        style={{
+          paddingBottom: "5px",
+          height: "20%",
+          display: isPaginaNormal ? "none" : "flex",
+        }}
+      >
         <p>Mantener presionado para pausar</p>
-        <button onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onTouchStart={handlePresion} onTouchEnd={handleTouchEnd} style={{height:"40px"}}>{isFullscreen ? "Pausar" : ""}</button>
+        <button
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          onTouchStart={handlePresion}
+          onTouchEnd={handleTouchEnd}
+          style={{ height: "40px" }}
+        >
+          {isFullscreen ? "Pausar" : ""}
+        </button>
       </div>
     </div>
   );
