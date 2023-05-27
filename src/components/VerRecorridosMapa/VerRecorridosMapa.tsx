@@ -243,6 +243,7 @@ const VerRecorridosMapa = () => {
                 console.log(data);
                 if(recorridos[index]!=undefined){
                   console.log(recorridos[index].color)
+                  console.log(data);
                   let val=recorridos[index].color;
                   return (<GeoJSON data={data} style={{color:val+""}}/>)
                 }

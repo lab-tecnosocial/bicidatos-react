@@ -1,6 +1,6 @@
 import L from 'leaflet';
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Polyline, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Polyline, useMapEvents,GeoJSON } from 'react-leaflet';
 import polyline from 'google-polyline';
 
 function OpcionesRecorridos() {
@@ -100,6 +100,23 @@ function OpcionesRecorridos() {
       )   
     
 }
+let polilineas: any = {
+  type: "FeatureCollection",
+  features: [
+    {
+      type: "Feature",
+      properties: {
+        description:
+          "Ciclovía construida en 1996 que recorre alrededor de la Laguna Alalay, un puente, y sobre un canal de riego bordea el Cerro de San Pedro y sigue una cuadra al norte de la Avenida América terminando en el Parque Wiracocha",
+        name: "Ciclovía Norte-Este",
+      },
+      geometry: {
+        type: "MultiLineString",
+        coordinates: [],
+      },
+    },
+  ],
+};
   return (
     <div className="App">
       <h1>Selecciona un punto de partida y un punto de destino</h1>
@@ -113,13 +130,20 @@ function OpcionesRecorridos() {
         <MarkerEnd/>
         {/* {startPoint[0] && <MarkerStart />}
         {endPoint[0] && <MarkerEnd/>} */}
-        {/* {routes.map((route, index) => (
-          <Polyline
-            key={index}
-            positions={polyline.decode(route).getLatLngs()}
-            color="blue"
-          />
-        ))} */}
+        {routes.map((route, index) => {
+          // console.log(polyline.decode(route.overview_polyline.points))
+          // <Polyline
+          //   key={index}
+          //   positions={polyline.decode(route).getLatLngs()}
+          //   color="blue"
+          // />
+          polilineas.features[0].geometry.coordinates=[];
+          let coordenadas=polyline.decode(route.overview_polyline.points)
+          polilineas.features[0].geometry.coordinates.push(coordenadas);
+
+          
+          return (<GeoJSON data={polilineas} style={{color:"blue"}}/>)
+          })}
       </MapContainer>
     </div>
   );
