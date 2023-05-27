@@ -289,7 +289,7 @@ const Map = ({
             style={{ height: "100vh" }}
             zoomControl={true}
           >
-            <SearchField />
+            {/* <SearchField /> */}
             <LayersControl position="bottomleft" collapsed={false} >
               <LayersControl.BaseLayer checked name="Base">
 
