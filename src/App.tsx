@@ -7,7 +7,6 @@ import Preview from "./components/Preview/Preview";
 import Form from "./components/Form/Form";
 import Recorrido from "./components/Recorrido/Recorrido";
 import DatosRecorridos from "./components/DatosRecorridos/DatosRecorridos";
-import Login from "./components/Login/Login";
 
 import {
   Routes,
@@ -24,7 +23,6 @@ import PublicRouter from "./routers/PublicRouter";
 import MenuPrincipal from "./components/MenuPrincipal/MenuPrincipal";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
-import ComponentNotFound from "./components/404NotFound/ComponentNotFound";
 import Sidebar from './components/Sidebar/Sidebar';
 import VerRecorridosMapa from "./components/VerRecorridosMapa/VerRecorridosMapa";
 

@@ -32,28 +32,6 @@ const theme = createMuiTheme({
 });
 
 
-const SearchField = () => {
-
-  const provider = new OpenStreetMapProvider();
-
-  // @ts-ignore
-  const searchControl = new GeoSearchControl({
-    provider: provider,
-    notFoundMessage: 'Lo sentimos, no encontramos el lugar',
-    showMarker: false,
-    searchLabel: 'Buscar ciudad',
-    style: 'bar'
-  });
-
-  const map = useMap();
-  useEffect(() => {
-    map.addControl(searchControl);
-    return () => map.removeControl(searchControl);
-  }, []);
-
-  return null;
-};
-
 const departamentos: Departamentos = [
   {
     id: 1,
