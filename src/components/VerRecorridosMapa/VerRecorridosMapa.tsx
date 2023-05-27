@@ -26,12 +26,12 @@ import RecenterAutomatically from "../Recorrido/RecenterAutomatically";
 import { setSelectedPlace } from "../../store/actions/places";
 import { data } from "../../data";
 import { ContactSupportOutlined } from "@material-ui/icons";
-import DatosRecorridos from '../DatosRecorridos/DatosRecorridos';
+import DatosRecorridos from "../DatosRecorridos/DatosRecorridos";
 
 let estadoSumarTotal = false;
 let datos = [];
 let nuevo: any;
-let elementos=[]
+let elementos = [];
 let polilineas: any = {
   type: "FeatureCollection",
   features: [
@@ -77,12 +77,10 @@ const VerRecorridosMapa = () => {
   });
 
   let [posicionActual, setPosicionActual] = useState<LatLngExpression>([
-    -17.396,
-    -66.153,
+    -17.396, -66.153,
   ]);
 
   useEffect(() => {
-   
     inicializarPuntos();
     llamarRecorridos();
   }, []);
@@ -92,60 +90,60 @@ const VerRecorridosMapa = () => {
     const coleccion = await miColeccionPrincipal
       .where("UIDUsuario", "==", user.uid)
       .get();
-    console.log(
-      "Obteniendo historial de usuario-------------------------------------------------------------------------------------------------------------"
-    );
-    console.log(coleccion.docs[0].id);
-    let historial: any = await db
-      .collection("recorridos")
-      .doc(coleccion.docs[0].id)
-      .collection("historial")
-      .get();
-    console.log(historial.docs[0].data());
-    let aux=[];
-    for (let i = 0; i < historial.docs.length; i++) {
-      datosEncontradosRecorridos.push({
-                  ...historial.docs[i].data(),
-                  color: getRandomHexColor(),
-                });
-      console.log(
-        "RECORRIDO " +
-          i +
-          "-----------------------------------------------------------------------------------------------------------------------------------------"
-      );
-      let o={
-        type: "FeatureCollection",
-        features: [
-          {
-            type: "Feature",
-            properties: {
-              description:
-                "Ciclovía construida en 1996 que recorre alrededor de la Laguna Alalay, un puente, y sobre un canal de riego bordea el Cerro de San Pedro y sigue una cuadra al norte de la Avenida América terminando en el Parque Wiracocha",
-              name: "Ciclovía Norte-Este",
+    if (coleccion.docs.length > 0) {
+      let historial: any = await db
+        .collection("recorridos")
+        .doc(coleccion.docs[0].id)
+        .collection("historial")
+        .get();
+      console.log(historial.docs[0].data());
+      let aux = [];
+      for (let i = 0; i < historial.docs.length; i++) {
+        datosEncontradosRecorridos.push({
+          ...historial.docs[i].data(),
+          color: getRandomHexColor(),
+        });
+        console.log(
+          "RECORRIDO " +
+            i +
+            "-----------------------------------------------------------------------------------------------------------------------------------------"
+        );
+        let o = {
+          type: "FeatureCollection",
+          features: [
+            {
+              type: "Feature",
+              properties: {
+                description:
+                  "Ciclovía construida en 1996 que recorre alrededor de la Laguna Alalay, un puente, y sobre un canal de riego bordea el Cerro de San Pedro y sigue una cuadra al norte de la Avenida América terminando en el Parque Wiracocha",
+                name: "Ciclovía Norte-Este",
+              },
+              geometry: {
+                type: "MultiLineString",
+                coordinates: [],
+              },
             },
-            geometry: {
-              type: "MultiLineString",
-              coordinates: [
-              ],
-            },
-          },
-        ],
-      };
-      setRecorridos(datosEncontradosRecorridos);
-      console.log("ESTABLECIENDO RECORRIDOS---------------------------------------------------------------------------------------------------")
-      console.log(recorridos);
-      o.features[0].geometry.coordinates.push(JSON.parse(historial.docs[i].data().puntosRecorridos).data);
-      elementos.push(o);
-      aux.push(JSON.parse(historial.docs[i].data().puntosRecorridos).data);
+          ],
+        };
+        setRecorridos(datosEncontradosRecorridos);
+        console.log(
+          "ESTABLECIENDO RECORRIDOS---------------------------------------------------------------------------------------------------"
+        );
+        console.log(recorridos);
+        o.features[0].geometry.coordinates.push(
+          JSON.parse(historial.docs[i].data().puntosRecorridos).data
+        );
+        elementos.push(o);
+        aux.push(JSON.parse(historial.docs[i].data().puntosRecorridos).data);
+      }
+      console.log(aux);
+      polilineas.features[0].geometry.coordinates = aux;
+      console.log(polilineas);
 
+      const miSubColeccion = await miColeccionPrincipal
+        .where("UIDUsuario", "==", user.uid)
+        .get();
     }
-    console.log(aux)
-    polilineas.features[0].geometry.coordinates=aux;
-    console.log(polilineas);
-
-    const miSubColeccion = await miColeccionPrincipal
-      .where("UIDUsuario", "==", user.uid)
-      .get();
   }
   useEffect(() => {
     setRecorridos(recorridos);
@@ -236,19 +234,21 @@ const VerRecorridosMapa = () => {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
           <Marker position={posicionActual} />
-            
-            {
-              elementos.map((data, index) => {
-                console.log("ELEMENTOS "+index+" ----------------------------------------------------------------------------------------------")
-                console.log(data);
-                if(recorridos[index]!=undefined){
-                  console.log(recorridos[index].color)
-                  console.log(data);
-                  let val=recorridos[index].color;
-                  return (<GeoJSON data={data} style={{color:val+""}}/>)
-                }
-                })
+
+          {elementos.map((data, index) => {
+            console.log(
+              "ELEMENTOS " +
+                index +
+                " ----------------------------------------------------------------------------------------------"
+            );
+            console.log(data);
+            if (recorridos[index] != undefined) {
+              console.log(recorridos[index].color);
+              console.log(data);
+              let val = recorridos[index].color;
+              return <GeoJSON data={data} style={{ color: val + "" }} />;
             }
+          })}
 
           <RecenterAutomatically
             lat={posicionActual[0]}
