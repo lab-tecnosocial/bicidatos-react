@@ -43,7 +43,7 @@ export const FormDepartamento = ({ departamentos }: Props) => {
 
   return (
     <FormControl ref={ref} variant="filled" className="form-departamento">
-      <InputLabel htmlFor="filled-age-native-simple">Departamento</InputLabel>
+      <InputLabel htmlFor="filled-age-native-simple" style={{ width: '100%' }} >Departamento</InputLabel>
       <Select
         native
         value={selectedDepartamento ? selectedDepartamento.nombre : ''}

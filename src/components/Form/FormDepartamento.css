@@ -13,10 +13,47 @@
   margin-top: 0.5rem !important;
 }
 
+.MuiFormLabel-root {
+  text-align: center;
+}
+
+.MuiFormLabel-root {
+  position: relative;
+}
+
+.MuiFormLabel-root::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+label.MuiFormLabel-root {
+  text-align: center;
+}
+
 .form-departamento select {
   border-radius: 50px !important;
   border: 2px solid rgba(0, 0, 0, .2);
+}
 
+.MuiInputLabel-filled {
+  transform: translate(12px, 20px) scale(1);
+}
+
+.MuiInputLabel-filled.MuiInputLabel-shrink {
+  transform: translate(40px, 10px) scale(0.75) !important;
+}
+
+@media (max-width: 375px) { 
+  .MuiInputLabel-filled {
+    transform: translate(2px, 20px) scale(1) !important;
+  }
+
+  .MuiInputLabel-filled.MuiInputLabel-shrink {
+    transform: translate(30px, 10px) scale(0.75) !important;
+  }
 }
 
 .MuiFilledInput-root {
@@ -28,6 +65,10 @@
 .MuiFormLabel-root.Mui-focused {
   color: rgb(67, 69, 69) !important;
 
+}
+
+.MuiSelect-select {
+  text-align-last: center;
 }
 
 .MuiSelect-select:focus {
