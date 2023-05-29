@@ -139,7 +139,7 @@ const Map = ({
 
 
   const getCicloviasFromGithub = async () => {
-    const url = 'https://raw.githubusercontent.com/lab-tecnosocial/bicidatos/main/data2/ciclovias.geojson';
+    const url = 'https://raw.githubusercontent.com/fradevgb/bicidatos/main/data2/ciclovias.geojson';
     const cicloviasData = await fetch(url).then(response => response.json())
     setCiclovias(cicloviasData);
     return ciclovias;
