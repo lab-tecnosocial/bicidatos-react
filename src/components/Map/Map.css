@@ -80,6 +80,7 @@
   background-image: url("https://bicidatos.org/mapa/img/flotante-taller.svg");
   transition: opacity 0.5s ease-in-out;
 }
+
 .leaflet-control-layers-overlays label:nth-of-type(2):hover {
   opacity: 0.8;
 }
@@ -89,6 +90,7 @@
   background-image: url("https://bicidatos.org/mapa/img/flotante-seguridad.svg");
   transition: opacity 0.5s ease-in-out;
 }
+
 .leaflet-control-layers-overlays label:nth-of-type(3):hover {
   opacity: 0.8;
 }
@@ -98,6 +100,7 @@
   background-image: url("https://bicidatos.org/mapa/img/flotante-aforos.svg");
   transition: opacity 0.5s ease-in-out;
 }
+
 .leaflet-control-layers-overlays label:nth-of-type(4):hover {
   opacity: 0.8;
 }
@@ -107,6 +110,7 @@
   background-image: url("https://bicidatos.org/mapa/img/flotante-ruta.svg");
   transition: opacity 0.5s ease-in-out;
 }
+
 .leaflet-control-layers-overlays label:nth-of-type(5):hover {
   opacity: 0.8;
 }
@@ -154,4 +158,98 @@
 
 .leaflet-control-attribution {
   display: none !important;
+}
+
+div.leaflet-top,
+div.leaflet-left {
+  width: 100%;
+}
+
+div.leaflet-control-zoom {
+  top: 0;
+  right: 13px;
+  background: red;
+  position: absolute;
+}
+
+button.MuiButton-root span.MuiButton-startIcon {
+  display: block;
+}
+
+button.MuiButton-root span.MuiButton-startIcon svg {
+  display: none;
+}
+
+a.MuiButtonBase-root {
+  flex-grow: 0;
+  flex-basis: 0;
+}
+
+h6.MuiTypography-h6 {
+  font-size: 0;
+  margin-left: 80px;
+  background-image: url("http://localhost:3000/img/bicidatos_blanco_android.svg");
+  width: 86px;
+  height: 56px;
+  background-size: 82%;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 767px) {
+  span.MuiButton-label {
+    padding: 12px 8px 12px 12px;
+  }
+
+  h6.MuiTypography-h6 {
+    margin-left: 50px;
+  }
+
+  button.MuiButton-root {
+    border-radius: 50%;
+  }
+
+  span.MuiButton-startIcon {
+    margin: 0;
+  }
+
+  button.MuiButton-text {
+    padding: 0;
+  }
+
+  button.MuiButton-root {
+    min-width: 0;
+  }
+
+  button.MuiButton-root span.MuiButton-startIcon {
+    display: inline-block;
+  }
+
+  button.MuiButton-root span.MuiButton-label {
+    font-size: 0;
+  }
+
+  button.MuiButton-root span.MuiButton-startIcon svg {
+    display: block;
+  }
+}
+
+@media (max-width: 375px) { 
+  .leaflet-control-layers {
+    width: 64px;
+  }
+
+  .leaflet-control-layers-overlays {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .leaflet-control-layers-overlays label {
+    font-size: 0.7rem;
+  }
+  .leaflet-control-layers-overlays label span {
+    width: auto;
+  }
+  .leaflet-left .leaflet-control {
+    margin-left: 5px;
+  }
 }
