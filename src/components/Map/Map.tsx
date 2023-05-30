@@ -5,15 +5,25 @@ import { LinearProgress } from "@material-ui/core";
 import "./Map.css";
 // leaflet
 import { LatLngExpression } from "leaflet";
-import { MapContainer, useMapEvents, TileLayer, Marker, Tooltip, LayersControl, LayerGroup, GeoJSON } from "react-leaflet";
+import { MapContainer, useMapEvents, TileLayer, Marker, Tooltip, LayersControl, LayerGroup, GeoJSON, Polyline } from 'react-leaflet';
 import { iconoBiciparqueo, iconoServicio, iconoDenuncia, iconoAforo } from "./icons";
 // redux
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { setPlacePreviewVisibility, setSelectedPlace } from "../../store/actions";
 // firebase
 import db from "../../database/firebase";
 // aux components
 import AddMarker from "./AddMarker";
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import { useMap } from 'react-leaflet';
+import '../../../node_modules/leaflet-geosearch/dist/geosearch.css';
+
+import { firebase, googleAuthProvider } from "../../database/firebase";
+import { useNavigate } from "react-router-dom";
+import { guardarUsuario } from '../../aux/action';
+
+
+
 import { FormDepartamento } from "../Form/FormDepartamento";
 // aux data
 import { departamentos } from "./local-places";
@@ -35,7 +45,16 @@ const Map = ({
   const [ciclovias, setCiclovias] = useState({} as any);
  
   useEffect(() => {
+    auth.onAuthStateChanged(persona => {
+      if (persona) {
+        setUser(persona);
+      } else {
+        setUser(null);
+      }
+    });
+
     getCicloviasFromGithub();
+    console.log(ciclovias);
   }, [])
 
 
@@ -57,9 +76,7 @@ const Map = ({
           case "Aforos":
             getAforos2FromFirebase();
             break;
-          // case "Ciclovias":
-          //   getCicloviasFromGithub();
-          //   break;
+
         }
       }
     });
@@ -141,6 +158,7 @@ const Map = ({
   const getCicloviasFromGithub = async () => {
     const url = 'https://raw.githubusercontent.com/fradevgb/bicidatos/main/data2/ciclovias.geojson';
     const cicloviasData = await fetch(url).then(response => response.json())
+    console.log(cicloviasData);
     setCiclovias(cicloviasData);
     return ciclovias;
   }
@@ -162,9 +180,28 @@ const Map = ({
     setPlaceForPreview(place);
     togglePreview(true);
   };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  
+  const signInWithGoogle = (e) => {
+    e.preventDefault();
+    firebase
+      .auth()
+      .signInWithPopup(googleAuthProvider)
+      .then((value) => {
+        console.log(value);
+        console.log("DISPATCH LOGIN-------------------------------------------------------------------------------------------------------")
+        dispatch(guardarUsuario((value.user)));
 
+          navigate('/menu-principal');    
+      });
+  };
+
+
+  const signOut = async () => {
+    firebase.auth().signOut();
+  }
+ 
   return (
     <div className="map__container">
       {
@@ -254,7 +291,8 @@ const Map = ({
               </LayersControl.Overlay>
 
               <LayersControl.Overlay name="Ciclovías">
-                {Object.keys(ciclovias).length > 0 && <GeoJSON data={ciclovias} />}
+                {
+                Object.keys(ciclovias).length > 0 && <GeoJSON data={ciclovias} />}
               </LayersControl.Overlay>
 
             </LayersControl>

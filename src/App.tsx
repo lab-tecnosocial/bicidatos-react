@@ -1,51 +1,108 @@
+import React, { useState } from "react";
 import "./App.css";
 import Header from "./components/Header/Header";
 import Map from "./components/Map/Map";
 import Preview from "./components/Preview/Preview";
 import Form from "./components/Form/Form";
-import { auth, provider } from "./database/firebase";
-import { useEffect, useState } from "react";
+import Recorrido from "./components/Recorrido/Recorrido";
+import DatosRecorridos from "./components/DatosRecorridos/DatosRecorridos";
+
+import {
+  Routes,
+  BrowserRouter as Router,
+  Route,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
+import store from "./aux/store";
+import { Provider } from "react-redux";
+
+import AuthRouter from "./routers/AuthRouter";
+import PublicRouter from "./routers/PublicRouter";
+import MenuPrincipal from "./components/MenuPrincipal/MenuPrincipal";
+import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
+import Sidebar from './components/Sidebar/Sidebar';
+import VerRecorridosMapa from "./components/VerRecorridosMapa/VerRecorridosMapa";
+import OpcionesRecorridos from "./components/OpcionesRecorridos/OpcionesRecorridos";
 
 function App() {
-  const [user, setUser] = useState(null);
-  if (user) {
-    console.log(user);
-  } else {
-    console.log(null);
-  }
-  useEffect(() => {
-    auth.onAuthStateChanged(persona => {
-      if (persona) {
-        setUser(persona);
-      } else {
-        setUser(null);
-      }
-    });
-  }, [])
-
-  const signInWithGoogle = async () => {
-    try {
-      await auth.signInWithPopup(provider)
-    }
-    catch (error) {
-      console.log(error);
-    }
-  }
-
-  const signOut = async () => {
-    auth.signOut();
-  }
-
+  const [log, setLog] = useState(false);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+  const [verNav,setVerNav]=useState(true);
   return (
     <>
-        <Header user={user} signIn={signInWithGoogle} signOut={signOut}/>
-      <main>
-        <Map />
-        <Preview />
-        <Form />
-      </main>
+      
+        <Router>
+          
+          <nav style={{display:(verNav)?"block":"none"}}>
+            <Header isSidebarVisible={isSidebarVisible} setIsSidebarVisible={setIsSidebarVisible} log={log} setLog={setLog}/>
+          </nav>
+          
+          <main>
+          {isSidebarVisible && log?<Sidebar/>:<></>}
+          <Routes>
+            {/* <Route path="/" element={<Login />} />
+            <Route path="/mapa" element={<Recorrido />} />
+            <Route path="/datosPersonales" element={<DatosRecorridos />} /> */}
+            {/* <PublicRouter path="/auth" component={AuthRouter} log={log} /> */}
+            <Route path="/mapabicidatos" element={<Map/>} />
+            <Route
+              path="/recorrido"
+              element={
+                <ProtectedRoute redirectPath="/" isAllowed={log}>
+                  <Recorrido setVerNav={setVerNav} verNav={verNav} setIsSidebarVisible={setIsSidebarVisible}/>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/datos-recorridos"
+              element={
+                <ProtectedRoute redirectPath="/" isAllowed={log}>
+                  <DatosRecorridos />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/menu-principal"
+              element={
+                <ProtectedRoute redirectPath="/" isAllowed={log}>
+                  <MenuPrincipal />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/recorridos-mapa"
+              element={
+                <ProtectedRoute redirectPath="/" isAllowed={log}>
+                  <VerRecorridosMapa />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/opciones-recorridos"
+              element={
+                <ProtectedRoute redirectPath="/" isAllowed={log}>
+                  <OpcionesRecorridos />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route path="*" element={<Map />} />
+          </Routes>
+          </main>
+        </Router>
     </>
+
+
   );
 }
-
+const ProtectedRoute = ({ isAllowed, redirectPath = "/", children }) => {
+  console.log("PROTECTED ROUTE------------------------------------------------------------------------------------")
+  console.log(isAllowed);
+  if (!isAllowed) {
+    return <Navigate to={redirectPath} replace />;
+  }
+  return children ? children : <Outlet />;
+};
 export default App;

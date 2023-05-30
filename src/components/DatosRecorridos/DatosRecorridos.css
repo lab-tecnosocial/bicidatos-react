@@ -1,0 +1,81 @@
+
+main{
+    width: 100%;
+}
+#datos-recorridos-div{
+    font-size: 12px !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    padding-left: auto;
+    padding-right: auto;
+    padding-top: 20px;
+}
+#datos-recorridos-div>*{
+    margin-bottom: 2vh;
+}
+
+#datos-recorridos-div table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+
+  }
+  
+  #datos-recorridos-div  th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  #datos-recorridos-div  th {
+    background-color: #15c0ea;
+    color: white;
+  }
+  #datos-recorridos-div button,select{
+    width: auto;
+  }
+  #datos-recorridos-div button{
+    background-color: greenyellow;
+    border-radius: 5px;
+    height: 4vh;
+  }
+  #datos-recorridos-div button:hover{
+    background-color: rgba(172, 255, 47, 0.533);
+    border-radius: 5px;
+    height: 4vh;
+    border: 2px solid greenyellow;
+  }
+  #datos-recorridos-div select{
+    height: 4vh;
+    border: none;
+    border-bottom: 2px solid black !important;
+  }
+
+  #datos-recorridos-div .profile {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+#datos-recorridos-div img {
+	width: 200px;
+	height: 200px;
+	object-fit: cover;
+	border-radius: 50%;
+	margin-bottom: 20px;
+}
+
+#datos-recorridos-div h1 {
+	font-size: 36px;
+	margin-bottom: 10px;
+}
+
+#datos-recorridos-div p {
+	font-size: 24px;
+	margin-bottom: 5px;
+}

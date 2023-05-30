@@ -1,0 +1,60 @@
+.total{
+    width: 100vw;
+    min-height: 100vh;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center !important;
+}
+
+.map-view-total-distance{
+    margin-left: auto;
+    margin-right: auto;
+    height: 70vh;
+    width: 80vw;
+}
+button{
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px 10px;
+    border-radius: 10px;
+    color: white;
+}
+button:hover{
+    background-color: white !important;
+    color: black;
+}
+#boton-cambio-estado button:hover{
+    background-color: white;
+    border: rgba(255, 0, 0, 0.62) solid 1px !important;
+}
+div.imagen_registrando{
+    text-align: center;
+}
+div.imagen_registrando img{
+	width: auto;
+	height: 200px;
+	object-fit: cover;
+	border-radius: 10%;
+	margin-bottom: 20px;
+}
+#boton-cambio-estado{
+    width: 100%;
+    background-color: #15c0ea;
+    text-align: center;
+    flex-direction: column;
+}
+#boton-cambio-estado button{
+    background-color: rgba(255, 0, 0, 0.62);
+    border: none;
+    margin-top: 8px;
+
+}
+#boton-cambio-estado{
+    color: white;
+}
+#registrando-recorrido h1{
+    color: white;
+}
