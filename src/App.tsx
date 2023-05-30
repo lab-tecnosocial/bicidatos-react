@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import Header from "./components/Header/Header";
 import Map from "./components/Map/Map";
@@ -14,14 +14,8 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
-import store from "./aux/store";
-import { Provider } from "react-redux";
 
-import AuthRouter from "./routers/AuthRouter";
-import PublicRouter from "./routers/PublicRouter";
 import MenuPrincipal from "./components/MenuPrincipal/MenuPrincipal";
-import LoginScreen from "./screens/LoginScreen";
-import RegisterScreen from "./screens/RegisterScreen";
 import Sidebar from './components/Sidebar/Sidebar';
 import VerRecorridosMapa from "./components/VerRecorridosMapa/VerRecorridosMapa";
 import OpcionesRecorridos from "./components/OpcionesRecorridos/OpcionesRecorridos";
@@ -42,10 +36,6 @@ function App() {
           <main>
           {isSidebarVisible && log?<Sidebar/>:<></>}
           <Routes>
-            {/* <Route path="/" element={<Login />} />
-            <Route path="/mapa" element={<Recorrido />} />
-            <Route path="/datosPersonales" element={<DatosRecorridos />} /> */}
-            {/* <PublicRouter path="/auth" component={AuthRouter} log={log} /> */}
             <Route path="/mapabicidatos" element={<Map/>} />
             <Route
               path="/recorrido"

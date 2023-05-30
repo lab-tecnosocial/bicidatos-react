@@ -1,19 +1,17 @@
 import firebase from "firebase/app"
 import "firebase/firestore";
 import "firebase/storage";
-import "firebase/auth"; 
+import "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-  databaseURL: process.env.REACT_APP_DATABASE_URL,
-  projectId: process.env.REACT_APP_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
-  measurementId:  process.env.REACT_APP_MEASUREMENT_ID
+  apiKey: "AIzaSyClsDMcq034MPQ2K22jhV0j3X_fRLG2MeU",
+  authDomain: "bicidatos-desarrollo.firebaseapp.com",
+  projectId: "bicidatos-desarrollo",
+  storageBucket: "bicidatos-desarrollo.appspot.com",
+  messagingSenderId: "338289917895",
+  appId: "1:338289917895:web:03b4f3299e6580c691a3e2",
+  measurementId: "G-1KFMFSLYWJ",
 };
-
 
 firebase.initializeApp(firebaseConfig);
 const db=firebase.firestore();
@@ -28,6 +26,5 @@ export const googleAuthProvider=new firebase.auth.GoogleAuthProvider();
 export {firebase};
 
 export default db;
-
 
 

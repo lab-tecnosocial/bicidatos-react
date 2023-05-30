@@ -14,13 +14,10 @@ import { setPlacePreviewVisibility, setSelectedPlace } from "../../store/actions
 import db from "../../database/firebase";
 // aux components
 import AddMarker from "./AddMarker";
-import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
-import { useMap } from 'react-leaflet';
-import '../../../node_modules/leaflet-geosearch/dist/geosearch.css';
-
 import { firebase, googleAuthProvider } from "../../database/firebase";
 import { useNavigate } from "react-router-dom";
 import { guardarUsuario } from '../../aux/action';
+import { auth } from "../../database/firebase";
 
 
 
@@ -45,13 +42,6 @@ const Map = ({
   const [ciclovias, setCiclovias] = useState({} as any);
  
   useEffect(() => {
-    auth.onAuthStateChanged(persona => {
-      if (persona) {
-        setUser(persona);
-      } else {
-        setUser(null);
-      }
-    });
 
     getCicloviasFromGithub();
     console.log(ciclovias);

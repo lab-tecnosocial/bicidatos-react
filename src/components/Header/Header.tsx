@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import { guardarUsuario } from '../../aux/action';
 import { useNavigate } from 'react-router-dom';
 import {useState} from 'react';
+import { Container } from '@material-ui/core';
 
 
 export default function Header(props) {
@@ -44,15 +45,14 @@ const navigate= useNavigate();
     setLogeo(false);
     props.setLog(false);
   }
-  const classes = useStyles();
   const handleToggleSidebar = () => {
     props.setIsSidebarVisible(!props.isSidebarVisible);
   };
   return (
-    <div className={classes.root}>
+    <div>
       <AppBar position="static" elevation={0}>
-        <Container maxWidth="lg">
-          <Toolbar>
+        <Container maxWidth="xl">
+          <Toolbar style={{ justifyContent: 'space-between' }}>
             {!logeo?
             <IconButton href="https://bicidatos.org/" edge="start" color="inherit" aria-label="menu" style={{width:"auto"}}>
                <Home />
@@ -64,12 +64,12 @@ const navigate= useNavigate();
             </IconButton>
             </>}
            
-            <Typography variant="h6" className={classes.title} >
+            <Typography variant="h6" >
               BiciDatos
             </Typography>
             {
-            logeo ? <Button size="small" className="button-header" onClick={signOut} variant="outlined" style={{ fontSize: '0.7rem',width:"auto"}} >Cerrar sesión</Button> :
-              <Button size="small" className="button-header" onClick={signInWithGoogle} variant="outlined" style={{ fontSize: '0.7rem' }} >Iniciar sesión</Button>
+            logeo ? <Button  onClick={signOut}   startIcon={<AccountCircle />} color="inherit">Cerrar sesión</Button> :
+              <Button onClick={signInWithGoogle} startIcon={<AccountCircle />} color="inherit" >Iniciar sesión</Button>
             }
           </Toolbar>
         </Container>
