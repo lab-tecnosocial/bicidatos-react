@@ -3,7 +3,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import { AccountCircle, Home } from '@material-ui/icons';
+import { AccountCircle, ExitToApp, Home } from '@material-ui/icons';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import Sidebar from '../Sidebar/Sidebar';
@@ -14,6 +14,8 @@ import { guardarUsuario } from '../../aux/action';
 import { useNavigate } from 'react-router-dom';
 import {useState} from 'react';
 import { Container } from '@material-ui/core';
+import { ExitStatus } from 'typescript';
+
 
 
 export default function Header(props) {
@@ -68,7 +70,7 @@ const navigate= useNavigate();
               BiciDatos
             </Typography>
             {
-            logeo ? <Button  onClick={signOut}   startIcon={<AccountCircle />} color="inherit">Cerrar sesión</Button> :
+            logeo ? <Button  onClick={signOut}   startIcon={<ExitToApp />} color="inherit">Cerrar sesión</Button> :
               <Button onClick={signInWithGoogle} startIcon={<AccountCircle />} color="inherit" >Iniciar sesión</Button>
             }
           </Toolbar>
