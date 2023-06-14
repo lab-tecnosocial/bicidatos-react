@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { UserData } from "../../aux/DataAux";
+import { UserData } from "../../auxiliar/DataAux";
 import LineChartHistoricalDates from "../LineChartHistoricalDates/LineChartHistorialDates";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
@@ -12,7 +12,7 @@ import db from "../../database/firebase";
 
 const DatosRecorridos = () => {
 
-  const user = useSelector((state:any) => {
+  const user = useSelector((state: any) => {
     return state.userReducer.user;
   });;
   console.log("MOSTRANDO COUNTER-------------------------------------------------------------------------------------------------")
@@ -49,7 +49,7 @@ const DatosRecorridos = () => {
             setRecorridos(datosEncontradosRecorridos);
             calcularPromedioRecorridos()
             calcularPromedioTiempos()
-            
+
           });
         });
       });
@@ -57,7 +57,7 @@ const DatosRecorridos = () => {
     obtenerUsuarios();
   }, []);
   const calcularPromedioRecorridos = () => {
-    let sumaRecorrido=0;
+    let sumaRecorrido = 0;
     for (let i = 0; i < datosEncontradosRecorridos.length; i++) {
       sumaRecorrido += datosEncontradosRecorridos[i].distanciaKilometros;
     }
@@ -66,7 +66,7 @@ const DatosRecorridos = () => {
 
   };
   const calcularPromedioTiempos = () => {
-    let sumaRecorrido=0;
+    let sumaRecorrido = 0;
     for (let i = 0; i < datosEncontradosRecorridos.length; i++) {
       sumaRecorrido += datosEncontradosRecorridos[i].tiempoHoras;
     }
@@ -91,7 +91,7 @@ const DatosRecorridos = () => {
     console.log(UserData);
     setRegistros(UserData);
   });
-  
+
   const handleTimeRange = (e) => {
     console.log("time range changed ");
     console.log(e.target.value);
@@ -117,13 +117,13 @@ const DatosRecorridos = () => {
         break;
     }
   };
-  const convertirFormatoFecha= (data:any) => {
+  const convertirFormatoFecha = (data: any) => {
 
-    const date = data.fecha.toDate(); 
-    const day = date.getDate().toString().padStart(2, "0"); 
-    const month = (date.getMonth() + 1).toString().padStart(2, "0"); 
-    const year = date.getFullYear(); 
-    return `${year}-${month}-${day}`; 
+    const date = data.fecha.toDate();
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear();
+    return `${year}-${month}-${day}`;
 
   };
   const [userData, setUserData] = useState({
@@ -175,7 +175,7 @@ const DatosRecorridos = () => {
     // })
     establecerDatosEnGraficaEstadistica()
   }, [fechaInicial, fechaFinal]);
-  function establecerDatosEnGraficaEstadistica(){
+  function establecerDatosEnGraficaEstadistica() {
     setUserData({
       labels: recorridos.map((data) => {
         let fechas = [];

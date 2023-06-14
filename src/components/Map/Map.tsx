@@ -16,7 +16,7 @@ import db from "../../database/firebase";
 import AddMarker from "./AddMarker";
 import { firebase, googleAuthProvider } from "../../database/firebase";
 import { useNavigate } from "react-router-dom";
-import { guardarUsuario } from '../../aux/action';
+import { guardarUsuario } from '../../auxiliar/action';
 import { auth } from "../../database/firebase";
 
 
@@ -40,7 +40,7 @@ const Map = ({
   const [denuncias2, setDenuncias2] = useState([] as any);
   const [loading, setLoading] = useState(false);
   const [ciclovias, setCiclovias] = useState({} as any);
- 
+
   useEffect(() => {
 
     getCicloviasFromGithub();
@@ -183,7 +183,7 @@ const Map = ({
         console.log("DISPATCH LOGIN-------------------------------------------------------------------------------------------------------")
         dispatch(guardarUsuario((value.user)));
 
-          navigate('/menu-principal');    
+        navigate('/menu-principal');
       });
   };
 
@@ -191,13 +191,13 @@ const Map = ({
   const signOut = async () => {
     firebase.auth().signOut();
   }
- 
+
   return (
     <div className="map__container">
       {
         <div>
-          
-            {loading ? <LinearProgress style={{ height: '0.5em' }} /> : null}
+
+          {loading ? <LinearProgress style={{ height: '0.5em' }} /> : null}
           <MapContainer
             center={defaultPosition}
             zoom={6}
@@ -282,7 +282,7 @@ const Map = ({
 
               <LayersControl.Overlay name="Ciclovías">
                 {
-                Object.keys(ciclovias).length > 0 && <GeoJSON data={ciclovias} />}
+                  Object.keys(ciclovias).length > 0 && <GeoJSON data={ciclovias} />}
               </LayersControl.Overlay>
 
             </LayersControl>
