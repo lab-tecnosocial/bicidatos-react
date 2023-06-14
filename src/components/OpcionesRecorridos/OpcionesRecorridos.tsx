@@ -137,11 +137,12 @@ let polilineas: any = {
           //   positions={polyline.decode(route).getLatLngs()}
           //   color="blue"
           // />
+
           polilineas.features[0].geometry.coordinates=[];
           let coordenadas=polyline.decode(route.overview_polyline.points)
           polilineas.features[0].geometry.coordinates.push(coordenadas);
 
-          
+          console.log(polilineas);
           return (<GeoJSON data={polilineas} style={{color:"blue"}}/>)
           })}
       </MapContainer>
