@@ -9,18 +9,23 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Sidebar from '../Sidebar/Sidebar';
 import firebase from 'firebase';
 import { googleAuthProvider } from '../../database/firebase';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { guardarUsuario } from '../../auxiliar/action';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container } from '@material-ui/core';
 import { ExitStatus } from 'typescript';
 
 
 
 export default function Header(props) {
+  const user = useSelector((state: any) => {
+    console.log(user);
+    return state.userReducer.user;
+  });
   const dispatch = useDispatch();
   let [logeo, setLogeo] = useState(false);
+  const [showSessionMessage, setShowSessionMessage] = useState(false)
   const navigate = useNavigate();
   const signInWithGoogle = (e) => {
     e.preventDefault();
@@ -31,6 +36,7 @@ export default function Header(props) {
         console.log(value);
         console.log("DISPATCH LOGIN-------------------------------------------------------------------------------------------------------")
         setLogeo(true);
+        setShowSessionMessage(true);
         props.setLog(true);
         dispatch(guardarUsuario((value.user)));
         navigate('/menu-principal');
@@ -50,6 +56,21 @@ export default function Header(props) {
   const handleToggleSidebar = () => {
     props.setIsSidebarVisible(!props.isSidebarVisible);
   };
+
+  useEffect(() => {
+    console.log('timer');
+    let timer: any;
+    if (showSessionMessage) {
+      timer = setTimeout(() => {
+        setShowSessionMessage(false);
+      }, 5000);
+    }
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [showSessionMessage]);
+
   return (
     <div>
       <AppBar position="static" elevation={0}>
@@ -70,12 +91,28 @@ export default function Header(props) {
               BiciDatos
             </Typography>
             {
-              logeo ? <Button onClick={signOut} startIcon={<ExitToApp />} color="inherit">Cerrar sesión</Button> :
-                <Button onClick={signInWithGoogle} startIcon={<AccountCircle />} color="inherit" >Iniciar sesión</Button>
+              logeo ? (
+                <>
+                  <Button onClick={signOut} startIcon={<ExitToApp />} color="inherit">
+                    Cerrar sesión
+                  </Button>
+                </>
+              ) : (
+                <Button onClick={signInWithGoogle} startIcon={<AccountCircle />} color="inherit">
+                  Iniciar sesión
+                </Button>
+              )
             }
           </Toolbar>
         </Container>
       </AppBar>
+      {showSessionMessage && (
+        <div style={{ backgroundColor: "#A0C49D", color:"#fff", padding: "10px", textAlign: "center" }}>
+          <Typography variant="subtitle1" color="inherit">
+            Sesión iniciada correctamente. ¡Bienvenido/a, {user.displayName}!
+          </Typography>
+        </div>
+      )}
     </div>
   );
 
