@@ -1,0 +1,91 @@
+.title {
+  color: #fff;
+  text-align: center;
+}
+
+.bg-user {
+  /* background-image: url("https://images.pexels.com/photos/990113/pexels-photo-990113.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"); */
+  /* background-image: url("https://images.pexels.com/photos/417059/pexels-photo-417059.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"); */
+  background-image: url("https://images.pexels.com/photos/10924189/pexels-photo-10924189.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top left;
+  width: 100%;
+}
+
+form {
+  width: 56.25rem;
+  margin: 0 auto;
+}
+
+@media (max-width: 850px) { 
+  .form-group {
+    width: 800px;
+  }
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+label, input {
+  display: block;
+}
+
+label {
+  color: #fff;
+  font-weight: 700;
+  /* text-transform: uppercase; */
+}
+
+.form-input {
+  width: 25rem;
+  height: 2.125rem;
+  border-radius: 0.125rem;
+  border-color: #eaeaea;
+  background-color: #ddd;
+}
+
+.form-select {
+  width: 25.5rem;
+  height: 2.5rem;
+  border-radius: 0.125rem;
+  border-color: #eaeaea;
+  background-color: #ddd;
+}
+
+.form-input:focus {
+  outline: none;
+  background-color: #fff;
+}
+
+.form-span {
+  color: red;
+  font-weight: bold;
+}
+
+.form-tipo {
+  display: block;
+}
+
+.form-btn {
+  display: block;
+  padding: 0.625rem 1.75rem;
+  background: #15c0ea;
+  border-color: #15c0ea;
+  cursor: pointer;
+  border-radius: 0.125rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-btn:focus {
+  outline: none;
+}
+
+.form-btn:hover {
+  background-color: #0e95b7;
+  border-color: #0e95b7;
+}
