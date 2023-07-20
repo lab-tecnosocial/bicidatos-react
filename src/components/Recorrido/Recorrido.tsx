@@ -13,6 +13,10 @@ import Cronometro from "../Cronometro/Cronometro";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import NoSleep from "nosleep.js";
+import IconButton from '@material-ui/core/IconButton';
+import SaveIcon from "@material-ui/icons/Save";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import PauseIcon from "@material-ui/icons/Pause";
 
 let estadoSumarTotal = false;
 let datos = [];
@@ -56,7 +60,7 @@ const Recorrido = (props) => {
         guardarPuntos();
         recorrido();
       },
-      (error) => {},
+      (error) => { },
       { enableHighAccuracy: true }
     );
   }
@@ -92,12 +96,12 @@ const Recorrido = (props) => {
 
           console.log(
             "calcularDistancia" +
-              calcularDistanciaDosPuntos(
-                latitud_2,
-                longitud_2,
-                latitud,
-                longitud
-              )
+            calcularDistanciaDosPuntos(
+              latitud_2,
+              longitud_2,
+              latitud,
+              longitud
+            )
           );
           if (
             calcularDistanciaDosPuntos(
@@ -123,7 +127,7 @@ const Recorrido = (props) => {
       longitud_2 = position.coords.longitude;
       console.log(
         "calcularDistancia" +
-          calcularDistanciaDosPuntos(latitud_2, longitud_2, latitud, longitud)
+        calcularDistanciaDosPuntos(latitud_2, longitud_2, latitud, longitud)
       );
 
       if (
@@ -161,7 +165,7 @@ const Recorrido = (props) => {
         // let longitud2=punto2[1]
         // setPunto1([latitud2, longitud2]);
       },
-      (error) => {},
+      (error) => { },
       { enableHighAccuracy: true }
     );
     setTimeout(recorrido, 4000);
@@ -206,9 +210,9 @@ const Recorrido = (props) => {
     var a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(mathp.toRadians(latitud1)) *
-        Math.cos(mathp.toRadians(latitud2)) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
+      Math.cos(mathp.toRadians(latitud2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = R * c;
     return d;
@@ -236,6 +240,38 @@ const Recorrido = (props) => {
     header: {
       backgroundColor: "#15C0EA",
     },
+    button: {
+      // width: "200px",
+      backgroundColor: "green",
+      color: "white",
+      padding: "5px 10px",
+      marginRight: "10px",
+      "&:hover": {
+        backgroundColor: "darkgreen",
+      },
+    },
+    buttonRed: {
+      backgroundColor: "red",
+      "&:hover": {
+        backgroundColor: "darkred",
+      }
+    },
+    iconButton: {
+      backgroundColor: "white",
+      borderRadius: "50%",
+      marginRight:"10px",
+      "&:hover": {
+        backgroundColor: "#e0e0e0",
+      },
+    },
+    saveIcon: {
+      color: "#333333",
+      fontSize: "30px",
+      "&:hover": {
+        color: "#999999",
+      },
+    },
+
   }));
   const classes = useStyles();
   const handleSumarTotal = () => {
@@ -263,7 +299,7 @@ const Recorrido = (props) => {
       .then((querySnapshot) => {
         console.log("Insertando------------------------------------------------------------------------------------------------------------------------")
         console.log(querySnapshot.docs);
-        if(querySnapshot.docs.length!=0){
+        if (querySnapshot.docs.length != 0) {
           querySnapshot.forEach((doc) => {
             console.log("Insertando documento de recorrido con el id------------------------------------------------------------------------------------------------------------------------")
             console.log(doc.id);
@@ -272,7 +308,7 @@ const Recorrido = (props) => {
           navigate("/datos-recorridos");
 
         }
-        else{
+        else {
           console.log("Insertando nuevo doc recorrido--------------------------------------------------------------------------------------------------------------")
           db.collection("recorridos").add({
             UIDUsuario: user.uid,
@@ -290,7 +326,7 @@ const Recorrido = (props) => {
         }
       })
       .catch((error) => {
-       
+
       });
 
     // document
@@ -340,7 +376,7 @@ const Recorrido = (props) => {
   const toggleFullscreen = () => {
     console.log(
       "FULL SCREEN INITIAL STATE--------------------------------------------------------" +
-        isFullscreen
+      isFullscreen
     );
     setIsFullscreen(!isFullscreen);
 
@@ -353,7 +389,7 @@ const Recorrido = (props) => {
     }
     console.log(
       "FULL SCREEN STATE--------------------------------------------------------" +
-        isFullscreen
+      isFullscreen
     );
   };
 
@@ -392,16 +428,16 @@ const Recorrido = (props) => {
 
   const touchEvents = isTouchDisabled
     ? {
-        onTouchStart: handleTouchStart,
-        onTouchMove: handleTouchStart,
-        onTouchEnd: handleTouchStart,
-      }
+      onTouchStart: handleTouchStart,
+      onTouchMove: handleTouchStart,
+      onTouchEnd: handleTouchStart,
+    }
     : {};
 
   const touchDisabledStyle = isTouchDisabled
     ? {
-        pointerEvents: "none",
-      }
+      pointerEvents: "none",
+    }
     : {};
   //----------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -469,7 +505,7 @@ const Recorrido = (props) => {
     >
       <div
         style={{
-          width: "100vw",
+          width: "100%",
           display: isPaginaNormal ? "flex" : "none",
           minHeight: "100vh",
           textAlign: "center",
@@ -478,28 +514,6 @@ const Recorrido = (props) => {
           background: "white",
         }}
       >
-        <h1>Controlador de distancia</h1>
-        <p>Distancia en metros = {distanciaRecorrida.toFixed(2)}</p>
-        <button
-          onClick={handleState}
-          style={{ backgroundColor: sumarTotal ? "red" : "green" }}
-        >
-          {sumarTotal ? "Pausar" : "Encender"}
-        </button>
-        {/* <button onClick={handleReset}>Reset</button> */}
-        <button
-          id="guardar_distancia"
-          onClick={handleGuardarInformacion}
-          style={{ backgroundColor: "#15C0EA" }}
-        >
-          Guardar distancia recorrida
-        </button>
-        <Cronometro
-          time={time}
-          setTime={setTime}
-          isRunning={isRunning}
-          setIsRunning={setIsRunning}
-        />
         <MapContainer
           center={posicionActual}
           zoom={16}
@@ -516,6 +530,36 @@ const Recorrido = (props) => {
             lng={posicionActual[1]}
           />
         </MapContainer>
+
+        <div className="data-container">
+          <p>{distanciaRecorrida.toFixed(2)} metros</p>
+          <div className="btn-container">
+            <IconButton
+              className={classes.iconButton}
+              // variant="contained"
+              onClick={handleState}
+              aria-label={sumarTotal ? "Pausar" : "Encender"}
+            >
+              {sumarTotal ? <PauseIcon style={{ color: "gray", fontSize: "28px" }} /> : <PlayArrowIcon style={{ color: "#32bea6", fontSize: "28px" }} />}
+            </IconButton>
+
+            <IconButton
+              // style={{ backgroundColor: "white", borderRadius: "50%" }}
+              color="default"
+              aria-label="Save"
+              onClick={handleGuardarInformacion}
+              className={classes.iconButton}
+            >
+              <SaveIcon style={{ color: "#333333", fontSize:"30px" }} />
+            </IconButton>
+          </div>
+          <Cronometro
+            time={time}
+            setTime={setTime}
+            isRunning={isRunning}
+            setIsRunning={setIsRunning}
+          />
+        </div>
       </div>
 
       <div
