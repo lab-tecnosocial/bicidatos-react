@@ -19,10 +19,12 @@ import MenuPrincipal from "./components/MenuPrincipal/MenuPrincipal";
 import Sidebar from './components/Sidebar/Sidebar';
 import VerRecorridosMapa from "./components/VerRecorridosMapa/VerRecorridosMapa";
 import OpcionesRecorridos from "./components/OpcionesRecorridos/OpcionesRecorridos";
+import { FormBici } from "./components/Form/FormBici";
+import { FormUser } from "./components/Form/FormUser";
 
 function App() {
   const [log, setLog] = useState(false);
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
   const [verNav,setVerNav]=useState(true);
   return (
     <>
@@ -37,6 +39,22 @@ function App() {
           {isSidebarVisible && log?<Sidebar/>:<></>}
           <Routes>
             <Route path="/mapabicidatos" element={<Map/>} />
+            <Route 
+              path="/registro-user"
+              element={
+                <ProtectedRoute redirectPath="/" isAllowed={log}>
+                  <FormUser/>
+                </ProtectedRoute>
+                }
+            />
+            <Route
+              path="/registro-bici"
+              element={
+                <ProtectedRoute redirectPath="/" isAllowed={log}>
+                  <FormBici />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/recorrido"
               element={
