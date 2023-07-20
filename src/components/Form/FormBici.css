@@ -1,0 +1,84 @@
+.title {
+  color: #fff;
+  text-align: center;
+}
+
+.bg-bici {
+  /* background-image: url("https://images.pexels.com/photos/37836/silhouette-fitness-bless-you-bike-37836.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"); */
+  background-image: url("https://images.unsplash.com/photo-1485965120184-e220f721d03e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top left;
+  width: 100%;
+}
+
+form {
+  width: 56.25rem;
+  margin: 0 auto;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+label, input {
+  display: block;
+}
+
+label {
+  color: #fff;
+  font-weight: 700;
+}
+
+.form-input {
+  width: 25rem;
+  height: 2.125rem;
+  border-radius: 0.125rem;
+  border-color: #eaeaea;
+  background-color: #ddd;
+}
+
+.form-select {
+  width: 25.5rem;
+  height: 2.5rem;
+  border-radius: 0.125rem;
+  border-color: #eaeaea;
+  background-color: #ddd;
+}
+
+.form-input:focus {
+  outline: none;
+  background-color: #fff;
+}
+
+.form-span {
+  color: red;
+  font-weight: bold;
+  display: block;
+}
+
+.form-tipo {
+  display: block;
+}
+
+.form-btn {
+  display: block;
+  padding: 0.625rem 1.75rem;
+  background: #15c0ea;
+  border-color: #15c0ea;
+  cursor: pointer;
+  border-radius: 0.125rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-btn:focus {
+  outline: none;
+}
+
+.form-btn:hover {
+  background-color: #0e95b7;
+  border-color: #0e95b7;
+}
