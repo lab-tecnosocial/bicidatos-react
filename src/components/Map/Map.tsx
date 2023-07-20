@@ -24,6 +24,7 @@ import { auth } from "../../database/firebase";
 import { FormDepartamento } from "../Form/FormDepartamento";
 // aux data
 import { departamentos } from "./local-places";
+import Toaster from "../Toaster";
 
 
 const Map = ({
@@ -40,6 +41,16 @@ const Map = ({
   const [denuncias2, setDenuncias2] = useState([] as any);
   const [loading, setLoading] = useState(false);
   const [ciclovias, setCiclovias] = useState({} as any);
+  // const [toastOpen, setToastOpen] = useState(true);
+  const [toastMessage, setToastMessage] = useState('');
+
+  // const handleToastClose = () => {
+  //   setToastOpen(false);
+  // };
+
+  const handleToastClose = () => {
+    setToastMessage('');
+  };
 
   useEffect(() => {
 
@@ -73,12 +84,13 @@ const Map = ({
     return null;
   }
 
-
   const getBiciparqueos2FromFirebase = async () => {
     const biciparqueosRef = db.collection('biciparqueos2');
+    console.log(biciparqueosRef);
     setLoading(true);
     const snapshot = await biciparqueosRef.get();
     if (snapshot.empty) {
+      setToastMessage('No se encontraron biciparqueos.');
       console.log('No se encontraron biciparqueos.');
       setLoading(false);
       return;
@@ -97,6 +109,7 @@ const Map = ({
     const snapshot = await serviciosRef.get();
     if (snapshot.empty) {
       console.log('No se encontraron servicios.');
+      setToastMessage('No se encontraron servicios.');
       setLoading(false);
       return;
     }
@@ -114,6 +127,7 @@ const Map = ({
     const snapshot = await aforosRef.get();
     if (snapshot.empty) {
       console.log('No se encontraron aforos.');
+      setToastMessage('No se encontraron aforos.');
       setLoading(false);
       return;
     }
@@ -132,6 +146,7 @@ const Map = ({
     const snapshot = await denunciasRef.get();
     if (snapshot.empty) {
       console.log('No se encontraron denuncias.');
+      setToastMessage('No se encontraron denuncias.');
       setLoading(false);
       return;
     }
@@ -289,6 +304,12 @@ const Map = ({
             <AddMarker />
             <MapEvents />
           </MapContainer>
+          <Toaster
+            open={Boolean(toastMessage)}
+            onClose={handleToastClose}
+            message={toastMessage}
+            type="error"
+          />
         </div>
 
       }
