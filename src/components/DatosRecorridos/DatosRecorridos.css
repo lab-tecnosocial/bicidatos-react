@@ -1,81 +1,139 @@
+main {
+  width: 100%;
+}
 
-main{
-    width: 100%;
+#datos-recorridos-div {
+  font-size: 12px !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  padding-left: auto;
+  padding-right: auto;
+  padding-top: 20px;
 }
-#datos-recorridos-div{
-    font-size: 12px !important;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-    padding-left: auto;
-    padding-right: auto;
-    padding-top: 20px;
-}
-#datos-recorridos-div>*{
-    margin-bottom: 2vh;
+
+#datos-recorridos-div>* {
+  margin-bottom: 2vh;
 }
 
 #datos-recorridos-div table {
-    border-collapse: collapse;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
 
-  }
-  
-  #datos-recorridos-div  th, td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  #datos-recorridos-div  th {
-    background-color: #15c0ea;
-    color: white;
-  }
-  #datos-recorridos-div button,select{
-    width: auto;
-  }
-  #datos-recorridos-div button{
-    background-color: greenyellow;
-    border-radius: 5px;
-    height: 4vh;
-  }
-  #datos-recorridos-div button:hover{
-    background-color: rgba(172, 255, 47, 0.533);
-    border-radius: 5px;
-    height: 4vh;
-    border: 2px solid greenyellow;
-  }
-  #datos-recorridos-div select{
-    height: 4vh;
-    border: none;
-    border-bottom: 2px solid black !important;
-  }
+#datos-recorridos-div th,
+td {
+  border: 1px solid rgb(154, 153, 153);
+  padding: 8px;
+  text-align: left;
+}
 
-  #datos-recorridos-div .profile {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
+#datos-recorridos-div th {
+  /* border: 1px solid rgb(154, 153, 153); */
+  background-color: #15c0ea;
+  color: white;
+}
+
+#datos-recorridos-div button,
+select {
+  width: auto;
+}
+
+#datos-recorridos-div button {
+  background-color: greenyellow;
+  border-radius: 5px;
+  height: 4vh;
+}
+
+#datos-recorridos-div button:hover {
+  background-color: rgba(172, 255, 47, 0.533);
+  border-radius: 5px;
+  height: 4vh;
+  border: 2px solid greenyellow;
+}
+
+#datos-recorridos-div select {
+  height: 4vh;
+  border: none;
+  /* border-bottom: 2px solid black !important; */
+  border-bottom: 2px solid rgb(154, 153, 153) !important;
+}
+
+#datos-recorridos-div .profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
 }
 
 #datos-recorridos-div img {
-	width: 200px;
-	height: 200px;
-	object-fit: cover;
-	border-radius: 50%;
-	margin-bottom: 20px;
+  /* width: 200px; */
+  /* height: 200px; */
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  /* border: 2px solid #ffcc00; */
+  /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* #datos-recorridos-div img:hover {
+  transform: scale(1.1);
+} */
+
 #datos-recorridos-div h1 {
-	font-size: 36px;
-	margin-bottom: 10px;
+  font-size: 36px;
+  margin-bottom: 10px;
 }
 
 #datos-recorridos-div p {
-	font-size: 24px;
-	margin-bottom: 5px;
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.statistical-data {
+  display: flex;
+  width: 52%;
+  margin: 0 auto;
+  justify-content: space-evenly;
+}
+
+.statistical-tour {
+  background-color: #dddee9;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.statistical-value {
+  font-size: 25.6px;
+  font-family: "Neue Plak UA Condensed", Helvetica, Arial, -apple-system, sans-serif;
+  font-weight: 800;
+}
+
+.statiscal-name {
+  color: #494949;
+  font-size: 10px;
+  font-family: "Neue Plak UA", Helvetica, Arial, -apple-system, sans-serif;
+  font-weight: 600;
+  line-height: 1.1428571428571428rem;
+  text-transform: capitalize;
+}
+
+.profile-card {
+  display: flex;
+  gap: 16px;
+  margin-top: 25px;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-bottom: 30px;
+  width: 80%;
+  margin: 0 auto;
 }

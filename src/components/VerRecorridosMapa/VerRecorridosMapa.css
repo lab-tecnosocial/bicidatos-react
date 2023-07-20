@@ -1,7 +1,11 @@
 #principal{
     width: 100%;
     text-align: center;
-    padding: 4vw;
+    /* padding: 4vw; */
+    /* padding: 10px; */
+}
+#principal div{
+  margin-top: 30px;
 }
 table {
     border-collapse: collapse;

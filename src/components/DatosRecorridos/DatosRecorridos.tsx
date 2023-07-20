@@ -7,11 +7,22 @@ import { DatePicker } from "@material-ui/pickers";
 import "./DatosRecorridos.css";
 import { useSelector } from "react-redux";
 import db from "../../database/firebase";
+import { makeStyles } from '@material-ui/core/styles';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
-
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    marginBottom: "30px",
+  },
+}));
 
 const DatosRecorridos = () => {
 
+  const classes = useStyles();
   const user = useSelector((state: any) => {
     return state.userReducer.user;
   });;
@@ -228,37 +239,70 @@ const DatosRecorridos = () => {
   return (
     <div id="datos-recorridos-div">
       <div className="profile">
-        <img
-          src="profile-picture.jpg"
-          alt="Foto de perfil"
-          // srcSet="https://thumbs.dreamstime.com/z/s%C3%ADmbolo-de-perfil-masculino-inteligente-retrato-estilo-caricatura-m%C3%ADnimo-166146967.jpg"
-          srcSet={user.photoURL}
-        />
+        <div className="profile-card">
+          <img
+            src="profile-picture.jpg"
+            alt="Foto de perfil"
+            // srcSet="https://thumbs.dreamstime.com/z/s%C3%ADmbolo-de-perfil-masculino-inteligente-retrato-estilo-caricatura-m%C3%ADnimo-166146967.jpg"
+            srcSet={user.photoURL}
+          />
+          <div className="statistical-tour">
+            <div className="statistical-value">
+              00.00
+            </div>
+            <div className="statiscal-name">
+              <span>Velocidad Promedio</span>
+              <span>(km/hr)</span>
+            </div>
+          </div>
+        </div>
 
-        <table>
-          <tr>
-            <th>Nombre:</th>
-            <td>{user.displayName}</td>
-          </tr>
-          {/* <tr>
-            <th>Edad:</th>
-            <td>25</td>
-          </tr> */}
-          <tr>
-            <th>Correo electrónico:</th>
-            <td>{user.email}</td>
-          </tr>
-          <tr>
-            <th>Promedio recorridos:</th>
-            <td>{promedioRecorridos.toFixed(2)} km</td>
-          </tr>
-          <tr>
-            <th>Promedio tiempos</th>
-            <td>{promedioTiempos.toFixed(2)} hrs</td>
-          </tr>
-        </table>
+        {/* <select name="choice" onChange={handleTimeRange}>
+          <option value="week">Ultima semana</option>
+          <option value="month" selected>
+            Ultimo mes
+          </option>
+          <option value="personal">Rango personal</option>
+        </select> */}
+
+        <FormControl className={classes.formControl}>
+          <Select
+            name="choice"
+            onChange={handleTimeRange}
+            defaultValue="month" // Agrega el valor predeterminado deseado
+          >
+            <MenuItem value="week">Ultima semana</MenuItem>
+            <MenuItem value="month">Ultimo mes</MenuItem>
+            <MenuItem value="personal">Rango personal</MenuItem>
+          </Select>
+        </FormControl>
+
+        <div className="statistical-data">
+          <div className="statistical-tour">
+            <div className="statistical-value">
+              <span>{promedioRecorridos.toFixed(2)}</span>
+            </div>
+            <div className="statiscal-name">
+              <span>Promedio recorridos</span>
+              <span>(km)</span>
+            </div>
+          </div>
+          <div className="statistical-tour">
+            <div className="statistical-value">
+              <span>{promedioTiempos.toFixed(2)}</span>
+            </div>
+            <div className="statiscal-name">
+              <span>Promedios tiempos</span>
+              <span>(Hrs)</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <table>
+
+      <div>
+
+      </div>
+      {/* <table>
         <thead>
           <tr>
             <th>Fecha</th>
@@ -283,15 +327,56 @@ const DatosRecorridos = () => {
             );
           })}
         </tbody>
-      </table>
+      </table> */}
+      {/* <div className="statistical-data">
+        {recorridos.map((data, index) => {
+          console.log(
+            "COLOCANDO DATA-------------------------------------------------------------------------------------"
+          );
+          console.log(new Date(data.fecha.toDate()));
+          const formattedDate = convertirFormatoFecha(data);
+          console.log(data);
+
+          return (
+            <div key={index} className="statistical-tour">
+              <div className="statistical-value">
+                <span>{formattedDate}</span>
+              </div>
+              <div className="statiscal-name">
+                <span>{data.distanciaKilometros.toFixed(2)} km</span>
+                <span>{data.tiempoHoras.toFixed(2)} hrs</span>
+              </div>
+            </div>
+          );
+        })}
+        <div className="statistical-tour">
+          <div className="statistical-value">
+            <span>{promedioRecorridos.toFixed(2)}</span>
+          </div>
+          <div className="statiscal-name">
+            <span>Promedio recorridos</span>
+            <span>(km)</span>
+          </div>
+        </div>
+        <div className="statistical-tour">
+          <div className="statistical-value">
+            <span>{promedioTiempos.toFixed(2)}</span>
+          </div>
+          <div className="statiscal-name">
+            <span>Promedios tiempos</span>
+            <span>(Hrs)</span>
+          </div>
+        </div>
+      </div> */}
+
       {/* <button onClick={agregarRegistro}>Agregar registro</button> */}
-      <select name="choice" onChange={handleTimeRange}>
+      {/* <select name="choice" onChange={handleTimeRange}>
         <option value="week">Ultima semana</option>
         <option value="month" selected>
           Ultimo mes
         </option>
         <option value="personal">Rango personal</option>
-      </select>
+      </select> */}
       <div>
         {activarRangoPersonalizado ? (
           <div>
@@ -321,7 +406,7 @@ const DatosRecorridos = () => {
         ) : (
           <div></div>
         )}
-        <div>
+        <div style={{ width: '500px' }}>
           <LineChartHistoricalDates chartData={userData} />
         </div>
       </div>

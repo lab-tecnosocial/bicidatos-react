@@ -38,7 +38,7 @@
 }
 
 .leaflet-bottom {
-  bottom: 40px;
+  bottom: 14%;
 }
 
 .leaflet-control-layers {
@@ -63,12 +63,15 @@
   background-repeat: no-repeat;
   background-position: 50% 15%;
   height: 60px;
+  text-align: center;
+  width: 100%;
 }
 
 .leaflet-control-layers-overlays label:nth-of-type(1) {
   color: #006dff;
   background-image: url("https://bicidatos.org/mapa/img/flotante-parqueo.svg");
   transition: opacity 0.5s ease-in-out;
+  background-position: 50% 20%;
 }
 
 .leaflet-control-layers-overlays label:nth-of-type(1):hover {
@@ -79,6 +82,7 @@
   color: #44740e;
   background-image: url("https://bicidatos.org/mapa/img/flotante-taller.svg");
   transition: opacity 0.5s ease-in-out;
+  background-position: 50% 20%;
 }
 
 .leaflet-control-layers-overlays label:nth-of-type(2):hover {
@@ -89,6 +93,7 @@
   color: #e20000;
   background-image: url("https://bicidatos.org/mapa/img/flotante-seguridad.svg");
   transition: opacity 0.5s ease-in-out;
+  background-position: 50% 20%;
 }
 
 .leaflet-control-layers-overlays label:nth-of-type(3):hover {
@@ -99,6 +104,7 @@
   color: #ffbb22;
   background-image: url("https://bicidatos.org/mapa/img/flotante-aforos.svg");
   transition: opacity 0.5s ease-in-out;
+  background-position: 50% 20%;
 }
 
 .leaflet-control-layers-overlays label:nth-of-type(4):hover {
@@ -109,6 +115,7 @@
   color: #569af4;
   background-image: url("https://bicidatos.org/mapa/img/flotante-ruta.svg");
   transition: opacity 0.5s ease-in-out;
+  background-position: 50% 20%;
 }
 
 .leaflet-control-layers-overlays label:nth-of-type(5):hover {
@@ -143,17 +150,23 @@
 }
 
 .leaflet-control-layers-overlays label:hover {
-  background-color: #f1f2f7;
+  /* background-color: #f1f2f7; */
+  background-color: #d5d9ed;
 }
 
 .leaflet-control-layers-overlays label span {
   display: inline-block;
   text-align: center;
   width: 95%;
-  padding: 3px 3px;
+  /* padding: 3px 3px; */
+  padding: 5px 3px;
   margin-top: 13px;
   font-weight: normal;
   color: rgba(0, 0, 0, 0.87);
+}
+
+section .leaflet-control-layers-overlays label span {
+  padding-left: 2px;
 }
 
 .leaflet-control-attribution {
@@ -218,6 +231,7 @@ h6.MuiTypography-h6 {
 
   button.MuiButton-root {
     min-width: 0;
+    width: 0;
   }
 
   button.MuiButton-root span.MuiButton-startIcon {
@@ -233,9 +247,15 @@ h6.MuiTypography-h6 {
   }
 }
 
+a.MuiIconButton-root:hover {
+  background-color: white;
+  color: black;
+}
+
 @media (max-width: 375px) { 
   .leaflet-control-layers {
-    width: 64px;
+    /* width: 64px; */
+    width: 71px;
   }
 
   .leaflet-control-layers-overlays {
@@ -251,5 +271,12 @@ h6.MuiTypography-h6 {
   }
   .leaflet-left .leaflet-control {
     margin-left: 5px;
+  }
+}
+
+@media (min-width: 600px) {
+  header div.MuiContainer-root {
+    padding-left: 0; 
+    padding-right: 0;
   }
 }

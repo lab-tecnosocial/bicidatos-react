@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './Cronometro.css';
 
 function Cronometro({time,setTime,isRunning,setIsRunning}) {
 
@@ -25,7 +26,12 @@ function Cronometro({time,setTime,isRunning,setIsRunning}) {
     const hours = Math.floor(time / 3600).toString().padStart(2, '0');
     const minutes = Math.floor((time % 3600) / 60).toString().padStart(2, '0');
     const seconds = Math.floor(time % 60).toString().padStart(2, '0');
-    return `${hours}:${minutes}:${seconds}`;
+    // return `${hours}:${minutes}:${seconds}`;
+    return (
+      <div className="cronometro-container">
+        <div className="cronometro-time">{`${hours}:${minutes}:${seconds}`}</div>
+      </div>
+    );
   };
 
   return (
