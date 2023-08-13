@@ -17,6 +17,7 @@ import AddMarker from "./AddMarker";
 import { FormDepartamento } from "../Form/FormDepartamento";
 // aux data
 import { departamentos } from "./local-places";
+import { ModalServices } from "./ModalServices";
 
 
 const Map = ({
@@ -33,7 +34,46 @@ const Map = ({
   const [denuncias2, setDenuncias2] = useState([] as any);
   const [loading, setLoading] = useState(false);
   const [ciclovias, setCiclovias] = useState({} as any);
- 
+  const [modal, setModal] = useState(false);
+
+  const modalClose = () => {
+    setModal(false);
+  }
+
+  const handleFilterClick = async (servicesSelect: any) => {
+    setServicios2([]);
+    const serviciosRef = db.collection('servicios2');
+    setLoading(true);
+    try {
+      const snapshot = await serviciosRef.get();
+      if (snapshot.empty) {
+        console.log('No se encontraron servicios.');
+        setLoading(false);
+        return;
+      }
+
+      let arr = [];
+      snapshot.forEach(doc => {
+        arr.push(doc.data());
+      });
+
+      const datosFiltrados = arr.filter(obj => {
+        const historialObj = Object.values(obj.historial)[0];
+        if (typeof historialObj === 'object' && historialObj !== null && 'tipo' in historialObj) {
+          const tipoServicio = historialObj.tipo;
+          return servicesSelect.includes(tipoServicio);
+        }
+        return false;
+      });
+      setServicios2(datosFiltrados);
+      setLoading(false);
+      setModal(true);
+    } catch (error) {
+      console.error('Error al obtener servicios:', error);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     getCicloviasFromGithub();
   }, [])
@@ -83,6 +123,7 @@ const Map = ({
     const data = await [...arr];
     setBiciparqueos2(data);
     setLoading(false);
+    setModal(false);
   };
   const getServicios2FromFirebase = async () => {
     const serviciosRef = db.collection('servicios2');
@@ -100,6 +141,7 @@ const Map = ({
     const data = await [...arr];
     setServicios2(data)
     setLoading(false);
+    setModal(true);
   };
   const getAforos2FromFirebase = async () => {
     const aforosRef = db.collection('aforos2');
@@ -117,6 +159,7 @@ const Map = ({
     const data = await [...arr];
     setAforos2(data);
     setLoading(false);
+    setModal(false);
   };
 
   const getDenuncias2FromFirebase = async () => {
@@ -135,6 +178,7 @@ const Map = ({
     const data = await [...arr];
     setDenuncias2(data)
     setLoading(false);
+    setModal(false);
   };
 
 
@@ -163,14 +207,12 @@ const Map = ({
     togglePreview(true);
   };
 
-  
-
   return (
     <div className="map__container">
       {
         <div>
-          
-            {loading ? <LinearProgress style={{ height: '0.5em' }} /> : null}
+          {modal && <ModalServices onClickClose={modalClose} handleFilterClick={handleFilterClick} />}
+          {loading ? <LinearProgress style={{ height: '0.5em' }} /> : null}
           <MapContainer
             center={defaultPosition}
             zoom={6}
