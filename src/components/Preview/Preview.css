@@ -18,6 +18,10 @@
   padding: 1rem;
 }
 
+.preview__description__container b {
+  color: #15C0EA;
+}
+
 .preview__close {
   position: absolute;
   right: 1rem;
@@ -90,4 +94,8 @@
 }
 .puntos {
   margin-right: 2.5em;
+}
+
+.preview__container .MuiSvgIcon-root {
+  color: #15C0EA;
 }
