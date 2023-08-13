@@ -1,8 +1,11 @@
 import { useState } from 'react';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
-import './ModalServices.css'
+import './ModalSelectorTipo.css'
 
 interface Props {
+  selectedType:string;
+  options: Option[];
   onClickClose: () => void;
   handleFilterClick: (selectedFilters: string[]) => void;
 }
@@ -12,13 +15,10 @@ interface Option {
   value: string;
 }
 
-export const ModalServices = ({ onClickClose, handleFilterClick }: Props) => {
-  const options: Option[] = [
-    { label: 'Tienda de bicicleta', value: 'Tienda de bicicleta' },
-    { label: 'Taller de repuestos', value: 'Taller de repuestos' },
-    { label: 'Llantería de bicicleta', value: 'Llantería de bicicleta' }
-  ];
-  const [selectedFilters, setSelectedFilters] = useState([]);
+export type Type = 'servicios' | 'denuncias';
+
+export const ModalSelectorTipo = ({ selectedType, options, onClickClose, handleFilterClick }: Props) => {
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -31,12 +31,22 @@ export const ModalServices = ({ onClickClose, handleFilterClick }: Props) => {
     }
   };
   const isFiltersSelected = selectedFilters.length > 0;
+  const buttonColor = selectedType === 'servicios' ? '#44740e' : '#e20000';
 
   return (
-    <div className="modal">
+    <Dialog onClose={onClickClose} aria-labelledby="customized-dialog-title" open={true}>
+      <DialogTitle id="customized-dialog-title">
+        <button className='btn-close' onClick={onClickClose}>
+          <Close />
+        </button>
+      </DialogTitle>
+      <DialogContent dividers>
       <div className="modal-list">
         {options.map(option => (
-          <label key={option.value} className='modal-item'>
+          <label 
+            key={option.value}
+            className='modal-item'
+          >
             <input
               type="checkbox"
               value={option.value}
@@ -48,19 +58,17 @@ export const ModalServices = ({ onClickClose, handleFilterClick }: Props) => {
           </label>
         ))}
       </div>
-      <button
-        className='btn-close'
-        onClick={onClickClose}
-      >
-        <Close />
-      </button>
-      <button
-        className={`btn-filter ${isFiltersSelected ? "btnFilter-active" : "btnFilter-inactive"}`}
+      </DialogContent>
+      <DialogActions>
+      <Button
+        autoFocus
         onClick={() => handleFilterClick(selectedFilters)}
+        style={{ backgroundColor: buttonColor, color: '#fff' }}
         disabled={!isFiltersSelected}
       >
         {isFiltersSelected ? "Aplicar Filtros" : "Seleccionar Filtros"}
-      </button>
-    </div>
+      </Button>
+      </DialogActions>
+    </Dialog>
   )
 }
