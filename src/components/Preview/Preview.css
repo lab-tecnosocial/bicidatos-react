@@ -99,3 +99,18 @@
 .preview__container .MuiSvgIcon-root {
   color: #15C0EA;
 }
+
+.propiedad-style{
+color: #15C0EA;
+font-family: 'Poppins';
+font-weight: bold;
+font-size: 1.4rem;
+
+}
+.valor-style{
+color: #716969;
+font-size: 1.4rem;
+font-family: "Poppins";
+font-weight: bold;
+
+}
