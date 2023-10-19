@@ -8,7 +8,7 @@ import L from 'leaflet';
 import { Departamento } from '../../store/models';
 
 interface Props {
-  departamentos: Departamento[]
+  departamentos: Departamento[];
 }
 
 export const FormDepartamento = ({ departamentos }: Props) => {
@@ -38,11 +38,13 @@ export const FormDepartamento = ({ departamentos }: Props) => {
         duration: 1, // duración de la animación en segundos
         easeLinearity: 0.25, // suavidad de la animación
       });
+      // select department add marker
+      // L.marker([latitud,longitud]).addTo(map);
     }
   }, [map, selectedDepartamento]);
 
   return (
-    <FormControl ref={ref} variant="filled" className="form-departamento">
+    <FormControl ref={ref} variant="filled" style={{ position: "absolute" }} className="form-departamento">
       <InputLabel htmlFor="filled-age-native-simple" style={{ width: '100%' }} >Departamento</InputLabel>
       <Select
         native

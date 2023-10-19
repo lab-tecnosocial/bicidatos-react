@@ -32,14 +32,27 @@
   cursor: pointer;
   border: 0;
   outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-close:hover {
   color: rgb(34, 32, 32);
 }
 
+div.MuiPaper-root {
+  border-radius: 1.25rem;
+}
+
 div.MuiDialogActions-root {
   justify-content: center;
+}
+
+div.MuiDialogActions-root .MuiButtonBase-root{
+  border-radius: 1.25rem;
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
 }
 
 button.MuiButton-textPrimary {
@@ -56,4 +69,10 @@ button.MuiButton-root.Mui-disabled {
 
 button.MuiButton-text {
   text-transform: capitalize;
+}
+
+@media (max-width: 767px) {
+  button.MuiButton-root span.MuiButton-label {
+    font-size: 12px;
+  }
 }

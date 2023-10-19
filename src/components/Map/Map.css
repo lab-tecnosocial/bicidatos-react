@@ -168,8 +168,14 @@ div.leaflet-left {
 div.leaflet-control-zoom {
   top: 0;
   right: 13px;
-  background: red;
   position: absolute;
+}
+div.leaflet-control-zoom.left-zoom {
+  top: 0;
+  left: 13px;
+  /* Puedes personalizar el color de fondo según tus preferencias */
+  position: absolute;
+  z-index: 9999;
 }
 
 button.MuiButton-root span.MuiButton-startIcon {
@@ -252,4 +258,31 @@ h6.MuiTypography-h6 {
   .leaflet-left .leaflet-control {
     margin-left: 5px;
   }
+}
+
+/* .zoom-control-right {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+}
+
+.zoom-control-left {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+} */
+
+.zoom-control {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  /* Ajusta la propiedad z-index según sea necesario */
+}
+
+.left-zoom-control {
+  right: unset;
+  left: 10px;
 }

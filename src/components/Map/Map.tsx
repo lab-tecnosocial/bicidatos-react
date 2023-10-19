@@ -1,5 +1,5 @@
 // react
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // mui and style
 import { LinearProgress } from "@material-ui/core";
 import "./Map.css";
@@ -19,6 +19,7 @@ import { FormDepartamento } from "../Form/FormDepartamento";
 import { departamentos } from "./local-places";
 import { ModalSelectorTipo, Type } from "./ModalSelectorTipo";
 import { servicios, denuncias } from './optionsData';
+import SearchField from "./SearchField";
 
 const Map = ({
   isVisible,
@@ -242,6 +243,7 @@ const Map = ({
             zoomControl={true}
           >
             <FormDepartamento departamentos={departamentos} />
+            <SearchField />
             <LayersControl position="bottomleft" collapsed={false} >
               <LayersControl.BaseLayer checked name="Base">
 

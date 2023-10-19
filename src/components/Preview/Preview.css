@@ -2,8 +2,10 @@
   z-index: 1000;
   position: fixed;
   width: 100%;
-  height: 95vh;
+  height: 100vh;
+  /* height: calc(100vh - 64px); */
   overflow-y: scroll;
+  /* overflow-y: hidden; */
   background-color: white;
   top: 0;
   right: -100%;
@@ -16,10 +18,25 @@
 
 .preview__description__container {
   padding: 1rem;
+  line-height: 1.6rem;
 }
 
 .preview__description__container b {
   color: #15C0EA;
+}
+
+.preview__description__container a {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.preview__content {
+  width: 90%;
+  margin: 0 auto;
 }
 
 .preview__close {
@@ -68,6 +85,7 @@
   .preview__container {
     top: auto;
     width: 30%;
+    height: calc(100vh - 64px);
   }
 }
 

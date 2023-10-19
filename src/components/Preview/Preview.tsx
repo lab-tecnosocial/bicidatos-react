@@ -22,6 +22,7 @@ import servicioImagen from './location-taller.png';
 import denunciaImagen from './location-seguridad.png';
 import bicidatosImagen from './bicidatos_bolivia.png';
 import { display } from "html2canvas/dist/types/css/property-descriptors/display";
+import QrGenerator from "./QrGenerator";
 
 const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
   const cardRef = useRef(null);
@@ -118,6 +119,7 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
 
       }
 
+      <div className="preview__content">
       <div className="seccion-flechas">
         <IconButton type="button" onClick={decrementIndex} disabled={primerObjeto} >
           <ArrowBackIosIcon />
@@ -136,12 +138,12 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
 
         {arregloOrd && arregloOrd[index].nombre && <div className=""><b>Nombre:</b> {arregloOrd[index].nombre}</div>}
         {arregloOrd && arregloOrd[index].tipo && <div className=""><b>Tipo de servicio:</b> {arregloOrd[index].tipo}</div>}
-        {arregloOrd && arregloOrd[index].sitioweb && <div className=""><b>Sitio web:</b> <a href={arregloOrd[index].sitioweb} target="_blank">{arregloOrd[index].sitioweb}</a></div>}
+        {arregloOrd && arregloOrd[index].sitioweb && <div className=""><b>Sitio web:</b> <a href={arregloOrd[index].sitioweb} target="_blank" rel="noreferrer">{arregloOrd[index].sitioweb}</a></div>}
         {arregloOrd && arregloOrd[index].telefono && <div className=""><b>Telefono:</b> {arregloOrd[index].telefono}</div>}
 
         {arregloOrd && arregloOrd[index].fecha_incidente && <div className=""><b>Fecha:</b> {arregloOrd[index].fecha_incidente}</div>}
         {arregloOrd && arregloOrd[index].tipo_incidente && <div className=""><b>Tipo de incidente:</b> {arregloOrd[index].tipo_incidente}</div>}
-        {arregloOrd && arregloOrd[index].enlace && <div className=""><b>Enlace:</b> <a href={arregloOrd[index].enlace} target="_blank">{arregloOrd[index].enlace}</a></div>}
+        {arregloOrd && arregloOrd[index].enlace && <div className=""><b>Enlace:</b> <a href={arregloOrd[index].enlace} target="_blank" rel="noreferrer">{arregloOrd[index].enlace.slice(0, 47)}...</a></div>}
 
         {arregloOrd && arregloOrd[index].fecha_observacion && <div className=""><b>Fecha:</b> {arregloOrd[index].fecha_observacion}</div>}
         {arregloOrd && arregloOrd[index].hora_inicio_observacion && <div className=""><b>Tiempo de inicio:</b> {arregloOrd[index].hora_inicio_observacion}</div>}
@@ -165,38 +167,60 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
       {actualizar && place?.historial[Object.keys(place?.historial)[index]].fecha_observacion && <FormAforos />}
       {actualizar && place?.historial[Object.keys(place?.historial)[index]].tipo_incidente && <FormDenuncias />}
 
-      <div ref={cardRef} style={{display:"none",zIndex:"1",position:"fixed", right:"0",top:"0",width:"1024px",height:"600px",backgroundImage:`url(${imagen})`}}>
+        <div ref={cardRef} style={{ display: "none", zIndex: "1", position: "fixed", right: "0", top: "0", width: "720px", height: "442px", fontFamily:"Poppins",backgroundImage:`url(${imagen})`}}>
             {/* <img src={imagen} alt="Imagen de la tarjeta" width={600} height={350} /> */}
-            <div style={{display:"flex",alignItems:"center",flexDirection:"column"}}>
-            <div style={{padding:"10px",margin:"80px 20px 20px",width:"60%", backgroundColor:"#15c0ea",borderRadius:"50px"}}>
-              <h1 style={{color:"white",paddingLeft:"20px"}}>
+            <div style={{display:"flex",alignItems:"center",flexDirection:"column",width:"100%"}}>
+
+            {/* title banner */}
+            <div style={{ padding: "10px 60px", margin: "50px 20px 20px", width: "60%", height: "53px", backgroundColor: "#15c0ea", borderRadius: "50px", display: "flex", alignItems: "center" }}>
+              <h1 style={{ color: "white", paddingLeft: "20px", fontSize: "25px" }}>
               {arregloOrd && arregloOrd[index].accesibilidad && "Biciparqueos en Bolivia"}
               {arregloOrd && arregloOrd[index].nombre && "Servicio ciclista en Bolivia"}
               {arregloOrd && arregloOrd[index].fecha_incidente && "Denuncia ciclista en Bolivia"}
+              {arregloOrd && arregloOrd[index].fecha_observacion && "Aforo ciclista en Bolivia"}
                 </h1>
             </div>
             
-            {arregloOrd && arregloOrd[index].accesibilidad && <img src={biciparqueoImagen} alt="BiciparqueoImagen" height={190} style={{position: "absolute",right:"150px",top:"30px"}} />}
-              {arregloOrd && arregloOrd[index].nombre && <img src={servicioImagen} alt="ServicioImagen" height={190} style={{position: "absolute",right:"150px",top:"30px"}} />}
-              {arregloOrd && arregloOrd[index].fecha_incidente && <img src={denunciaImagen} alt="DenunciaImagen" height={190} style={{position: "absolute",right:"150px",top:"30px"}} />}
+            {arregloOrd && arregloOrd[index].accesibilidad && <img src={biciparqueoImagen} alt="BiciparqueoImagen" height={150} style={{position: "absolute",right:"50px",top:"20px"}} />}
+            {arregloOrd && arregloOrd[index].nombre && <img src={servicioImagen} alt="ServicioImagen" height={140} style={{position: "absolute",right:"50px",top:"20px"}} />}
+            {arregloOrd && arregloOrd[index].fecha_incidente && <img src={denunciaImagen} alt="DenunciaImagen" height={140} style={{position: "absolute",right:"50px",top:"20px"}} />}
             </div>
-            <div style={{display:"flex",flexDirection:"column",marginLeft:"26%",marginTop:"20px"}}>
-            <div>
+          {/* box description */}
+          <div style={{ display: "flex", flexDirection: "column", width:"90%", marginLeft:"auto", marginRight:"auto"}}>
+            <div style={{padding:"5px"}}>
               {/* <div style={{marginTop:"15px"}}><span className="propiedad-style">Accesibilidad:</span>&nbsp; <span className="valor-style">Valor</span></div>
               <div style={{marginTop:"15px"}}><span className="propiedad-style">Señalización:</span>&nbsp;<span className="valor-style">Valor</span></div>
               <div style={{marginTop:"15px"}}><span className="propiedad-style">Seguridad percibida:</span>&nbsp;<span className="valor-style">Valor</span></div> */}
+              <div style={{width:"60%", margin:"0 auto"}}>
               {arregloOrd && arregloOrd[index].accesibilidad && <div className="" style={{marginTop:"15px"}}><span className="propiedad-style">Accesibilidad:</span> <span className="valor-style">{arregloOrd[index].accesibilidad} </span> </div>}
         {arregloOrd && arregloOrd[index].senalizacion && <div className="" style={{marginTop:"15px"}}><span className="propiedad-style">Señalización:</span> <span className="valor-style">{arregloOrd[index].senalizacion}</span></div>}
         {arregloOrd && arregloOrd[index].seguridad_percibida && <div className="" style={{marginTop:"15px"}}><span className="propiedad-style">Seguridad percibida:</span> <span className="valor-style">{arregloOrd[index].seguridad_percibida}</span></div>}
 
-        {arregloOrd && arregloOrd[index].nombre && <div className="" style={{marginTop:"15px"}}><span className="propiedad-style">Nombre:</span> <span className="valor-style">{arregloOrd[index].nombre}</span></div>}
-        {arregloOrd && arregloOrd[index].tipo && <div className="" style={{marginTop:"15px"}}><span className="propiedad-style">Tipo de servicio:</span> <span className="valor-style">{arregloOrd[index].tipo}</span></div>}
-        {arregloOrd && arregloOrd[index].sitioweb && <div className="" style={{marginTop:"15px"}}><span className="propiedad-style">Sitio web:</span> <span className="valor-style"><a href={arregloOrd[index].sitioweb} target="_blank">{arregloOrd[index].sitioweb}</a></span></div>}
-        {arregloOrd && arregloOrd[index].telefono && <div className="" style={{marginTop:"15px"}}><span className="propiedad-style">Telefono:</span> <span className="valor-style">{arregloOrd[index].telefono}</span></div>}
+              </div>
 
-        {arregloOrd && arregloOrd[index].fecha_incidente && <div className="" style={{marginTop:"15px"}}><span className="propiedad-style">Fecha:</span> <span className="valor-style">{arregloOrd[index].fecha_incidente}</span></div>}
-        {arregloOrd && arregloOrd[index].tipo_incidente && <div className="" style={{marginTop:"15px"}}><span className="propiedad-style">Tipo de incidente:</span> <span className="valor-style">{arregloOrd[index].tipo_incidente}</span></div>}
-        {arregloOrd && arregloOrd[index].enlace && <div className="" style={{marginTop:"15px"}}><span className="propiedad-style">Enlace:</span> <span className="valor-style"><a href={arregloOrd[index].enlace} target="_blank">{arregloOrd[index].enlace}</a></span></div>}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-evenly" }}>
+                <div>
+                  {arregloOrd && arregloOrd[index].sitioweb && <div className="" style={{ marginTop: "15px" }}><span className="valor-style"><QrGenerator url={arregloOrd[index].sitioweb} /></span></div>}
+                </div>
+                <div>
+                  {arregloOrd && arregloOrd[index].nombre && <div className="" style={{marginTop:"15px"}}><span className="propiedad-style">Nombre:</span> <span className="valor-style">{arregloOrd[index].nombre}</span></div>}
+                  {arregloOrd && arregloOrd[index].tipo && <div className="" style={{marginTop:"15px"}}><span className="propiedad-style">Tipo de servicio:</span> <span className="valor-style">{arregloOrd[index].tipo}</span></div>}
+                  
+                  {arregloOrd && arregloOrd[index].telefono && <div className="" style={{marginTop:"15px"}}><span className="propiedad-style">Telefono:</span> <span className="valor-style">{arregloOrd[index].telefono}</span></div>}
+
+                </div>
+              </div>
+        
+        <div style={{display:"flex", alignItems:"center", justifyContent:"space-evenly"}}>
+          <div>
+            {arregloOrd && arregloOrd[index].enlace && <div className="" style={{ marginTop: "15px" }}><span className="valor-style"> <QrGenerator url={arregloOrd[index].enlace} /></span></div>}
+          </div>
+          <div>
+            {arregloOrd && arregloOrd[index].fecha_incidente && <div className="" style={{ marginTop: "15px" }}><span className="propiedad-style">Fecha:</span> <span className="valor-style">{arregloOrd[index].fecha_incidente}</span></div>}
+            {arregloOrd && arregloOrd[index].tipo_incidente && <div className="" style={{ marginTop: "15px" }}><span className="propiedad-style">Tipo de incidente:</span> <span className="valor-style">{arregloOrd[index].tipo_incidente}</span></div>}
+            </div>
+        </div>
+
 
         {arregloOrd && arregloOrd[index].fecha_observacion && <div className="" style={{marginTop:"15px"}}><span className="propiedad-style">Fecha:</span> <span className="valor-style">{arregloOrd[index].fecha_observacion}</span></div>}
         {arregloOrd && arregloOrd[index].hora_inicio_observacion && <div className="" style={{marginTop:"15px"}}><span className="propiedad-style">Tiempo de inicio:</span> <span className="valor-style">{arregloOrd[index].hora_inicio_observacion}</span></div>}
@@ -206,14 +230,16 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
             
             </div>
             </div>
-            <div style={{display:"flex",flexDirection:"row",marginLeft:"22%",marginTop:"20px"}}>
-              <div >
-              <p style={{color:"#15C0EA",paddingLeft:"20px",fontFamily:"Poppins",fontWeight:"bold",fontSize:"1.4rem",width:"420px"}}>
+          <div style={{ display: "flex", flexDirection: "row", alignItems:"end", justifyContent: "space-between", width: "80%", marginLeft: "auto", marginRight: "auto", padding:"0 60px"}}>
+            <div style={{ display: "flex", alignItems: "end" }}>
+              <p style={{color:"#15C0EA",fontFamily:"Poppins",fontWeight:"bold",fontSize:"1.5625rem",width:"420px"}}>
                 ¡Usa tu bici, pedalea y comienza a subir BiciDatos!</p>
-               
               </div>
-              <img src={bicidatosImagen} alt="BiciDatosImagen" style={{marginLeft:"60px"}} height={100} />
+            <div style={{ display: "flex", alignItems: "end", marginBottom: "30px" }}>
+                <img src={bicidatosImagen} alt="BiciDatosImagen" style={{display: "block"}} width={120} height={74.88} />
+              </div>
             </div>
+      </div>
       </div>
     </div>
   );
