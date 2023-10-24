@@ -44,13 +44,13 @@ export const FormDepartamento = ({ departamentos }: Props) => {
   }, [map, selectedDepartamento]);
 
   return (
-    <FormControl ref={ref} variant="filled" style={{ position: "absolute" }} className="form-departamento">
+    <FormControl ref={ref} variant="filled" style={{ position: "absolute", borderRadius: "24px", boxShadow:"0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02)", maxWidth:"376px",minWidth:"291px",width:"75%", height:"48px", boxSizing:"border-box" }} className="form-departamento">
       <InputLabel htmlFor="filled-age-native-simple" style={{ width: '100%' }} >Departamento</InputLabel>
       <Select
         native
         value={selectedDepartamento ? selectedDepartamento.nombre : ''}
         onChange={handleChange}
-        style={{ borderRadius: '50px' }}
+        style={{ borderRadius: '24px',overflow:"hidden" }}
         inputProps={{
           name: 'nombre',
           id: 'filled-age-native-simple',

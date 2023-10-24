@@ -87,7 +87,7 @@ const Map = ({
       });
       setFunction(datosFiltrados);
       setLoading(false);
-      setModal(true);
+      setModal(false);
     } catch (error) {
       console.error('Error al obtener info', error);
       setLoading(false);

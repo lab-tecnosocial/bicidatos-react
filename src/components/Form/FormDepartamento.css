@@ -1,11 +1,11 @@
 .form-departamento {
   z-index: 1000;
-  min-width: 120px;
+  /* min-width: 120px;
   max-width: 400px;
-  width: 66%;
+  width: 66%; */
   position: absolute;
   left: 50%;
-  top: 0;
+  top: -15px;
   transform: translateX(-50%);
   margin-left: 45px;
   cursor: auto;
@@ -35,8 +35,12 @@ label.MuiFormLabel-root {
 }
 
 .form-departamento select {
-  border-radius: 50px !important;
-  border: 2px solid rgba(0, 0, 0, .2);
+  /* border-radius: 50px !important;
+  border: 2px solid rgba(0, 0, 0, .2); */
+  transition-property: background, box-shadow;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
 }
 
 .MuiInputLabel-filled {
@@ -59,7 +63,8 @@ label.MuiFormLabel-root {
 
 .MuiFilledInput-root {
   background-color: rgb(255 255 255) !important;
-  border: 2px solid rgba(0, 0, 0, .2);
+  /* border: 2px solid rgba(0, 0, 0, .2); */
+  border: none;
 
 }
 
@@ -70,6 +75,12 @@ label.MuiFormLabel-root {
 
 .MuiSelect-select {
   text-align-last: center;
+}
+
+
+.MuiSelect-select {
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
 }
 
 .MuiSelect-select:focus {
@@ -85,6 +96,5 @@ label.MuiFormLabel-root {
 
 
 .MuiInputBase-input{
-  border-radius: 30px;
-
+  /* border-radius: 30px; */
 }

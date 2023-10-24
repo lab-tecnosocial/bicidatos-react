@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import { AccountCircle, Home } from '@material-ui/icons';
+import { Hidden } from '@material-ui/core';
 
 
 export default function Header({ user, signIn, signOut }) {
@@ -18,9 +19,26 @@ export default function Header({ user, signIn, signOut }) {
         <Typography variant="h6" align='center'>
           BiciDatos
         </Typography>
-        {
-          user ? <Button onClick={signOut} startIcon={<AccountCircle />} color='inherit'>Cerrar sesión</Button> : <Button onClick={signIn} startIcon={<AccountCircle />} color='inherit'>Iniciar sesión</Button>
-        }
+        <Hidden smUp>
+          {user ? (
+            <Button onClick={signOut} startIcon={<AccountCircle />} color="inherit">
+            </Button>
+          ) : (
+            <Button onClick={signIn} startIcon={<AccountCircle />} color="inherit">
+            </Button>
+          )}
+        </Hidden>
+        <Hidden xsDown>
+          {user ? (
+            <Button onClick={signOut} color="inherit">
+              Cerrar sesión
+            </Button>
+          ) : (
+            <Button onClick={signIn} color="inherit">
+              Iniciar sesión
+            </Button>
+          )}
+        </Hidden>
       </Toolbar>
     </AppBar>
 

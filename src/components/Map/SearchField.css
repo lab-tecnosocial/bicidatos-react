@@ -76,18 +76,19 @@
   position: absolute;
   top: 0;
   left: 36px;
-  /* border-radius: 0 4px 4px 0; */
   background-color: #fff;
   background-clip: padding-box;
   z-index: -1;
   height: auto;
   margin: 0;
   padding: 0 8px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
 }
 
 .leaflet-geosearch-button form.open {
-  border-radius: 0 4px 4px 4px;
+  border-radius: 24px;
+  width: 376px;
+  height: 48px;
+  transition-property: background, box-shadow;
 }
 
 .leaflet-control-geosearch.active form {
@@ -113,23 +114,34 @@
   font-size: 12px;
   height: 30px;
   border: none;
-  /* border-radius: 0 4px 4px 0; */
   border-radius: 10px 4px 4px 10px;
   text-indent: 8px;
 }
 
 .leaflet-touch .leaflet-geosearch-bar form {
-  border: 2px solid rgba(0, 0, 0, 0.2);
+  font-family: 'Poppins';
   box-shadow: none;
-  
-  /* height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center; */
+  border-radius: 24px;
+  width: 80%;
+  min-width: 300px;
+  max-width: 376px;
+  height: 48px;
+  transition-property: background, box-shadow;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+  border: none;
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) { 
+  .leaflet-touch .leaflet-geosearch-bar form {
+      width: 100%;
+    }
 }
 
 .leaflet-touch .leaflet-geosearch-bar form input {
-  height: 30px;
+  font-family: inherit;
+  height: 100%;
+  border-radius: inherit;
 }
 
 .leaflet-control-geosearch .results {
@@ -194,9 +206,6 @@
   position: relative;
   display: block;
   height: auto;
-  /* height: 50px; */
-  width: 400px;
-  max-width: calc(100% - 120px);
   margin: 10px auto 0;
   cursor: auto;
   z-index: 1000;
@@ -204,11 +213,9 @@
 
 .leaflet-geosearch-bar form {
   position: relative;
-  /* top: 0; */
-  top: 80px;
+  top: 51px;
   left: 0;
   display: block;
-  /* border-radius: 4px; */
   border-radius: 15px;
 }
 
@@ -238,19 +245,22 @@
   font-weight: bold;
   position: absolute;
   line-height: 26px;
-  padding: 0 8px;
+  padding: 0 10px;
   right: 0;
   top: 0;
   cursor: pointer;
   border: none;
   text-decoration: none;
   background-color: #fff;
-  /* border-radius: 0 4px 4px 0; */
   border-radius: 0 15px 15px 0;
+  border-top-right-radius: 24px;
+  border-bottom-right-radius: 24px;
 }
 
 .leaflet-touch .leaflet-control-geosearch button.reset {
   line-height: 30px;
+  font-size: 16px;
+  height: 100%;
 }
 
 .leaflet-control-geosearch button.reset:hover {

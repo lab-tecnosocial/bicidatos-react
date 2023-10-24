@@ -17,9 +17,11 @@ const SearchField = () => {
   let searchControl = new GeoSearchControl({
     provider: provider,
     notFoundMessage: 'Lo sentimos, no encontramos el lugar',
-    showMarker: false,
+    showMarker: true,
     searchLabel: 'Buscar',
     style: 'bar',
+    autoComplete: true,
+    autoCompleteDelay: 250,
   });
 
   useEffect(() => {

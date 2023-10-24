@@ -163,6 +163,7 @@
 div.leaflet-top,
 div.leaflet-left {
   width: 100%;
+  font-family: 'Poppins';
 }
 
 div.leaflet-control-zoom {
