@@ -209,6 +209,7 @@
   margin: 10px auto 0;
   cursor: auto;
   z-index: 1000;
+  width: 80%;
 }
 
 .leaflet-geosearch-bar form {
