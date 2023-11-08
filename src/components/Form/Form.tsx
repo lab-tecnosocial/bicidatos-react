@@ -7,6 +7,7 @@ import FormBiciparqueos from "./FormBiciparqueos";
 import FormServicios from "./FormServicios";
 import FormDenuncias from "./FormDenuncias";
 import FormAforos from "./FormAforos";
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -21,11 +22,16 @@ const Form = ({
 
  
   const [selectedForm, setSelectedForm] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e: any) => {
     setSelectedForm(e.target.value);
   };
 
+  const closeFormRedirect = () => {
+    closeForm();
+    navigate("/");
+  };
 
   return (
     <div
@@ -35,7 +41,7 @@ const Form = ({
         <span
           className="form__header__close"
           role="button"
-          onClick={() => closeForm()}
+          onClick={() => closeFormRedirect()}
         >
           <AiFillCloseCircle />
         </span>

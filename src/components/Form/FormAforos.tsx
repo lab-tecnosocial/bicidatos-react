@@ -16,6 +16,7 @@ import {
 import { useEffect, useState } from "react";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from "@material-ui/core";
+import { useNavigate } from "react-router-dom";
 
 
 const dateFns = new DateFnsUtils();
@@ -46,6 +47,7 @@ const Form = ({
   placeSelect: any;
 }) => {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     auth.onAuthStateChanged(persona => {
       if (persona) {
@@ -99,6 +101,7 @@ const Form = ({
         actions.resetForm({});
         closeForm();
         // alert('Punto nuevo enviado correctamente');
+        navigate("/");
 
       } else {
         const newAforo = {
@@ -108,6 +111,7 @@ const Form = ({
         actions.resetForm({});
         closeForm();
         // alert('Punto actualizado correctamente');
+        navigate("/");
       }
 
     } else {

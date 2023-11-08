@@ -9,6 +9,7 @@ import { auth, provider } from "../../database/firebase";
 import { useEffect, useState } from "react";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from "@material-ui/core";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,6 +35,7 @@ const Form = ({
   placeSelect: any;
 }) => {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     auth.onAuthStateChanged(persona => {
       if (persona) {
@@ -116,6 +118,7 @@ const Form = ({
         actions.resetForm({});
         fotoRef.current.value = null;
         closeForm();
+        navigate("/");
         // alert('Punto nuevo enviado correctamente');
 
       } else {
@@ -126,6 +129,7 @@ const Form = ({
         actions.resetForm({});
         fotoRef.current.value = null;
         closeForm();
+        navigate("/");
         // alert('Punto actualizado correctamente');
       }
 

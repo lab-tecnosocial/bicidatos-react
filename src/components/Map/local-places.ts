@@ -3,7 +3,7 @@ import { Departamento } from '../../store/models';
 const departamentos: Departamento[] = [
     {
         id: 0,
-        nombre: "Todos",
+        nombre: "Bolivia",
         latitud: -17.396,
         longitud: -66.153
       },

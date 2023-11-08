@@ -11,6 +11,7 @@ import { auth } from "../../database/firebase";
 import { useEffect, useState } from "react";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from "@material-ui/core";
+import { useNavigate } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +39,7 @@ const Form = ({
   placeSelect: any;
 }) => {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     auth.onAuthStateChanged(persona => {
       if (persona) {
@@ -105,6 +107,7 @@ const Form = ({
         actions.resetForm({});
         fotoRef.current.value = null;
         closeForm();
+        navigate("/");
 
       } else {
         const newBiciparqueo = {
@@ -114,6 +117,7 @@ const Form = ({
         actions.resetForm({});
         fotoRef.current.value = null;
         closeForm();
+        navigate("/");
       }
     } else {
       alert("Necesitas iniciar sesión para subir datos.");

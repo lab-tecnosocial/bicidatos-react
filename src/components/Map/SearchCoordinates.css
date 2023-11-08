@@ -1,0 +1,37 @@
+.MuiFormControl-root {
+  width: 100%;
+}
+
+@media (max-width:375px ) { 
+  .form-search {
+    left: 45% !important;
+    width: 75% !important;
+  }
+}
+
+input:focus {
+  text-align: center;
+}
+
+label.MuiFormLabel-root {
+  width: 100%;
+  text-align: center;
+}
+
+form.MuiTextField-root {
+  width: 100%;
+  border-radius: 24px;
+}
+
+form.MuiFilledInput-root {
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+form div.MuiFilledInput-input {
+  width: 100%;
+}
+
+input#filled-basic.MuiInputBase-input.MuiFilledInput-input{
+  background: #fff;
+}

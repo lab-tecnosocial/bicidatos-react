@@ -1,5 +1,5 @@
 // react
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 // mui and style
 import { LinearProgress } from "@material-ui/core";
 import "./Map.css";
@@ -9,7 +9,7 @@ import { MapContainer, useMapEvents, TileLayer, Marker, Tooltip, LayersControl, 
 import { iconoBiciparqueo, iconoServicio, iconoDenuncia, iconoAforo } from "./icons";
 // redux
 import { connect } from "react-redux";
-import { setPlacePreviewVisibility, setSelectedPlace } from "../../store/actions";
+import { setPlaceFormVisibility, setPlacePreviewVisibility, setPrePlaceLocation, setSelectedPlace } from "../../store/actions";
 // firebase
 import db from "../../database/firebase";
 // aux components
@@ -20,6 +20,8 @@ import { departamentos } from "./local-places";
 import { ModalSelectorTipo, Type } from "./ModalSelectorTipo";
 import { servicios, denuncias } from './optionsData';
 import SearchField from "./SearchField";
+import SearchCoordinates from "./SearchCoordinates";
+import { useLocation } from "react-router-dom";
 
 const Map = ({
   isVisible,
@@ -27,7 +29,14 @@ const Map = ({
   selectedPlace,
   togglePreview,
   setPlaceForPreview,
+  setPlaceFormVisibility,
+  setLocation
 }: any) => {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const lat = parseFloat(params.get("lat"));
+  const lng = parseFloat(params.get("lng"));
+
   const defaultPosition: LatLngExpression = [-17.396, -66.153]; // Cochabamba
   const [aforos2, setAforos2] = useState([] as any);
   const [biciparqueos2, setBiciparqueos2] = useState([] as any);
@@ -37,6 +46,7 @@ const Map = ({
   const [ciclovias, setCiclovias] = useState({} as any);
   const [modal, setModal] = useState(false);
   const [selectedType, setSelectedType] = useState<Type>('servicios');
+  const [showSearchCoordinates, setShowSearchCoordinates] = useState(true);
 
   const modalClose = () => {
     setModal(false);
@@ -94,10 +104,26 @@ const Map = ({
     }
   };
 
+  const toggleForm = () => {
+    const isFormVisible = places.placeFormIsVisible;
+    if (isFormVisible) {
+      setPlaceFormVisibility(false);
+    } else {
+      setPlaceFormVisibility(true);
+    }
+  };
+
   useEffect(() => {
     getCicloviasFromGithub();
-  }, [])
 
+    if (!isNaN(lat) && !isNaN(lng)) {
+      setLocation(lat, lng);
+    }
+
+    if (window.location.pathname === '/') {
+      setShowSearchCoordinates(true);
+    }
+  }, [lat, lng, setLocation])
 
   const MapEvents = () => {
 
@@ -231,7 +257,7 @@ const Map = ({
 
   return (
     <div className="map__container">
-      {
+      
         <div>
           {modal && <ModalSelectorTipo selectedType={selectedType} options={selectedOptions} onClickClose={modalClose} handleFilterClick={handleFilterClick} />}
           {loading ? <LinearProgress style={{ height: '0.5em' }} /> : null}
@@ -243,7 +269,8 @@ const Map = ({
             zoomControl={true}
           >
             <FormDepartamento departamentos={departamentos} />
-            <SearchField />
+            {/* <SearchField /> */}
+            {showSearchCoordinates && (<SearchCoordinates setShowSearchCoordinates={setShowSearchCoordinates} />) }
             <LayersControl position="bottomleft" collapsed={false} >
               <LayersControl.BaseLayer checked name="Base">
 
@@ -323,13 +350,18 @@ const Map = ({
               </LayersControl.Overlay>
 
             </LayersControl>
-            <AddMarker />
             <MapEvents />
+
+            {(!isNaN(lat) && !isNaN(lng)) && (
+            <Marker
+              position={[lat,lng]}
+              eventHandlers={{ click: toggleForm }}
+            >
+            </Marker>
+            )}
+            <AddMarker />
           </MapContainer>
         </div>
-
-      }
-
     </div>
   );
 };
@@ -349,6 +381,10 @@ const mapDispatchToProps = (dispatch: any) => {
       dispatch(setPlacePreviewVisibility(payload)),
     setPlaceForPreview: (payload: any) =>
       dispatch(setSelectedPlace(payload)),
+    setPlaceFormVisibility: (payload:any) =>
+      dispatch(setPlaceFormVisibility(payload)),
+    setLocation: (lat: number, lng: number) =>
+      dispatch(setPrePlaceLocation({ lat, lng })),
   };
 };
 

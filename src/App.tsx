@@ -5,6 +5,7 @@ import Preview from "./components/Preview/Preview";
 import Form from "./components/Form/Form";
 import { auth, provider } from "./database/firebase";
 import { useEffect, useState } from "react";
+import { Routes, Route,Navigate, BrowserRouter } from "react-router-dom";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -35,15 +36,33 @@ function App() {
   const signOut = async () => {
     auth.signOut();
   }
-
   return (
     <>
-        <Header user={user} signIn={signInWithGoogle} signOut={signOut}/>
-      <main>
-        <Map />
-        <Preview />
-        <Form />
-      </main>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={
+            <>
+              <Header user={user} signIn={signInWithGoogle} signOut={signOut} />
+              <main>
+                <Map />
+                <Preview />
+                <Form />
+              </main>
+            </>
+          } />
+          <Route path="mapa" element={
+            <>
+              <Header user={user} signIn={signInWithGoogle} signOut={signOut} />
+              <main>
+                <Map />
+                <Preview />
+                <Form />
+              </main>
+            </>
+          } />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

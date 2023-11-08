@@ -33,8 +33,7 @@ export const FormDepartamento = ({ departamentos }: Props) => {
     }
     if (selectedDepartamento && map) {
       const { latitud, longitud } = selectedDepartamento;
-      console.log({ latitud, longitud });
-      map.flyTo([latitud, longitud], selectedDepartamento['nombre'] == 'Todos' ? 6 : 12, {
+      map.flyTo([latitud, longitud], selectedDepartamento['nombre'] === 'Bolivia' ? 6 : 12, {
         duration: 1, // duración de la animación en segundos
         easeLinearity: 0.25, // suavidad de la animación
       });
@@ -45,7 +44,7 @@ export const FormDepartamento = ({ departamentos }: Props) => {
 
   return (
     <FormControl ref={ref} variant="filled" style={{ position: "absolute", borderRadius: "24px", boxShadow:"0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02)", maxWidth:"376px",minWidth:"291px",width:"75%", height:"48px", boxSizing:"border-box" }} className="form-departamento">
-      <InputLabel htmlFor="filled-age-native-simple" style={{ width: '100%' }} >Departamento</InputLabel>
+      <InputLabel htmlFor="filled-age-native-simple" style={{ width: '100%' }} >Seleccione una opción</InputLabel>
       <Select
         native
         value={selectedDepartamento ? selectedDepartamento.nombre : ''}

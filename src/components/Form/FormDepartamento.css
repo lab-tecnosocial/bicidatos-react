@@ -15,6 +15,12 @@
   width: 63%;
 }
 
+@media (max-width: 375px) { 
+  .form-departamento {
+    left: 45%;
+  }
+}
+
 .MuiFormLabel-root {
   text-align: center;
 }

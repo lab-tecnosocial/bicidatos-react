@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { LatLng, LatLngExpression } from "leaflet";
-import { Marker, useMapEvents } from "react-leaflet";
+import { useMapEvents, Marker } from "react-leaflet";
 import { connect } from "react-redux";
 import { setPlaceFormVisibility, setPrePlaceLocation, setSelectedPlace } from "../../store/actions";
 import { setPlacePreviewVisibility } from "../../store/actions";
 import Alert from "./Alert";
+import { useNavigate } from "react-router-dom";
 
-const AddMarker = ({ formIsOpen, toggleForm, setLocation, closePreview, place, nullPlace }: any) => {
+const AddMarker = ({ formIsOpen, toggleForm, setLocation, closePreview, place, nullPlace, closeForm }: any) => {
+  const navigate = useNavigate();
   const [position, setPosition] = useState(null as unknown as LatLngExpression);
   const [showAlert, setShowAlert] = useState(false);
 
@@ -26,14 +28,12 @@ const AddMarker = ({ formIsOpen, toggleForm, setLocation, closePreview, place, n
         e.latlng.lng <= boliviaLatLng.east
       ) {
         setPosition(e.latlng);
+        navigate(`/mapa?lat=${e.latlng.lat}&lng=${e.latlng.lng}`);
         setLocation(e.latlng);
         toggleForm(true);
         nullPlace();
         closePreview();
         setShowAlert(false);
-
-        // toggleForm(true);
-        // setIsFormOpen(true); 
       } else {
         setShowAlert(true);
         setTimeout(() => {
@@ -42,7 +42,6 @@ const AddMarker = ({ formIsOpen, toggleForm, setLocation, closePreview, place, n
       }
     },
   });
-  console.log("position:", position);
 
   return (
     <>
@@ -74,6 +73,7 @@ const mapDispatchToProps = (dispatch: any) => {
     setLocation: (payload: LatLng) => dispatch(setPrePlaceLocation(payload)),
     nullPlace: () => dispatch(setSelectedPlace(null)),
     closePreview: () => dispatch(setPlacePreviewVisibility(false)),
+    closeForm: () => dispatch(setPlaceFormVisibility(false)),
   };
 };
 
