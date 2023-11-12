@@ -24,6 +24,7 @@ import bicidatosImagen from './bicidatos_bolivia.png';
 import aforoImagen from './location-aforos.png';
 import { display } from "html2canvas/dist/types/css/property-descriptors/display";
 import QrGenerator from "./QrGenerator";
+import { Tooltip } from '@material-ui/core';
 
 const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
   const cardRef = useRef(null);
@@ -154,13 +155,17 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
       </div>
 
       <div className="seccion-notificar-actualizar">
-        <FormNotificacion />
-        <IconButton type="button" onClick={handleActualizar}>
-          <UpdateIcon />
-        </IconButton>
-        <IconButton type="button" onClick={handleShare}>
-          <ShareOutlinedIcon />
-        </IconButton>
+          <FormNotificacion />
+          <Tooltip title="Actualizar" arrow>
+            <IconButton type="button" onClick={handleActualizar}>
+              <UpdateIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Compartir" arrow>
+            <IconButton type="button" onClick={handleShare}>
+              <ShareOutlinedIcon />
+            </IconButton>
+          </Tooltip>
       </div>
 
       {actualizar && place?.historial[Object.keys(place?.historial)[index]].accesibilidad && <FormBiciparqueos />}

@@ -12,7 +12,7 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import FlagIcon from '@material-ui/icons/Flag';
 import { IconButton } from '@material-ui/core';
-
+import { Tooltip } from '@material-ui/core';
 
 export default function FormNotificacion() {
   const [user, setUser] = useState(null);
@@ -89,9 +89,11 @@ export default function FormNotificacion() {
 
   return (
     <div>
-        <IconButton type="button" onClick={handleClickOpenNoti}>
-          <FlagIcon />
-        </IconButton>
+        <Tooltip title="Notificar" arrow>
+          <IconButton type="button" onClick={handleClickOpenNoti}>
+            <FlagIcon />
+          </IconButton>
+        </Tooltip>
         <Dialog open={openNoti} onClose={handleCloseNoti} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Notificar</DialogTitle>
           <form onSubmit={formik.handleSubmit}>

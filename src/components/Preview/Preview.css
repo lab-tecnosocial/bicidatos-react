@@ -10,6 +10,7 @@
   top: 0;
   right: -100%;
   transition: all 0.2s ease-in-out;
+  overflow-x: hidden;
 }
 
 .preview__container--active {
@@ -84,7 +85,7 @@
 @media only screen and (min-width: 768px) {
   .preview__container {
     top: auto;
-    width: 30%;
+    width: 25%;
     height: calc(100vh - 64px);
   }
 }

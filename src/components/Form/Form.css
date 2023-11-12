@@ -19,7 +19,7 @@
   }
 }
 
-.form__container::-webkit-scrollbar {
+/* .form__container::-webkit-scrollbar {
   -webkit-appearance: none;
 }
 
@@ -44,7 +44,7 @@
 
 .form__container::-webkit-scrollbar-track {
   background-color: #9fdae9;
-}
+} */
 
 .subform__container {
   display: flex;
@@ -93,6 +93,7 @@
   font-size: 1rem;
   margin: 1rem auto;
   cursor: pointer;
+  font-family: "Poppins";
 }
 
 .formGroup {
@@ -139,12 +140,13 @@ select:focus {
   height: 40px;
   border: 1px solid black;
   border-radius: 5%;
+  font-family: 'Poppins';
 }
 
 @media only screen and (min-width: 768px) {
   .form__container {
     top: auto;
-    width: 30%;
+    width: 25%;
   }
 }
 

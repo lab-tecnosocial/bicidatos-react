@@ -235,6 +235,7 @@ const Form = ({
                     <label htmlFor="fecha">Fecha</label>
                     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
                       <Field
+                        autoOk={true}
                         cancelLabel="Cancelar"
                         component={DatePicker}
                         id="fecha"
@@ -256,7 +257,7 @@ const Form = ({
                     <label htmlFor="tiempoInicio">Tiempo de inicio</label>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <Field
-                        autoOk
+                        autoOk={true}
                         component={TimePicker}
                         id="tiempoInicio"
                         name="tiempoInicio"
@@ -276,7 +277,7 @@ const Form = ({
                     <label htmlFor="tiempoFin">Tiempo de fin</label>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <Field
-                        autoOK
+                        autoOk={true}
                         component={TimePicker}
                         id="tiempoFin"
                         name="tiempoFin"
