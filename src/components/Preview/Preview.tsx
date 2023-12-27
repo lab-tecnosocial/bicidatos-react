@@ -80,7 +80,7 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
       <li key={number}>&bull;&nbsp;</li>
     )
     // console.log('id del lugar: ', place.id);
-        var arregloOrd = ordenarPorFecha(place);
+    var arregloOrd = ordenarPorFecha(place);
     closeForm();
   }
 
@@ -90,12 +90,12 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
     <div
       className={`preview__container preview__container--${isVisible && place && "active"
         }`}
-        
+
     >
       <div className="preview__close" onClick={() => closePreview()}>
         <AiFillCloseCircle></AiFillCloseCircle>
       </div>
-      
+
       {
         (arregloOrd && arregloOrd[index]?.fotografia &&
           <div
@@ -122,39 +122,39 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
       }
 
       <div className="preview__content">
-      <div className="seccion-flechas">
-        <IconButton type="button" onClick={decrementIndex} disabled={primerObjeto} >
-          <ArrowBackIosIcon />
-        </IconButton>
-        <ul className="puntos">
-          {puntos}
-        </ul>
-        <IconButton type="button" onClick={incrementIndex} disabled={ultimoObjeto}>
-          <ArrowForwardIosIcon />
-        </IconButton>
-      </div>
-      <div className="preview__description__container">
-        {arregloOrd && arregloOrd[index].accesibilidad && <div className=""><b>Accesibilidad:</b> {arregloOrd[index].accesibilidad}</div>}
-        {arregloOrd && arregloOrd[index].senalizacion && <div className=""><b>Señalización:</b> {arregloOrd[index].senalizacion}</div>}
-        {arregloOrd && arregloOrd[index].seguridad_percibida && <div className=""><b>Seguridad percibida:</b> {arregloOrd[index].seguridad_percibida}</div>}
+        <div className="seccion-flechas">
+          <IconButton type="button" onClick={decrementIndex} disabled={primerObjeto} >
+            <ArrowBackIosIcon />
+          </IconButton>
+          <ul className="puntos">
+            {puntos}
+          </ul>
+          <IconButton type="button" onClick={incrementIndex} disabled={ultimoObjeto}>
+            <ArrowForwardIosIcon />
+          </IconButton>
+        </div>
+        <div className="preview__description__container">
+          {arregloOrd && arregloOrd[index].accesibilidad && <div className=""><b>Accesibilidad:</b> {arregloOrd[index].accesibilidad}</div>}
+          {arregloOrd && arregloOrd[index].senalizacion && <div className=""><b>Señalización:</b> {arregloOrd[index].senalizacion}</div>}
+          {arregloOrd && arregloOrd[index].seguridad_percibida && <div className=""><b>Seguridad percibida:</b> {arregloOrd[index].seguridad_percibida}</div>}
 
-        {arregloOrd && arregloOrd[index].nombre && <div className=""><b>Nombre:</b> {arregloOrd[index].nombre}</div>}
-        {arregloOrd && arregloOrd[index].tipo && <div className=""><b>Tipo de servicio:</b> {arregloOrd[index].tipo}</div>}
-        {arregloOrd && arregloOrd[index].sitioweb && <div className=""><b>Sitio web:</b> <a href={arregloOrd[index].sitioweb} target="_blank" rel="noreferrer">{arregloOrd[index].sitioweb.slice(0, 47)}...</a></div>}
-        {arregloOrd && arregloOrd[index].telefono && <div className=""><b>Telefono:</b> {arregloOrd[index].telefono}</div>}
+          {arregloOrd && arregloOrd[index].nombre && <div className=""><b>Nombre:</b> {arregloOrd[index].nombre}</div>}
+          {arregloOrd && arregloOrd[index].tipo && <div className=""><b>Tipo de servicio:</b> {arregloOrd[index].tipo}</div>}
+          {arregloOrd && arregloOrd[index].sitioweb && <div className=""><b>Sitio web:</b> <a href={arregloOrd[index].sitioweb} target="_blank" rel="noreferrer">{arregloOrd[index].sitioweb.slice(0, 47)}...</a></div>}
+          {arregloOrd && arregloOrd[index].telefono && <div className=""><b>Telefono:</b> {arregloOrd[index].telefono}</div>}
 
-        {arregloOrd && arregloOrd[index].fecha_incidente && <div className=""><b>Fecha:</b> {arregloOrd[index].fecha_incidente}</div>}
-        {arregloOrd && arregloOrd[index].tipo_incidente && <div className=""><b>Tipo de incidente:</b> {arregloOrd[index].tipo_incidente}</div>}
-        {arregloOrd && arregloOrd[index].enlace && <div className=""><b>Enlace:</b> <a href={arregloOrd[index].enlace} target="_blank" rel="noreferrer">{arregloOrd[index].enlace.slice(0, 47)}...</a></div>}
+          {arregloOrd && arregloOrd[index].fecha_incidente && <div className=""><b>Fecha:</b> {arregloOrd[index].fecha_incidente}</div>}
+          {arregloOrd && arregloOrd[index].tipo_incidente && <div className=""><b>Tipo de incidente:</b> {arregloOrd[index].tipo_incidente}</div>}
+          {arregloOrd && arregloOrd[index].enlace && <div className=""><b>Enlace:</b> <a href={arregloOrd[index].enlace} target="_blank" rel="noreferrer">{arregloOrd[index].enlace.slice(0, 47)}...</a></div>}
 
-        {arregloOrd && arregloOrd[index].fecha_observacion && <div className=""><b>Fecha:</b> {arregloOrd[index].fecha_observacion}</div>}
-        {arregloOrd && arregloOrd[index].hora_inicio_observacion && <div className=""><b>Tiempo de inicio:</b> {arregloOrd[index].hora_inicio_observacion}</div>}
-        {arregloOrd && arregloOrd[index].hora_fin_observacion && <div className=""><b>Tiempo de fin:</b> {arregloOrd[index].hora_fin_observacion}</div>}
-        {arregloOrd && arregloOrd[index].nro_ciclistas_observados && <div className=""><b>Número de ciclistas:</b> {arregloOrd[index].nro_ciclistas_observados}</div>}
+          {arregloOrd && arregloOrd[index].fecha_observacion && <div className=""><b>Fecha:</b> {arregloOrd[index].fecha_observacion}</div>}
+          {arregloOrd && arregloOrd[index].hora_inicio_observacion && <div className=""><b>Tiempo de inicio:</b> {arregloOrd[index].hora_inicio_observacion}</div>}
+          {arregloOrd && arregloOrd[index].hora_fin_observacion && <div className=""><b>Tiempo de fin:</b> {arregloOrd[index].hora_fin_observacion}</div>}
+          {arregloOrd && arregloOrd[index].nro_ciclistas_observados && <div className=""><b>Número de ciclistas:</b> {arregloOrd[index].nro_ciclistas_observados}</div>}
 
-      </div>
+        </div>
 
-      <div className="seccion-notificar-actualizar">
+        <div className="seccion-notificar-actualizar">
           <FormNotificacion />
           <Tooltip title="Actualizar" arrow>
             <IconButton type="button" onClick={handleActualizar}>
@@ -166,35 +166,35 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
               <ShareOutlinedIcon />
             </IconButton>
           </Tooltip>
-      </div>
+        </div>
 
-      {actualizar && place?.historial[Object.keys(place?.historial)[index]].accesibilidad && <FormBiciparqueos />}
-      {actualizar && place?.historial[Object.keys(place?.historial)[index]].nombre && <FormServicios />}
-      {actualizar && place?.historial[Object.keys(place?.historial)[index]].fecha_observacion && <FormAforos />}
-      {actualizar && place?.historial[Object.keys(place?.historial)[index]].tipo_incidente && <FormDenuncias />}
+        {actualizar && place?.historial[Object.keys(place?.historial)[index]].accesibilidad && <FormBiciparqueos />}
+        {actualizar && place?.historial[Object.keys(place?.historial)[index]].nombre && <FormServicios />}
+        {actualizar && place?.historial[Object.keys(place?.historial)[index]].fecha_observacion && <FormAforos />}
+        {actualizar && place?.historial[Object.keys(place?.historial)[index]].tipo_incidente && <FormDenuncias />}
 
-        <div ref={cardRef} style={{ display: "none", zIndex: "1", position: "fixed", right: "0", top: "0", width: "720px", height: "442px", fontFamily:"Poppins",backgroundImage:`url(${imagen})`}}>
-            {/* <img src={imagen} alt="Imagen de la tarjeta" width={600} height={350} /> */}
-            <div style={{display:"flex",alignItems:"center",flexDirection:"column",width:"100%"}}>
+        <div ref={cardRef} style={{ display: "none", zIndex: "1", position: "fixed", right: "0", top: "0", width: "720px", height: "442px", fontFamily: "Poppins", backgroundImage: `url(${imagen})` }}>
+          {/* <img src={imagen} alt="Imagen de la tarjeta" width={600} height={350} /> */}
+          <div style={{ display: "flex", alignItems: "center", flexDirection: "column", width: "100%" }}>
 
             {/* title banner */}
             <div style={{ padding: "10px 60px", margin: "50px 20px 20px", width: "60%", height: "53px", backgroundColor: "#15c0ea", borderRadius: "50px", display: "flex", alignItems: "center" }}>
               <h1 style={{ color: "white", paddingLeft: "20px", fontSize: "25px" }}>
-              {arregloOrd && arregloOrd[index].accesibilidad && "Biciparqueos en Bolivia"}
-              {arregloOrd && arregloOrd[index].nombre && "Servicio ciclista en Bolivia"}
-              {arregloOrd && arregloOrd[index].fecha_incidente && "Denuncia ciclista en Bolivia"}
-              {arregloOrd && arregloOrd[index].fecha_observacion && "Aforo ciclista en Bolivia"}
-                </h1>
+                {arregloOrd && arregloOrd[index].accesibilidad && "Biciparqueos en Bolivia"}
+                {arregloOrd && arregloOrd[index].nombre && "Servicio ciclista en Bolivia"}
+                {arregloOrd && arregloOrd[index].fecha_incidente && "Denuncia ciclista en Bolivia"}
+                {arregloOrd && arregloOrd[index].fecha_observacion && "Aforo ciclista en Bolivia"}
+              </h1>
             </div>
-            
-            {arregloOrd && arregloOrd[index].accesibilidad && <img src={biciparqueoImagen} alt="BiciparqueoImagen" height={150} style={{position: "absolute",right:"50px",top:"20px"}} />}
-            {arregloOrd && arregloOrd[index].nombre && <img src={servicioImagen} alt="ServicioImagen" height={140} style={{position: "absolute",right:"50px",top:"20px"}} />}
-            {arregloOrd && arregloOrd[index].fecha_incidente && <img src={denunciaImagen} alt="DenunciaImagen" height={140} style={{position: "absolute",right:"50px",top:"20px"}} />}
-            {arregloOrd && arregloOrd[index].fecha_observacion && <img src={aforoImagen} alt="DenunciaImagen" height={140} style={{position: "absolute",right:"50px",top:"20px"}} />}
-            </div>
+
+            {arregloOrd && arregloOrd[index].accesibilidad && <img src={biciparqueoImagen} alt="BiciparqueoImagen" height={150} style={{ position: "absolute", right: "50px", top: "20px" }} />}
+            {arregloOrd && arregloOrd[index].nombre && <img src={servicioImagen} alt="ServicioImagen" height={140} style={{ position: "absolute", right: "50px", top: "20px" }} />}
+            {arregloOrd && arregloOrd[index].fecha_incidente && <img src={denunciaImagen} alt="DenunciaImagen" height={140} style={{ position: "absolute", right: "50px", top: "20px" }} />}
+            {arregloOrd && arregloOrd[index].fecha_observacion && <img src={aforoImagen} alt="DenunciaImagen" height={140} style={{ position: "absolute", right: "50px", top: "20px" }} />}
+          </div>
           {/* box description */}
-          <div style={{ display: "flex", flexDirection: "column", width:"90%", marginLeft:"auto", marginRight:"auto"}}>
-            <div style={{padding:"5px"}}>
+          <div style={{ display: "flex", flexDirection: "column", width: "90%", marginLeft: "auto", marginRight: "auto" }}>
+            <div style={{ padding: "5px" }}>
               {/* biciparqueo */}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-evenly" }}>
                 <div>
@@ -217,29 +217,29 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
                   {arregloOrd && arregloOrd[index].sitioweb && <div className="" style={{ marginTop: "15px" }}><span className="valor-style"><QrGenerator url={arregloOrd[index].sitioweb} /></span></div>}
                 </div>
                 <div>
-                  {arregloOrd && arregloOrd[index].nombre && <div className="" style={{marginTop:"15px"}}><span className="propiedad-style">Nombre:</span> <span className="valor-style">{arregloOrd[index].nombre}</span></div>}
-                  {arregloOrd && arregloOrd[index].tipo && <div className="" style={{marginTop:"15px"}}><span className="propiedad-style">Tipo de servicio:</span> <span className="valor-style">{arregloOrd[index].tipo}</span></div>}
-                  
-                  {arregloOrd && arregloOrd[index].telefono && <div className="" style={{marginTop:"15px"}}><span className="propiedad-style">Telefono:</span> <span className="valor-style">{arregloOrd[index].telefono}</span></div>}
+                  {arregloOrd && arregloOrd[index].nombre && <div className="" style={{ marginTop: "15px" }}><span className="propiedad-style">Nombre:</span> <span className="valor-style">{arregloOrd[index].nombre}</span></div>}
+                  {arregloOrd && arregloOrd[index].tipo && <div className="" style={{ marginTop: "15px" }}><span className="propiedad-style">Tipo de servicio:</span> <span className="valor-style">{arregloOrd[index].tipo}</span></div>}
+
+                  {arregloOrd && arregloOrd[index].telefono && <div className="" style={{ marginTop: "15px" }}><span className="propiedad-style">Telefono:</span> <span className="valor-style">{arregloOrd[index].telefono}</span></div>}
 
                 </div>
               </div>
-        {/* Denuncia */}
-        <div style={{display:"flex", alignItems:"center", justifyContent:"space-evenly"}}>
-          <div>
-            {arregloOrd && arregloOrd[index].enlace && (
-            <div className="" style={{ marginTop: "15px" }}>
-              <span className="valor-style">
-                <QrGenerator url={arregloOrd[index].enlace} />
-              </span>
-            </div>
-            )}
-          </div>
-          <div>
-            {arregloOrd && arregloOrd[index].fecha_incidente && <div className="" style={{ marginTop: "15px" }}><span className="propiedad-style">Fecha:</span> <span className="valor-style">{arregloOrd[index].fecha_incidente}</span></div>}
-            {arregloOrd && arregloOrd[index].tipo_incidente && <div className="" style={{ marginTop: "15px" }}><span className="propiedad-style">Tipo de incidente:</span> <span className="valor-style">{arregloOrd[index].tipo_incidente}</span></div>}
-            </div>
-        </div>
+              {/* Denuncia */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-evenly" }}>
+                <div>
+                  {arregloOrd && arregloOrd[index].enlace && (
+                    <div className="" style={{ marginTop: "15px" }}>
+                      <span className="valor-style">
+                        <QrGenerator url={arregloOrd[index].enlace} />
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div>
+                  {arregloOrd && arregloOrd[index].fecha_incidente && <div className="" style={{ marginTop: "15px" }}><span className="propiedad-style">Fecha:</span> <span className="valor-style">{arregloOrd[index].fecha_incidente}</span></div>}
+                  {arregloOrd && arregloOrd[index].tipo_incidente && <div className="" style={{ marginTop: "15px" }}><span className="propiedad-style">Tipo de incidente:</span> <span className="valor-style">{arregloOrd[index].tipo_incidente}</span></div>}
+                </div>
+              </div>
               {/* Aforo */}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-evenly" }}>
                 <div>
@@ -259,17 +259,17 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
                 </div>
               </div>
             </div>
-            </div>
-          <div style={{ display: "flex", flexDirection: "row", alignItems:"end", justifyContent: "space-between", width: "80%", marginLeft: "auto", marginRight: "auto", padding:"0 60px"}}>
+          </div>
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "end", justifyContent: "space-between", width: "80%", marginLeft: "auto", marginRight: "auto", padding: "0 60px" }}>
             <div style={{ display: "flex", alignItems: "end" }}>
-              <p style={{color:"#15C0EA",fontFamily:"Poppins",fontWeight:"bold",fontSize:"1.5625rem",width:"420px"}}>
+              <p style={{ color: "#15C0EA", fontFamily: "Poppins", fontWeight: "bold", fontSize: "1.5625rem", width: "420px" }}>
                 ¡Usa tu bici, pedalea y comienza a subir BiciDatos!</p>
-              </div>
-            <div style={{ display: "flex", alignItems: "end", marginBottom: "30px" }}>
-                <img src={bicidatosImagen} alt="BiciDatosImagen" style={{display: "block"}} width={120} height={74.88} />
-              </div>
             </div>
-      </div>
+            <div style={{ display: "flex", alignItems: "end", marginBottom: "30px" }}>
+              <img src={bicidatosImagen} alt="BiciDatosImagen" style={{ display: "block" }} width={120} height={74.88} />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

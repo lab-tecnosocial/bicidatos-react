@@ -3,27 +3,20 @@ import "firebase/firestore";
 import "firebase/storage";
 import "firebase/auth";
 const firebaseConfig = {
-  apiKey: "AIzaSyBIuPb2AoFPhldY2IHU8blPjEOtIPSlcIE",
-
-  authDomain: "bicidatos-27f70.firebaseapp.com",
-
-  databaseURL: "https://bicidatos-27f70-default-rtdb.firebaseio.com",
-
-  projectId: "bicidatos-27f70",
-
-  storageBucket: "bicidatos-27f70.appspot.com",
-
-  messagingSenderId: "599460388932",
-
-  appId: "1:599460388932:web:8894895998f3bcc7f59c11",
-
-  measurementId: "G-YHTTPP449B"
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_DATABASE_URL,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
+  measurementId: import.meta.env.VITE_MEASUREMENT_ID
 
 };
-  
+
 firebase.initializeApp(firebaseConfig);
-const db=firebase.firestore();
+const db = firebase.firestore();
 export const storageRef = firebase.storage();
 export const provider = new firebase.auth.GoogleAuthProvider();
-export const auth =firebase.auth();
+export const auth = firebase.auth();
 export default db;
