@@ -67,7 +67,7 @@
 
 .leaflet-control-layers-overlays label:nth-of-type(1) {
   color: #006dff;
-  background-image: url("https://bicidatos.org/mapa/img/flotante-parqueo.svg");
+  background-image: url("https://bicidatos.org/mapa-assets/img/flotante-parqueo.svg");
   transition: opacity 0.5s ease-in-out;
 }
 
@@ -77,7 +77,7 @@
 
 .leaflet-control-layers-overlays label:nth-of-type(2) {
   color: #44740e;
-  background-image: url("https://bicidatos.org/mapa/img/flotante-taller.svg");
+  background-image: url("https://bicidatos.org/mapa-assets/img/flotante-taller.svg");
   transition: opacity 0.5s ease-in-out;
 }
 
@@ -87,7 +87,7 @@
 
 .leaflet-control-layers-overlays label:nth-of-type(3) {
   color: #e20000;
-  background-image: url("https://bicidatos.org/mapa/img/flotante-seguridad.svg");
+  background-image: url("https://bicidatos.org/mapa-assets/img/flotante-seguridad.svg");
   transition: opacity 0.5s ease-in-out;
 }
 
@@ -97,7 +97,7 @@
 
 .leaflet-control-layers-overlays label:nth-of-type(4) {
   color: #ffbb22;
-  background-image: url("https://bicidatos.org/mapa/img/flotante-aforos.svg");
+  background-image: url("https://bicidatos.org/mapa-assets/img/flotante-aforos.svg");
   transition: opacity 0.5s ease-in-out;
 }
 
@@ -107,7 +107,7 @@
 
 .leaflet-control-layers-overlays label:nth-of-type(5) {
   color: #569af4;
-  background-image: url("https://bicidatos.org/mapa/img/flotante-ruta.svg");
+  background-image: url("https://bicidatos.org/mapa-assets/img/flotante-ruta.svg");
   transition: opacity 0.5s ease-in-out;
 }
 
@@ -171,6 +171,7 @@ div.leaflet-control-zoom {
   right: 13px;
   position: absolute;
 }
+
 div.leaflet-control-zoom.left-zoom {
   top: 0;
   left: 13px;
@@ -195,7 +196,7 @@ a.MuiButtonBase-root {
 h6.MuiTypography-h6 {
   font-size: 0;
   margin-left: 80px;
-  background-image: url("http://localhost:3000/img/bicidatos_blanco_android.svg");
+  background-image: url("https://bicidatos.org/mapa-assets/img/bicidatos_blanco_android.svg");
   width: 86px;
   height: 56px;
   background-size: 82%;
@@ -240,7 +241,7 @@ h6.MuiTypography-h6 {
   }
 }
 
-@media (max-width: 375px) { 
+@media (max-width: 375px) {
   .leaflet-control-layers {
     width: 64px;
   }
@@ -250,12 +251,15 @@ h6.MuiTypography-h6 {
     flex-direction: column;
     align-items: center;
   }
+
   .leaflet-control-layers-overlays label {
     font-size: 0.7rem;
   }
+
   .leaflet-control-layers-overlays label span {
     width: auto;
   }
+
   .leaflet-left .leaflet-control {
     margin-left: 5px;
   }
