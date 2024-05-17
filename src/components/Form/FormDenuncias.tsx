@@ -348,5 +348,5 @@ interface PlaceFormDenunciasProps {
   tipoIncidente: string;
   descripcion: string;
   enlace: string;
-  fotografiaConf: any;
+  fotografiaConf: any; //Problema de las imágenes
 }

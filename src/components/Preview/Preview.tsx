@@ -108,7 +108,7 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
         (arregloOrd && arregloOrd[index].fecha_incidente &&
           <div
             className="preview__picture"
-            style={{ backgroundImage: `url(https://bicidatos.org/wp-content/uploads/2021/04/seguridad_cuadrado.png)` }}
+            style={{ backgroundImage: `url(/public/img/placeholderDenuncia.png)` }}
           ></div>)
 
         ||
@@ -116,7 +116,7 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
         (arregloOrd && arregloOrd[index].fecha_observacion &&
           <div
             className="preview__picture"
-            style={{ backgroundImage: `url(https://bicidatos.org/wp-content/uploads/2021/04/aforo_cuadrado.png)` }}
+            style={{ backgroundImage: `url(/public/img/placeholderAforo.png)` }}
           ></div>)
 
       }

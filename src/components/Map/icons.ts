@@ -3,8 +3,7 @@ import L from "leaflet";
 // Iconos de markers
 
 const iconoBiciparqueo = L.icon({
-    iconUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-parqueo-e1617504997591.png',
-    shadowUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-shadow.png',
+    iconUrl: '/public/img/iconoParqueo.png',
     iconSize: [35, 35],
     shadowSize: [30, 30],
     shadowAnchor: [8, 25],
@@ -13,8 +12,7 @@ const iconoBiciparqueo = L.icon({
   });
   
   const iconoServicio = L.icon({
-    iconUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-taller-e1617504970484.png',
-    shadowUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-shadow.png',
+    iconUrl: '/public/img/iconoServicio.png',
     iconSize: [35, 35],
     shadowSize: [30, 30],
     shadowAnchor: [8, 25],
@@ -23,8 +21,7 @@ const iconoBiciparqueo = L.icon({
   });
   
   const iconoDenuncia = L.icon({
-    iconUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-seguridad-e1617505231488.png',
-    shadowUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-shadow.png',
+    iconUrl: '/public/img/iconoDenuncia.png',
     iconSize: [35, 35],
     shadowSize: [30, 30],
     shadowAnchor: [8, 25],
@@ -33,8 +30,7 @@ const iconoBiciparqueo = L.icon({
   });
   
   const iconoAforo = L.icon({
-    iconUrl: 'https://bicidatos.org/wp-content/uploads/2021/04/location-aforos.png',
-    shadowUrl: 'https://bicidatos.org/wp-content/uploads/2021/03/location-shadow.png',
+    iconUrl: '/public/img/iconoAforo.png',
     iconSize: [35, 35],
     shadowSize: [30, 30],
     shadowAnchor: [8, 25],
