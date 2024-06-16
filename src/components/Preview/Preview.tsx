@@ -108,7 +108,7 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
         (arregloOrd && arregloOrd[index].fecha_incidente &&
           <div
             className="preview__picture"
-            style={{ backgroundImage: `url(/public/img/placeholderDenuncia.png)` }}
+            style={{ backgroundImage: `url(/img/placeholderDenuncia.png)` }}
           ></div>)
 
         ||
@@ -116,7 +116,7 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
         (arregloOrd && arregloOrd[index].fecha_observacion &&
           <div
             className="preview__picture"
-            style={{ backgroundImage: `url(/public/img/placeholderAforo.png)` }}
+            style={{ backgroundImage: `url(/img/placeholderAforo.png)` }}
           ></div>)
 
       }

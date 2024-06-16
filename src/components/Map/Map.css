@@ -107,7 +107,7 @@
 
 .leaflet-control-layers-overlays label:nth-of-type(5) {
   color: #569af4;
-  background-image: url(/public/img/iconoCiclovia.png);
+  background-image: url(/img/iconoCiclovia.png);
   transition: opacity 0.5s ease-in-out;
 }
 
