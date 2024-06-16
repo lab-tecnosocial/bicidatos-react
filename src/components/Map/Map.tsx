@@ -257,111 +257,111 @@ const Map = ({
 
   return (
     <div className="map__container">
-      
-        <div>
-          {modal && <ModalSelectorTipo selectedType={selectedType} options={selectedOptions} onClickClose={modalClose} handleFilterClick={handleFilterClick} />}
-          {loading ? <LinearProgress style={{ height: '0.5em' }} /> : null}
-          <MapContainer
-            center={defaultPosition}
-            zoom={6}
-            scrollWheelZoom={true}
-            style={{ height: "100vh" }}
-            zoomControl={true}
-          >
-            <FormDepartamento departamentos={departamentos} />
-            {/* <SearchField /> */}
-            {showSearchCoordinates && (<SearchCoordinates setShowSearchCoordinates={setShowSearchCoordinates} />) }
-            <LayersControl position="bottomleft" collapsed={false} >
-              <LayersControl.BaseLayer checked name="Base">
 
-                <TileLayer
-                  attribution='Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
-                  url="https://api.mapbox.com/styles/v1/labtecnosocial/ckmrvd5jx2gbu17p7atlk1xay/tiles/{z}/{x}/{y}?access_token=sk.eyJ1IjoibGFidGVjbm9zb2NpYWwiLCJhIjoiY2ttcnBlcG53MDl4ejJxcnMyc3N2dGpoYSJ9.MaXq1p4n25cMQ6gXIN14Eg" maxZoom={19} tileSize={512} zoomOffset={-1}
-                />
+      <div>
+        {modal && <ModalSelectorTipo selectedType={selectedType} options={selectedOptions} onClickClose={modalClose} handleFilterClick={handleFilterClick} />}
+        {loading ? <LinearProgress style={{ height: '0.5em' }} /> : null}
+        <MapContainer
+          center={defaultPosition}
+          zoom={6}
+          scrollWheelZoom={true}
+          style={{ height: "100vh" }}
+          zoomControl={true}
+        >
+          <FormDepartamento departamentos={departamentos} />
+          {/* <SearchField /> */}
+          {showSearchCoordinates && (<SearchCoordinates setShowSearchCoordinates={setShowSearchCoordinates} />)}
+          <LayersControl position="bottomleft" collapsed={false} >
+            <LayersControl.BaseLayer checked name="Base">
 
-              </LayersControl.BaseLayer>
+              <TileLayer
+                attribution='Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
+                url="https://api.mapbox.com/styles/v1/labtecnosocial/ckmrvd5jx2gbu17p7atlk1xay/tiles/{z}/{x}/{y}?access_token=sk.eyJ1IjoibGFidGVjbm9zb2NpYWwiLCJhIjoiY2ttcnBlcG53MDl4ejJxcnMyc3N2dGpoYSJ9.MaXq1p4n25cMQ6gXIN14Eg" maxZoom={19} tileSize={512} zoomOffset={-1}
+              />
 
-              <LayersControl.Overlay name="Biciparqueos">
-                <LayerGroup>
-                  {biciparqueos2.map((biciparqueo: any) =>
-                    <Marker
-                      key={biciparqueo.id}
-                      position={[biciparqueo.latitud, biciparqueo.longitud]}
-                      eventHandlers={{ click: () => showPreview(biciparqueo) }}
-                      icon={iconoBiciparqueo}
-                    >
-                      <Tooltip>Biciparqueo</Tooltip>
-                    </Marker>
-                  )
-                  }
-                </LayerGroup>
-              </LayersControl.Overlay>
+            </LayersControl.BaseLayer>
 
-              <LayersControl.Overlay name="Servicios">
-                <LayerGroup>
-                  {servicios2.map((servicio: any) =>
-                    <Marker
-                      key={servicio.id}
-                      position={[servicio.latitud, servicio.longitud]}
-                      eventHandlers={{ click: () => showPreview(servicio) }}
-                      icon={iconoServicio}
-                    >
-                      <Tooltip>Servicio</Tooltip>
-                    </Marker>
-                  )
-                  }
-                </LayerGroup>
-              </LayersControl.Overlay>
+            <LayersControl.Overlay name="Biciparqueos">
+              <LayerGroup>
+                {biciparqueos2.map((biciparqueo: any) =>
+                  <Marker
+                    key={biciparqueo.id}
+                    position={[biciparqueo.latitud, biciparqueo.longitud]}
+                    eventHandlers={{ click: () => showPreview(biciparqueo) }}
+                    icon={iconoBiciparqueo}
+                  >
+                    <Tooltip>Biciparqueo</Tooltip>
+                  </Marker>
+                )
+                }
+              </LayerGroup>
+            </LayersControl.Overlay>
 
-              <LayersControl.Overlay name="Denuncias">
-                <LayerGroup>
-                  {denuncias2.map((denuncia: any) =>
-                    <Marker
-                      key={denuncia.id}
-                      position={[denuncia.latitud, denuncia.longitud]}
-                      eventHandlers={{ click: () => showPreview(denuncia) }}
-                      icon={iconoDenuncia}
-                    >
-                      <Tooltip>Denuncia</Tooltip>
-                    </Marker>
-                  )
-                  }
-                </LayerGroup>
-              </LayersControl.Overlay>
+            <LayersControl.Overlay name="Servicios">
+              <LayerGroup>
+                {servicios2.map((servicio: any) =>
+                  <Marker
+                    key={servicio.id}
+                    position={[servicio.latitud, servicio.longitud]}
+                    eventHandlers={{ click: () => showPreview(servicio) }}
+                    icon={iconoServicio}
+                  >
+                    <Tooltip>Servicio</Tooltip>
+                  </Marker>
+                )
+                }
+              </LayerGroup>
+            </LayersControl.Overlay>
 
-              <LayersControl.Overlay name="Aforos">
-                <LayerGroup>
-                  {aforos2.map((aforo: any) =>
-                    <Marker
-                      key={aforo.id}
-                      position={[aforo.latitud, aforo.longitud]}
-                      eventHandlers={{ click: () => showPreview(aforo) }}
-                      icon={iconoAforo}
-                    >
-                      <Tooltip>Aforo</Tooltip>
-                    </Marker>
-                  )
-                  }
-                </LayerGroup>
-              </LayersControl.Overlay>
+            <LayersControl.Overlay name="Denuncias">
+              <LayerGroup>
+                {denuncias2.map((denuncia: any) =>
+                  <Marker
+                    key={denuncia.id}
+                    position={[denuncia.latitud, denuncia.longitud]}
+                    eventHandlers={{ click: () => showPreview(denuncia) }}
+                    icon={iconoDenuncia}
+                  >
+                    <Tooltip>Denuncia</Tooltip>
+                  </Marker>
+                )
+                }
+              </LayerGroup>
+            </LayersControl.Overlay>
 
-              <LayersControl.Overlay name="Ciclovías">
-                {Object.keys(ciclovias).length > 0 && <GeoJSON data={ciclovias} />}
-              </LayersControl.Overlay>
+            <LayersControl.Overlay name="Aforos">
+              <LayerGroup>
+                {aforos2.map((aforo: any) =>
+                  <Marker
+                    key={aforo.id}
+                    position={[aforo.latitud, aforo.longitud]}
+                    eventHandlers={{ click: () => showPreview(aforo) }}
+                    icon={iconoAforo}
+                  >
+                    <Tooltip>Aforo</Tooltip>
+                  </Marker>
+                )
+                }
+              </LayerGroup>
+            </LayersControl.Overlay>
 
-            </LayersControl>
-            <MapEvents />
+            <LayersControl.Overlay name="Ciclovías">
+              {Object.keys(ciclovias).length > 0 && <GeoJSON data={ciclovias} style={() => ({ color: '#5C616C' })} />}
+            </LayersControl.Overlay>
 
-            {(!isNaN(lat) && !isNaN(lng)) && (
+          </LayersControl>
+          <MapEvents />
+
+          {(!isNaN(lat) && !isNaN(lng)) && (
             <Marker
-              position={[lat,lng]}
+              position={[lat, lng]}
               eventHandlers={{ click: toggleForm }}
             >
             </Marker>
-            )}
-            <AddMarker />
-          </MapContainer>
-        </div>
+          )}
+          <AddMarker />
+        </MapContainer>
+      </div>
     </div>
   );
 };
@@ -381,7 +381,7 @@ const mapDispatchToProps = (dispatch: any) => {
       dispatch(setPlacePreviewVisibility(payload)),
     setPlaceForPreview: (payload: any) =>
       dispatch(setSelectedPlace(payload)),
-    setPlaceFormVisibility: (payload:any) =>
+    setPlaceFormVisibility: (payload: any) =>
       dispatch(setPlaceFormVisibility(payload)),
     setLocation: (lat: number, lng: number) =>
       dispatch(setPrePlaceLocation({ lat, lng })),
