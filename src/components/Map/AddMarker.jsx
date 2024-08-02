@@ -7,9 +7,9 @@ import { setPlacePreviewVisibility } from "../../store/actions";
 import Alert from "./Alert";
 import { useNavigate } from "react-router-dom";
 
-const AddMarker = ({ formIsOpen, toggleForm, setLocation, closePreview, place, nullPlace, closeForm }: any) => {
+const AddMarker = ({ formIsOpen, toggleForm, setLocation, closePreview, place, nullPlace, closeForm }) => {
   const navigate = useNavigate();
-  const [position, setPosition] = useState(null as unknown as LatLngExpression);
+  const [position, setPosition] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
 
   useMapEvents({
@@ -59,7 +59,7 @@ const AddMarker = ({ formIsOpen, toggleForm, setLocation, closePreview, place, n
   );
 };
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state) => {
   const { places } = state;
   return {
     formIsOpen: places.placeFormIsVisible,
@@ -67,10 +67,10 @@ const mapStateToProps = (state: any) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    toggleForm: (payload: boolean) => dispatch(setPlaceFormVisibility(payload)),
-    setLocation: (payload: LatLng) => dispatch(setPrePlaceLocation(payload)),
+    toggleForm: (payload) => dispatch(setPlaceFormVisibility(payload)),
+    setLocation: (payload) => dispatch(setPrePlaceLocation(payload)),
     nullPlace: () => dispatch(setSelectedPlace(null)),
     closePreview: () => dispatch(setPlacePreviewVisibility(false)),
     closeForm: () => dispatch(setPlaceFormVisibility(false)),

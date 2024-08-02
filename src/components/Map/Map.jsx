@@ -31,28 +31,28 @@ const Map = ({
   setPlaceForPreview,
   setPlaceFormVisibility,
   setLocation
-}: any) => {
+}) => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const lat = parseFloat(params.get("lat"));
   const lng = parseFloat(params.get("lng"));
 
-  const defaultPosition: LatLngExpression = [-17.396, -66.153]; // Cochabamba
-  const [aforos2, setAforos2] = useState([] as any);
-  const [biciparqueos2, setBiciparqueos2] = useState([] as any);
-  const [servicios2, setServicios2] = useState([] as any);
-  const [denuncias2, setDenuncias2] = useState([] as any);
+  const defaultPosition = [-17.396, -66.153]; // Cochabamba
+  const [aforos2, setAforos2] = useState([]);
+  const [biciparqueos2, setBiciparqueos2] = useState([]);
+  const [servicios2, setServicios2] = useState([]);
+  const [denuncias2, setDenuncias2] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [ciclovias, setCiclovias] = useState({} as any);
+  const [ciclovias, setCiclovias] = useState({});
   const [modal, setModal] = useState(false);
-  const [selectedType, setSelectedType] = useState<Type>('servicios');
+  const [selectedType, setSelectedType] = useState < Type > ('servicios');
   const [showSearchCoordinates, setShowSearchCoordinates] = useState(true);
 
   const modalClose = () => {
     setModal(false);
   }
 
-  const handleFilterClick = async (servicesSelect: string[]) => {
+  const handleFilterClick = async (servicesSelect) => {
     let dbRef;
     let setFunction;
 
@@ -82,7 +82,7 @@ const Map = ({
       const datosFiltrados = arr.filter(obj => {
         const historialObj = Object.values(obj.historial)[0];
         if (typeof historialObj === 'object' && historialObj !== null) {
-          const filtrarPorTipo = (tipoControl: string) => {
+          const filtrarPorTipo = (tipoControl) => {
             if (tipoControl in historialObj) {
               const tipo = historialObj[tipoControl];
               if (typeof tipo === 'string') {
@@ -162,7 +162,7 @@ const Map = ({
       setLoading(false);
       return;
     }
-    let arr: any = [];
+    let arr = [];
     snapshot.forEach(doc => {
       arr.push(doc.data());
     });
@@ -179,7 +179,7 @@ const Map = ({
       setLoading(false);
       return;
     }
-    let arr: any = [];
+    let arr = [];
     snapshot.forEach(doc => {
       arr.push(doc.data());
     });
@@ -198,7 +198,7 @@ const Map = ({
       setLoading(false);
       return;
     }
-    let arr: any = [];
+    let arr = [];
     snapshot.forEach(doc => {
       arr.push(doc.data());
     });
@@ -216,7 +216,7 @@ const Map = ({
       setLoading(false);
       return;
     }
-    let arr: any = [];
+    let arr = [];
     snapshot.forEach(doc => {
       arr.push(doc.data());
     });
@@ -235,7 +235,7 @@ const Map = ({
     return ciclovias;
   }
 
-  const showPreview = (place: any) => {
+  const showPreview = (place) => {
     if (isVisible) {
       togglePreview(false);
       setPlaceForPreview(null);
@@ -248,7 +248,7 @@ const Map = ({
     }
   };
 
-  const showPlace = (place: any) => {
+  const showPlace = (place) => {
     setPlaceForPreview(place);
     togglePreview(true);
   };
@@ -283,7 +283,7 @@ const Map = ({
 
             <LayersControl.Overlay name="Biciparqueos">
               <LayerGroup>
-                {biciparqueos2.map((biciparqueo: any) =>
+                {biciparqueos2.map((biciparqueo) =>
                   <Marker
                     key={biciparqueo.id}
                     position={[biciparqueo.latitud, biciparqueo.longitud]}
@@ -299,7 +299,7 @@ const Map = ({
 
             <LayersControl.Overlay name="Servicios">
               <LayerGroup>
-                {servicios2.map((servicio: any) =>
+                {servicios2.map((servicio) =>
                   <Marker
                     key={servicio.id}
                     position={[servicio.latitud, servicio.longitud]}
@@ -315,7 +315,7 @@ const Map = ({
 
             <LayersControl.Overlay name="Denuncias">
               <LayerGroup>
-                {denuncias2.map((denuncia: any) =>
+                {denuncias2.map((denuncia) =>
                   <Marker
                     key={denuncia.id}
                     position={[denuncia.latitud, denuncia.longitud]}
@@ -331,7 +331,7 @@ const Map = ({
 
             <LayersControl.Overlay name="Aforos">
               <LayerGroup>
-                {aforos2.map((aforo: any) =>
+                {aforos2.map((aforo) =>
                   <Marker
                     key={aforo.id}
                     position={[aforo.latitud, aforo.longitud]}
@@ -366,7 +366,7 @@ const Map = ({
   );
 };
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state) => {
   const { places } = state;
   return {
     isVisible: places.placePreviewsIsVisible,
@@ -375,15 +375,15 @@ const mapStateToProps = (state: any) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    togglePreview: (payload: boolean) =>
+    togglePreview: (payload) =>
       dispatch(setPlacePreviewVisibility(payload)),
-    setPlaceForPreview: (payload: any) =>
+    setPlaceForPreview: (payload) =>
       dispatch(setSelectedPlace(payload)),
-    setPlaceFormVisibility: (payload: any) =>
+    setPlaceFormVisibility: (payload) =>
       dispatch(setPlaceFormVisibility(payload)),
-    setLocation: (lat: number, lng: number) =>
+    setLocation: (lat, lng) =>
       dispatch(setPrePlaceLocation({ lat, lng })),
   };
 };

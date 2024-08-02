@@ -6,24 +6,21 @@ import { useMap } from 'react-leaflet';
 import './SearchCoordinates.css';
 import Alert from './Alert';
 
-interface SearchCoordinatesProps {
-  setShowSearchCoordinates: (show: boolean) => void;
-}
 
-const SearchCoordinates = ({ setShowSearchCoordinates }: SearchCoordinatesProps) => {
-  const formRef = useRef<HTMLFormElement | null>(null);
+const SearchCoordinates = ({ setShowSearchCoordinates }) => {
+  const formRef = useRef < HTMLFormElement | null > (null);
   const navigate = useNavigate();
-  const mapRef = useRef<L.Map | null>(null);
+  const mapRef = useRef < L.Map | null > (null);
   const map = useMap();
   const [coordinates, setCoordinates] = useState('');
   const [error, setError] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e) => {
     setCoordinates(e.target.value);
     setError('');
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!coordinates) {
@@ -110,7 +107,7 @@ const SearchCoordinates = ({ setShowSearchCoordinates }: SearchCoordinatesProps)
       >
         <div>
           <TextField
-            style={{textAlign:"center"}}
+            style={{ textAlign: "center" }}
             label='Ingrese la coordenada:'
             variant='filled'
             value={coordinates}

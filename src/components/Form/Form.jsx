@@ -15,16 +15,13 @@ import { useNavigate } from 'react-router-dom';
 const Form = ({
   isVisible,
   closeForm,
-}: {
-  isVisible: boolean;
-  closeForm: Function;
 }) => {
 
- 
+
   const [selectedForm, setSelectedForm] = useState('');
   const navigate = useNavigate();
 
-  const handleChange = (e: any) => {
+  const handleChange = (e) => {
     setSelectedForm(e.target.value);
   };
 
@@ -47,43 +44,43 @@ const Form = ({
         </span>
         <span className="form__header__title">Añadir punto</span>
       </div>
-     
-        <form>
-            <div className="formGroup">
-              <div className="formGroupInput">
-                <label htmlFor="selectForm">Tipo de reporte</label>
-                <select id="selectForm" name="selectForm" onChange={handleChange}>
-                  <option hidden >Selecciona una opción</option>
-                  <option value="biciparqueos">Biciparqueos</option>
-                  <option value="servicios">Servicios</option>
-                  <option value="denuncias">Denuncias</option>
-                  <option value="aforos">Aforos</option>
-                </select>
-              </div>
-            </div>
-            </form>
-     
-      { selectedForm === 'biciparqueos' && <FormBiciparqueos /> }
-      { selectedForm === 'servicios' && <FormServicios /> }
-      { selectedForm === 'denuncias' && <FormDenuncias /> }
-      { selectedForm === 'aforos' && <FormAforos /> }
+
+      <form>
+        <div className="formGroup">
+          <div className="formGroupInput">
+            <label htmlFor="selectForm">Tipo de reporte</label>
+            <select id="selectForm" name="selectForm" onChange={handleChange}>
+              <option hidden >Selecciona una opción</option>
+              <option value="biciparqueos">Biciparqueos</option>
+              <option value="servicios">Servicios</option>
+              <option value="denuncias">Denuncias</option>
+              <option value="aforos">Aforos</option>
+            </select>
+          </div>
+        </div>
+      </form>
+
+      {selectedForm === 'biciparqueos' && <FormBiciparqueos />}
+      {selectedForm === 'servicios' && <FormServicios />}
+      {selectedForm === 'denuncias' && <FormDenuncias />}
+      {selectedForm === 'aforos' && <FormAforos />}
     </div>
 
   );
 };
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state) => {
   const { places } = state;
   return {
     isVisible: places.placeFormIsVisible,
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     closeForm: () =>
       dispatch(setPlaceFormVisibility(false))
-    }
-  };
+  }
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);

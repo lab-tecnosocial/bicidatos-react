@@ -31,12 +31,6 @@ const Form = ({
   closeForm,
   addNewPlace,
   placeSelect
-}: {
-  isVisible: boolean;
-  position: LatLng;
-  closeForm: Function;
-  addNewPlace: Function;
-  placeSelect: any;
 }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
@@ -70,8 +64,8 @@ const Form = ({
 
   const fotoRef = useRef(null);
 
-  const validator = (values: PlaceFormBiciparqueosProps) => {
-    const errors: any = {};
+  const validator = (values) => {
+    const errors = {};
     if (!values.accesibilidad) {
       errors.accesibilidad = "Requerido";
     }
@@ -95,7 +89,7 @@ const Form = ({
     return errors;
   };
 
-  const handleOnSubmit = (values: PlaceFormBiciparqueosProps, actions) => {
+  const handleOnSubmit = (values, actions) => {
     if (user) {
       if (placeSelect == null) {
         const newBiciparqueo = {
@@ -124,7 +118,7 @@ const Form = ({
     }
 
   }
-  const uploadPhotoAndData = (object: any) => {
+  const uploadPhotoAndData = (object) => {
     setLoading(true);
     const map = {
       correo_usuario: user.email,
@@ -166,7 +160,7 @@ const Form = ({
         })
       })
   }
-  const formaterBiciparqueo = (bici: any, urlImage: string) => {
+  const formaterBiciparqueo = (bici, urlImage) => {
     let idBici = db.collection("biciparqueos2").doc().id;
     let data = {
       id: idBici,
@@ -181,7 +175,7 @@ const Form = ({
     };
     return data;
   }
-  const updateBiciparqueo = (actualizacion: any, idPunto: any) => {
+  const updateBiciparqueo = (actualizacion, idPunto) => {
     setLoading(true);
     const map = {
       correo_usuario: user.email,
@@ -269,7 +263,7 @@ const Form = ({
                 <div className="formGroupInput">
                   <label htmlFor="fotografia">Fotografía</label>
                   <input id="fotografia" name="fotografia" type="file" className="form-control" onChange={(event) => {
-                    setFieldValue("fotografia", event.currentTarget.files![0]);
+                    setFieldValue("fotografia", event.currentTarget.files[0]);
                   }} ref={fotoRef} />
                 </div>
                 <div className="errors">{errors.fotografia}</div>
@@ -285,32 +279,23 @@ const Form = ({
   );
 };
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state) => {
   const { places } = state;
   return {
     isVisible: places.placeFormIsVisible,
-    position: places.prePlacePosition as LatLng,
+    position: places.prePlacePosition,
     placeSelect: places.selectedPlace
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     closeForm: () =>
       dispatch(setPlaceFormVisibility(false)),
-    addNewPlace: (place: any) => {
+    addNewPlace: (place) => {
       dispatch(addNewPlaceAction(place))
     }
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);
-
-interface PlaceFormBiciparqueosProps {
-  [key: string]: string;
-  tipo: string;
-  accesibilidad: string;
-  senalizacion: string;
-  seguridadPercibida: string;
-  fotografia?: any;
-}

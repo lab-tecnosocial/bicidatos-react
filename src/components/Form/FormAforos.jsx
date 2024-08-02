@@ -39,12 +39,6 @@ const Form = ({
   closeForm,
   addNewPlace,
   placeSelect
-}: {
-  isVisible: boolean;
-  position: LatLng;
-  closeForm: Function;
-  addNewPlace: Function;
-  placeSelect: any;
 }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
@@ -71,8 +65,8 @@ const Form = ({
     numHombres: 0
   };
 
-  const validator = (values: PlaceFormAforosProps) => {
-    const errors: any = {};
+  const validator = (values) => {
+    const errors = {};
     if (!values.fecha) {
       errors.fecha = "Requerido";
     }
@@ -89,7 +83,7 @@ const Form = ({
     return errors;
   };
 
-  const handleOnSubmit = (values: PlaceFormAforosProps, actions: any) => {
+  const handleOnSubmit = (values, actions) => {
     if (user) {
       if (placeSelect == null) {
         const newAforo = {
@@ -119,7 +113,7 @@ const Form = ({
     }
 
   }
-  const uploadData = (object: any) => {
+  const uploadData = (object) => {
     setLoading(true);
     const map = {
       nombre_usuario: user.displayName,
@@ -165,7 +159,7 @@ const Form = ({
         console.log(error)
       )
   }
-  const formaterAforo = (afo: any) => {
+  const formaterAforo = (afo) => {
     let idafo = db.collection("aforos2").doc().id;
     let data = {
       id: idafo,
@@ -182,7 +176,7 @@ const Form = ({
     };
     return data;
   }
-  const updateAforo = (actualizacion: any, idPunto: any) => {
+  const updateAforo = (actualizacion, idPunto) => {
     setLoading(true);
     const map = {
       correo_usuario: user.email,
@@ -229,128 +223,118 @@ const Form = ({
         >
           {({ errors, touched, isValidating, setFieldValue, values }) => (
 
-              <FormikForm>
-                <div className="formGroup">
-                  <div className="formGroupInput">
-                    <label htmlFor="fecha">Fecha</label>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
-                      <Field
-                        autoOk={true}
-                        cancelLabel="Cancelar"
-                        component={DatePicker}
-                        id="fecha"
-                        name="fecha"
-                        format="dd-MM-yyyy"
-                        value={values.fecha}
-                        invalidDateMessage=""
-                        placeholder=""
-                        onChange={
-                          value => { setFieldValue("fecha", value) }
-                        } />
-                    </MuiPickersUtilsProvider>
+            <FormikForm>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="fecha">Fecha</label>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
+                    <Field
+                      autoOk={true}
+                      cancelLabel="Cancelar"
+                      component={DatePicker}
+                      id="fecha"
+                      name="fecha"
+                      format="dd-MM-yyyy"
+                      value={values.fecha}
+                      invalidDateMessage=""
+                      placeholder=""
+                      onChange={
+                        value => { setFieldValue("fecha", value) }
+                      } />
+                  </MuiPickersUtilsProvider>
 
-                  </div>
-                  <div className="errors">{errors.fecha}</div>
                 </div>
-                <div className="formGroup">
-                  <div className="formGroupInput">
-                    <label htmlFor="tiempoInicio">Tiempo de inicio</label>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <Field
-                        autoOk={true}
-                        component={TimePicker}
-                        id="tiempoInicio"
-                        name="tiempoInicio"
-                        value={values.tiempoInicio}
-                        invalidDateMessage=""
-                        placeholder=""
-                        ampm={false}
-                        onChange={
-                          value => { setFieldValue("tiempoInicio", value) }
-                        } />
-                    </MuiPickersUtilsProvider>
-                  </div>
-                  <div className="errors">{errors.tiempoInicio}</div>
+                <div className="errors">{errors.fecha}</div>
+              </div>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="tiempoInicio">Tiempo de inicio</label>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <Field
+                      autoOk={true}
+                      component={TimePicker}
+                      id="tiempoInicio"
+                      name="tiempoInicio"
+                      value={values.tiempoInicio}
+                      invalidDateMessage=""
+                      placeholder=""
+                      ampm={false}
+                      onChange={
+                        value => { setFieldValue("tiempoInicio", value) }
+                      } />
+                  </MuiPickersUtilsProvider>
                 </div>
-                <div className="formGroup">
-                  <div className="formGroupInput">
-                    <label htmlFor="tiempoFin">Tiempo de fin</label>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <Field
-                        autoOk={true}
-                        component={TimePicker}
-                        id="tiempoFin"
-                        name="tiempoFin"
-                        value={values.tiempoFin}
-                        invalidDateMessage=""
-                        placeholder=""
-                        ampm={false}
-                        onChange={
-                          value => { setFieldValue("tiempoFin", value) }
-                        } />
-                    </MuiPickersUtilsProvider>
-                  </div>
-                  <div className="errors">{errors.tiempoFin}</div>
+                <div className="errors">{errors.tiempoInicio}</div>
+              </div>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="tiempoFin">Tiempo de fin</label>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <Field
+                      autoOk={true}
+                      component={TimePicker}
+                      id="tiempoFin"
+                      name="tiempoFin"
+                      value={values.tiempoFin}
+                      invalidDateMessage=""
+                      placeholder=""
+                      ampm={false}
+                      onChange={
+                        value => { setFieldValue("tiempoFin", value) }
+                      } />
+                  </MuiPickersUtilsProvider>
                 </div>
-                <div className="formGroup">
-                  <div className="formGroupInput">
-                    <label htmlFor="numCiclistas">Número de ciclistas observados</label>
-                    <Field id="numCiclistas" name="numCiclistas" type="number" min="1" />
-                  </div>
-                  <div className="errors"> {errors.numCiclistas}</div>
+                <div className="errors">{errors.tiempoFin}</div>
+              </div>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="numCiclistas">Número de ciclistas observados</label>
+                  <Field id="numCiclistas" name="numCiclistas" type="number" min="1" />
                 </div>
-                <div className="formGroup">
-                  <div className="formGroupInput">
-                    <label htmlFor="numMujeres">Número de mujeres</label>
-                    <Field id="numMujeres" name="numMujeres" type="number" min="0" />
-                  </div>
-                  <div className="errors">{errors.numMujeres}</div>
+                <div className="errors"> {errors.numCiclistas}</div>
+              </div>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="numMujeres">Número de mujeres</label>
+                  <Field id="numMujeres" name="numMujeres" type="number" min="0" />
                 </div>
-                <div className="formGroup">
-                  <div className="formGroupInput">
-                    <label htmlFor="numHombres">Número de hombres</label>
-                    <Field id="numHombres" name="numHombres" type="number" min="0" />
-                  </div>
-                  <div className="errors">{errors.numHombres}</div>
+                <div className="errors">{errors.numMujeres}</div>
+              </div>
+              <div className="formGroup">
+                <div className="formGroupInput">
+                  <label htmlFor="numHombres">Número de hombres</label>
+                  <Field id="numHombres" name="numHombres" type="number" min="0" />
                 </div>
+                <div className="errors">{errors.numHombres}</div>
+              </div>
 
-                <div className="button__container">
-                  <button className="form__button" type="submit">Enviar</button>
-                </div>
-              </FormikForm>
+              <div className="button__container">
+                <button className="form__button" type="submit">Enviar</button>
+              </div>
+            </FormikForm>
           )}
         </Formik>
       </div>
   );
 };
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state) => {
   const { places } = state;
   return {
     isVisible: places.placeFormIsVisible,
-    position: places.prePlacePosition as LatLng,
+    position: places.prePlacePosition,
     placeSelect: places.selectedPlace
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     closeForm: () =>
       dispatch(setPlaceFormVisibility(false)),
-    addNewPlace: (place: any) => {
+    addNewPlace: (place) => {
       dispatch(addNewPlaceAction(place))
     }
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);
-
-interface PlaceFormAforosProps {
-  tipo: string;
-  fecha: string;
-  tiempoInicio: string;
-  tiempoFin: string;
-  numCiclistas: number;
-  numMujeres: number;
-  numHombres: number;
-}

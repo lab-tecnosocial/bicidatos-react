@@ -26,7 +26,7 @@ import { display } from "html2canvas/dist/types/css/property-descriptors/display
 import QrGenerator from "./QrGenerator";
 import { Tooltip } from '@material-ui/core';
 
-const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
+const Preview = ({ isVisible, place, closePreview, closeForm }) => {
   const cardRef = useRef(null);
   const [index, setIndex] = useState(0);
   const [actualizar, setActualizar] = useState(false);
@@ -60,7 +60,7 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
   const incrementIndex = () => setIndex(prevIndex => prevIndex + 1);
   const decrementIndex = () => setIndex(prevIndex => prevIndex - 1);
 
-  const ordenarPorFecha = (objeto: any) => {
+  const ordenarPorFecha = (objeto) => {
     let x = Object.keys(objeto.historial).map(key => objeto.historial[key]);
 
     let y = x.sort((a, b) => {
@@ -276,12 +276,12 @@ const Preview = ({ isVisible, place, closePreview, closeForm }: any) => {
 };
 
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state) => {
   const { places } = state;
   return { isVisible: places.placePreviewsIsVisible, place: places.selectedPlace };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     closePreview: () =>
       dispatch(setPlacePreviewVisibility(false)),

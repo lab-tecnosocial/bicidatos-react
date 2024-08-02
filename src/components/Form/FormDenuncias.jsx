@@ -39,12 +39,6 @@ const Form = ({
   closeForm,
   addNewPlace,
   placeSelect
-}: {
-  isVisible: boolean;
-  position: LatLng;
-  closeForm: Function;
-  addNewPlace: Function;
-  placeSelect: any;
 }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
@@ -81,8 +75,8 @@ const Form = ({
 
   const fotoRef = useRef(null);
 
-  const validator = (values: PlaceFormDenunciasProps) => {
-    const errors: any = {};
+  const validator = (values) => {
+    const errors = {};
     if (!values.fecha) {
       errors.fecha = "Requerido";
     }
@@ -104,7 +98,7 @@ const Form = ({
     return errors;
   };
 
-  const handleOnSubmit = (values: PlaceFormDenunciasProps, actions: any) => {
+  const handleOnSubmit = (values, actions) => {
     if (user) {
       if (placeSelect == null) {
         const newDenuncia = {
@@ -135,7 +129,7 @@ const Form = ({
     }
 
   }
-  const uploadPhotoAndData = (object: any) => {
+  const uploadPhotoAndData = (object) => {
     setLoading(true);
     //Subir la imagen a Storage para obtener la url de la imagen
     const uploadTask = storageRef.ref(`imagenesDenuncias/${new Date().getTime() + "_" + object.fotografiaConf.name}`)
@@ -176,7 +170,7 @@ const Form = ({
         })
       })
   }
-  const formaterDenuncia = (denu: any) => {
+  const formaterDenuncia = (denu) => {
     let iddenu = db.collection("denuncias2").doc().id;
     let data = {
       id: iddenu,
@@ -191,7 +185,7 @@ const Form = ({
     };
     return data;
   }
-  const updateDenuncia = (actualizacion: any, idPunto: any) => {
+  const updateDenuncia = (actualizacion, idPunto) => {
     setLoading(true);
     //Subir la imagen a Storage para obtener la url de la imagen
     const uploadTask = storageRef.ref(`imagenesDenuncias/${new Date().getTime() + "_" + actualizacion.fotografiaConf.name}`)
@@ -248,25 +242,25 @@ const Form = ({
               <div className="formGroup">
                 <div className="formGroupInput">
                   <label htmlFor="fecha">Fecha del incidente</label>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
-                      <Field
-                        autoOk
-                        cancelLabel="Cancelar"
-                        component={DatePicker}
-                        id="fecha"
-                        name="fecha"
-                        value={values.fecha}
-                        format="dd-MM-yyyy"
-                        invalidDateMessage=""
-                        placeholder=""
-                        maxDate={new Date()}
-                        maxDateMessage="La fecha no puede estar en el futuro"
-                        onChange={
-                          value => {
-                            setFieldValue("fecha", value)
-                          }
-                        } />
-                    </MuiPickersUtilsProvider>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
+                    <Field
+                      autoOk
+                      cancelLabel="Cancelar"
+                      component={DatePicker}
+                      id="fecha"
+                      name="fecha"
+                      value={values.fecha}
+                      format="dd-MM-yyyy"
+                      invalidDateMessage=""
+                      placeholder=""
+                      maxDate={new Date()}
+                      maxDateMessage="La fecha no puede estar en el futuro"
+                      onChange={
+                        value => {
+                          setFieldValue("fecha", value)
+                        }
+                      } />
+                  </MuiPickersUtilsProvider>
                 </div>
                 <div className="errors">{errors.fecha}</div>
               </div>
@@ -304,7 +298,7 @@ const Form = ({
                 <div className="formGroupInput">
                   <label htmlFor="fotografiaConf">Fotografía</label>
                   <input id="fotografiaConf" name="fotografiaConf" type="file" className="form-control" onChange={(event) => {
-                    setFieldValue("fotografiaConf", event.currentTarget.files![0]);
+                    setFieldValue("fotografiaConf", event.currentTarget.files[0]);
                   }} ref={fotoRef} />
                 </div>
                 <div className="errors">{errors.fotografiaConf}</div>
@@ -320,33 +314,23 @@ const Form = ({
   );
 };
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state) => {
   const { places } = state;
   return {
     isVisible: places.placeFormIsVisible,
-    position: places.prePlacePosition as LatLng,
+    position: places.prePlacePosition,
     placeSelect: places.selectedPlace
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     closeForm: () =>
       dispatch(setPlaceFormVisibility(false)),
-    addNewPlace: (place: any) => {
+    addNewPlace: (place) => {
       dispatch(addNewPlaceAction(place))
     }
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);
-
-interface PlaceFormDenunciasProps {
-  [key: string]: string;
-  tipo: string;
-  fecha: string;
-  tipoIncidente: string;
-  descripcion: string;
-  enlace: string;
-  fotografiaConf: any; //Problema de las imágenes
-}

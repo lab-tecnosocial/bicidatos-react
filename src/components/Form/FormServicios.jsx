@@ -27,12 +27,6 @@ const Form = ({
   closeForm,
   addNewPlace,
   placeSelect
-}: {
-  isVisible: boolean;
-  position: LatLng;
-  closeForm: Function;
-  addNewPlace: Function;
-  placeSelect: any;
 }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
@@ -70,8 +64,8 @@ const Form = ({
 
   const fotoRef = useRef(null);
 
-  const validator = (values: PlaceFormServiciosProps) => {
-    const errors: any = {};
+  const validator = (values) => {
+    const errors = {};
     if (!values.nombre) {
       errors.nombre = "Requerido";
     }
@@ -105,7 +99,7 @@ const Form = ({
     return errors;
   };
 
-  const handleOnSubmit = (values: PlaceFormServiciosProps, actions: any) => {
+  const handleOnSubmit = (values, actions) => {
     if (user) {
 
       if (placeSelect == null) {
@@ -138,7 +132,7 @@ const Form = ({
     }
 
   }
-  const uploadPhotoAndData = (object: any) => {
+  const uploadPhotoAndData = (object) => {
     setLoading(true);
     const map = {
       correo_usuario: user.email,
@@ -182,7 +176,7 @@ const Form = ({
         })
       })
   }
-  const formaterServicio = (serv: any, urlImage: string) => {
+  const formaterServicio = (serv, urlImage) => {
     let idserv = db.collection("servicios2").doc().id;
     let data = {
       id: idserv,
@@ -199,7 +193,7 @@ const Form = ({
     };
     return data;
   }
-  const updateServicio = (actualizacion: any, idPunto: any) => {
+  const updateServicio = (actualizacion, idPunto) => {
     setLoading(true);
     const map = {
       correo_usuario: user.email,
@@ -298,7 +292,7 @@ const Form = ({
                 <div className="formGroupInput">
                   <label htmlFor="fotografia">Fotografía</label>
                   <input id="fotografia" name="fotografia" type="file" className="form-control" onChange={(event) => {
-                    setFieldValue("fotografia", event.currentTarget.files![0]);
+                    setFieldValue("fotografia", event.currentTarget.files[0]);
                   }} ref={fotoRef} />
                 </div>
                 <div className="errors">{errors.fotografia}</div>
@@ -314,20 +308,20 @@ const Form = ({
   );
 };
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state) => {
   const { places } = state;
   return {
     isVisible: places.placeFormIsVisible,
-    position: places.prePlacePosition as LatLng,
+    position: places.prePlacePosition,
     placeSelect: places.selectedPlace
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     closeForm: () =>
       dispatch(setPlaceFormVisibility(false)),
-    addNewPlace: (place: any) => {
+    addNewPlace: (place) => {
       dispatch(addNewPlaceAction(place))
     }
   };
@@ -335,13 +329,3 @@ const mapDispatchToProps = (dispatch: any) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);
 
-interface PlaceFormServiciosProps {
-  [key: string]: string;
-  tipo: string;
-  nombre: string;
-  tipoServicio: string;
-  descripcion: string;
-  sitioWeb: string;
-  telefono: string;
-  fotografia: any;
-}

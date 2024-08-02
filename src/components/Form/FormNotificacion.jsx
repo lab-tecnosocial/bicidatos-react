@@ -26,7 +26,7 @@ export default function FormNotificacion() {
     })
   }, [])
 
-  const place = useSelector((state: any) => state.places.selectedPlace);
+  const place = useSelector((state) => state.places.selectedPlace);
 
   const [openNoti, setOpenNoti] = useState(false);
   const handleClickOpenNoti = () => {
@@ -64,7 +64,7 @@ export default function FormNotificacion() {
       }
     },
     validate: values => {
-      let errors: any = {};
+      let errors = {};
       if (values.mensaje.length < 11) {
         errors.mensaje = 'El mensaje debe tener más de 10 letras.'
       };
@@ -72,7 +72,7 @@ export default function FormNotificacion() {
     }
   });
 
-  const sendNotification = (mensaje: String, idPunto: String, categoria: String) => {
+  const sendNotification = (mensaje, idPunto, categoria) => {
     const notificacion = {
       correo_usuario: user.email,
       nombre_usuario: user.displayName,
@@ -89,44 +89,44 @@ export default function FormNotificacion() {
 
   return (
     <div>
-        <Tooltip title="Notificar" arrow>
-          <IconButton type="button" onClick={handleClickOpenNoti}>
-            <FlagIcon />
-          </IconButton>
-        </Tooltip>
-        <Dialog open={openNoti} onClose={handleCloseNoti} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Notificar</DialogTitle>
-          <form onSubmit={formik.handleSubmit}>
-            <DialogContent>
-              <DialogContentText>
-                Si encuentras algun problema con la información de este punto, puedes notificarlo aquí para que los administradores lo revisen.
-              </DialogContentText>
-              <TextField
-                autoFocus
-                multiline
-                value={formik.values.mensaje}
-                margin="dense"
-                id="mensaje"
-                label="Mensaje"
-                fullWidth
-                rows="4"
-                variant="outlined"
-                error={formik.touched.mensaje && Boolean(formik.errors.mensaje)}
-                helperText={formik.touched.mensaje && formik.errors.mensaje}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCloseNoti} >
-                Cancelar
-              </Button>
-              <Button type="submit" >
-                Enviar
-              </Button>
-            </DialogActions>
-          </form>
-        </Dialog>
+      <Tooltip title="Notificar" arrow>
+        <IconButton type="button" onClick={handleClickOpenNoti}>
+          <FlagIcon />
+        </IconButton>
+      </Tooltip>
+      <Dialog open={openNoti} onClose={handleCloseNoti} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Notificar</DialogTitle>
+        <form onSubmit={formik.handleSubmit}>
+          <DialogContent>
+            <DialogContentText>
+              Si encuentras algun problema con la información de este punto, puedes notificarlo aquí para que los administradores lo revisen.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              multiline
+              value={formik.values.mensaje}
+              margin="dense"
+              id="mensaje"
+              label="Mensaje"
+              fullWidth
+              rows="4"
+              variant="outlined"
+              error={formik.touched.mensaje && Boolean(formik.errors.mensaje)}
+              helperText={formik.touched.mensaje && formik.errors.mensaje}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseNoti} >
+              Cancelar
+            </Button>
+            <Button type="submit" >
+              Enviar
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
     </div>
   );
 }
