@@ -5,7 +5,7 @@ import Preview from "./components/Preview/Preview";
 import Form from "./components/Form/Form";
 import { auth, provider } from "./database/firebase";
 import { useEffect, useState } from "react";
-import { Routes, Route,Navigate, BrowserRouter } from "react-router-dom";
+import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
 
 function App() {
   const [user, setUser] = useState(null);

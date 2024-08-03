@@ -22,7 +22,6 @@ import servicioImagen from './location-taller.png';
 import denunciaImagen from './location-seguridad.png';
 import bicidatosImagen from './bicidatos_bolivia.png';
 import aforoImagen from './location-aforos.png';
-import { display } from "html2canvas/dist/types/css/property-descriptors/display";
 import QrGenerator from "./QrGenerator";
 import { Tooltip } from '@material-ui/core';
 

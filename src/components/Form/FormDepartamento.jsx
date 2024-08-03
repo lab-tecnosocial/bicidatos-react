@@ -5,11 +5,10 @@ import Select from '@material-ui/core/Select';
 import { useMap } from 'react-leaflet';
 import './FormDepartamento.css'
 import L from 'leaflet';
-import { Departamento } from '../../store/models';
 
 
 export const FormDepartamento = ({ departamentos }) => {
-  const ref = useRef < HTMLDivElement > (null);
+  const ref = useRef(null);
   const map = useMap();
   const [selectedDepartamento, setSelectedDepartamento] = useState(null);
 

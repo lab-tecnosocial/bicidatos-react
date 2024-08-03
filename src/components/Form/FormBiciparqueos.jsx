@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 import { addNewPlace as addNewPlaceAction, setPlaceFormVisibility } from "../../store/actions";
-import { Place, PlaceBiciparqueos } from "../../store/models";
 import { AiFillCloseCircle } from "react-icons/ai";
 import "./Form.css";
 import { Field, Formik, Form as FormikForm } from "formik";

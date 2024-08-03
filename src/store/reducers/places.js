@@ -5,22 +5,21 @@ import {
   SET_PRE_PLACE_LOCATION,
   ADD_NEW_PLACE,
 } from "../actions";
-import { PlaceState } from "../models";
 import { data } from "../../data";
 import { LatLngExpression } from "leaflet";
 
-const initialState: PlaceState = {
+const initialState = {
   places: data,
   selectedPlace: null,
   placePreviewsIsVisible: false,
   placeFormIsVisible: false,
-  prePlacePosition: (null as unknown) as LatLngExpression,
+  prePlacePosition: (null),
 };
 
 const productsReducer = (
-  state: PlaceState = initialState,
-  action: { type: string; payload: any }
-): PlaceState => {
+  state = initialState,
+  action
+) => {
   switch (action.type) {
     case SET_SELECTED_PLACE: {
       return { ...state, selectedPlace: action.payload };

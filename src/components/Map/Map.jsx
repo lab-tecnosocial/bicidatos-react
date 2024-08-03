@@ -17,7 +17,7 @@ import AddMarker from "./AddMarker";
 import { FormDepartamento } from "../Form/FormDepartamento";
 // aux data
 import { departamentos } from "./local-places";
-import { ModalSelectorTipo, Type } from "./ModalSelectorTipo";
+import { ModalSelectorTipo } from "./ModalSelectorTipo";
 import { servicios, denuncias } from './optionsData';
 import SearchField from "./SearchField";
 import SearchCoordinates from "./SearchCoordinates";
@@ -45,7 +45,7 @@ const Map = ({
   const [loading, setLoading] = useState(false);
   const [ciclovias, setCiclovias] = useState({});
   const [modal, setModal] = useState(false);
-  const [selectedType, setSelectedType] = useState < Type > ('servicios');
+  const [selectedType, setSelectedType] = useState('servicios');
   const [showSearchCoordinates, setShowSearchCoordinates] = useState(true);
 
   const modalClose = () => {

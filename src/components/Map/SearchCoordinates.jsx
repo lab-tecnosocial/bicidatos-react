@@ -8,9 +8,9 @@ import Alert from './Alert';
 
 
 const SearchCoordinates = ({ setShowSearchCoordinates }) => {
-  const formRef = useRef < HTMLFormElement | null > (null);
+  const formRef = useRef(null);
   const navigate = useNavigate();
-  const mapRef = useRef < L.Map | null > (null);
+  const mapRef = useRef(null);
   const map = useMap();
   const [coordinates, setCoordinates] = useState('');
   const [error, setError] = useState('');
