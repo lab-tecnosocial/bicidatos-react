@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { connect } from "react-redux";
-import { setPlaceFormVisibility } from "../../store/actions";
+import { useStore } from "../../store/context";
 import { AiFillCloseCircle } from "react-icons/ai";
 import "./Form.css";
 import FormBiciparqueos from "./FormBiciparqueos";
@@ -10,25 +9,17 @@ import FormAforos from "./FormAforos";
 import { useNavigate } from 'react-router-dom';
 
 
-
-
-const Form = ({
-  isVisible,
-  closeForm,
-}) => {
-
-
+const Form = () => {
   const [selectedForm, setSelectedForm] = useState('');
-  const navigate = useNavigate();
+  const { state, dispatch } = useStore();
+
+  const isVisible = state.placeFormIsVisible;
+  const closeForm = () => dispatch({ type: "SET_PLACE_FORM_VISIBILITY", payload: false });
 
   const handleChange = (e) => {
     setSelectedForm(e.target.value);
   };
 
-  const closeFormRedirect = () => {
-    closeForm();
-    navigate("/");
-  };
 
   return (
     <div
@@ -38,7 +29,7 @@ const Form = ({
         <span
           className="form__header__close"
           role="button"
-          onClick={() => closeFormRedirect()}
+          onClick={() => closeForm()}
         >
           <AiFillCloseCircle />
         </span>
@@ -69,18 +60,6 @@ const Form = ({
   );
 };
 
-const mapStateToProps = (state) => {
-  const { places } = state;
-  return {
-    isVisible: places.placeFormIsVisible,
-  };
-};
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    closeForm: () =>
-      dispatch(setPlaceFormVisibility(false))
-  }
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Form);
+export default Form;

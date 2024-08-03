@@ -1,5 +1,7 @@
 // react
 import { useEffect, useState } from "react";
+import { useStore } from "../../store/context";
+
 // mui and style
 import { LinearProgress } from "@material-ui/core";
 import "./Map.css";
@@ -7,9 +9,6 @@ import "./Map.css";
 import { LatLngExpression } from "leaflet";
 import { MapContainer, useMapEvents, TileLayer, Marker, Tooltip, LayersControl, LayerGroup, GeoJSON } from "react-leaflet";
 import { iconoBiciparqueo, iconoServicio, iconoDenuncia, iconoAforo } from "./icons";
-// redux
-import { connect } from "react-redux";
-import { setPlaceFormVisibility, setPlacePreviewVisibility, setPrePlaceLocation, setSelectedPlace } from "../../store/actions";
 // firebase
 import db from "../../database/firebase";
 // aux components
@@ -21,18 +20,29 @@ import { ModalSelectorTipo } from "./ModalSelectorTipo";
 import { servicios, denuncias } from './optionsData';
 import SearchField from "./SearchField";
 import SearchCoordinates from "./SearchCoordinates";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 
-const Map = ({
-  isVisible,
-  places,
-  selectedPlace,
-  togglePreview,
-  setPlaceForPreview,
-  setPlaceFormVisibility,
-  setLocation
-}) => {
-  const location = useLocation();
+const Map = () => {
+  const { state, dispatch } = useStore();
+
+  const isVisible = state.placePreviewsIsVisible;
+  const selectedPlace = state.selectedPlace;
+  const setPlaceForPreview = (place) => {
+    dispatch({ type: "SET_SELECTED_PLACE", payload: place });
+  };
+
+  const setPlaceFormVisibility = (value) => {
+    dispatch({ type: "SET_PLACE_FORM_VISIBILITY", payload: value });
+  };
+
+  const togglePreview = (value) => {
+    dispatch({ type: "SET_PLACE_PREVIEW_VISIBILITY", payload: value });
+  };
+
+  const setLocation = (lat, lng) => {
+    dispatch({ type: "SET_PRE_PLACE_LOCATION", payload: { lat, lng } });
+  };
+
   const params = new URLSearchParams(location.search);
   const lat = parseFloat(params.get("lat"));
   const lng = parseFloat(params.get("lng"));
@@ -123,7 +133,7 @@ const Map = ({
     if (window.location.pathname === '/') {
       setShowSearchCoordinates(true);
     }
-  }, [lat, lng, setLocation])
+  }, [])
 
   const MapEvents = () => {
 
@@ -287,7 +297,7 @@ const Map = ({
                   <Marker
                     key={biciparqueo.id}
                     position={[biciparqueo.latitud, biciparqueo.longitud]}
-                    eventHandlers={{ click: () => showPreview(biciparqueo) }}
+                    eventHandlers={{ click: () => { showPreview(biciparqueo) } }}
                     icon={iconoBiciparqueo}
                   >
                     <Tooltip>Biciparqueo</Tooltip>
@@ -366,26 +376,4 @@ const Map = ({
   );
 };
 
-const mapStateToProps = (state) => {
-  const { places } = state;
-  return {
-    isVisible: places.placePreviewsIsVisible,
-    places: places.places,
-    selectedPlace: places.selectedPlace,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    togglePreview: (payload) =>
-      dispatch(setPlacePreviewVisibility(payload)),
-    setPlaceForPreview: (payload) =>
-      dispatch(setSelectedPlace(payload)),
-    setPlaceFormVisibility: (payload) =>
-      dispatch(setPlaceFormVisibility(payload)),
-    setLocation: (lat, lng) =>
-      dispatch(setPrePlaceLocation({ lat, lng })),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Map);
+export default Map;

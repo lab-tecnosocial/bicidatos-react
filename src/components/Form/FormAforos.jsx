@@ -1,8 +1,6 @@
-import { connect } from "react-redux";
-import { addNewPlace as addNewPlaceAction, setPlaceFormVisibility } from "../../store/actions";
+import { useStore } from "../../store/context";
 import "./Form.css";
 import { Field, Formik, Form as FormikForm } from "formik";
-import { LatLng } from "leaflet";
 import DateFnsUtils from '@date-io/date-fns';
 import esLocale from "date-fns/locale/es";
 
@@ -33,14 +31,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const Form = ({
-  isVisible,
-  position,
-  closeForm,
-  addNewPlace,
-  placeSelect
-}) => {
+const Form = () => {
   const [user, setUser] = useState(null);
+  const { state, dispatch } = useStore();
+  const position = state.prePlacePosition;
+  const placeSelect = state.selectedPlace;
+
+  const closeForm = () => {
+    dispatch({ type: "SET_PLACE_FORM_VISIBILITY", payload: false });
+  };
+
+  const addNewPlace = (place) => {
+    dispatch({ type: "ADD_NEW_PLACE", payload: place });
+  };
+
+
   const navigate = useNavigate();
   useEffect(() => {
     auth.onAuthStateChanged(persona => {
@@ -213,7 +218,7 @@ const Form = ({
   return (
     loading ? <div className={classes.root}><CircularProgress /><p>Enviando...</p></div> :
       <div
-        className={`subform__container form__container--${isVisible && "active"}`}
+        className={`subform__container form__container--${state.placeFormIsVisible && "active"}`}
       >
 
         <Formik
@@ -318,23 +323,4 @@ const Form = ({
   );
 };
 
-const mapStateToProps = (state) => {
-  const { places } = state;
-  return {
-    isVisible: places.placeFormIsVisible,
-    position: places.prePlacePosition,
-    placeSelect: places.selectedPlace
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    closeForm: () =>
-      dispatch(setPlaceFormVisibility(false)),
-    addNewPlace: (place) => {
-      dispatch(addNewPlaceAction(place))
-    }
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Form);
+export default Form;

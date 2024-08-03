@@ -1,3 +1,4 @@
+import { useStore } from "../../store/context";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -9,13 +10,13 @@ import db, { auth } from '../../database/firebase';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import FlagIcon from '@material-ui/icons/Flag';
 import { IconButton } from '@material-ui/core';
 import { Tooltip } from '@material-ui/core';
 
 export default function FormNotificacion() {
   const [user, setUser] = useState(null);
+  const { state, dispatch } = useStore();
   useEffect(() => {
     auth.onAuthStateChanged(persona => {
       if (persona) {
@@ -26,7 +27,7 @@ export default function FormNotificacion() {
     })
   }, [])
 
-  const place = useSelector((state) => state.places.selectedPlace);
+  const place = state.selectedPlace;
 
   const [openNoti, setOpenNoti] = useState(false);
   const handleClickOpenNoti = () => {

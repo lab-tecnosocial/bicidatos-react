@@ -1,7 +1,6 @@
-import { connect } from "react-redux";
+import { useStore } from "../../store/context";
 import { useRef, useState } from "react";
 import FormBiciparqueos from "../Form/FormBiciparqueos";
-import { setPlaceFormVisibility, setPlacePreviewVisibility } from "../../store/actions";
 import { AiFillCloseCircle } from "react-icons/ai";
 import "./Preview.css";
 import FormServicios from "../Form/FormServicios";
@@ -25,10 +24,16 @@ import aforoImagen from './location-aforos.png';
 import QrGenerator from "./QrGenerator";
 import { Tooltip } from '@material-ui/core';
 
-const Preview = ({ isVisible, place, closePreview, closeForm }) => {
+const Preview = () => {
   const cardRef = useRef(null);
   const [index, setIndex] = useState(0);
   const [actualizar, setActualizar] = useState(false);
+  const { state, dispatch } = useStore();
+
+  const isVisible = state.placePreviewsIsVisible;
+  const place = state.selectedPlace;
+  const closePreview = () => dispatch({ type: 'SET_PLACE_PREVIEW_VISIBILITY', payload: false });
+  const closeForm = () => dispatch({ type: 'SET_PLACE_FORM_VISIBILITY', payload: false });
 
   useEffect(() => {
     setIndex(0);
@@ -275,18 +280,4 @@ const Preview = ({ isVisible, place, closePreview, closeForm }) => {
 };
 
 
-const mapStateToProps = (state) => {
-  const { places } = state;
-  return { isVisible: places.placePreviewsIsVisible, place: places.selectedPlace };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    closePreview: () =>
-      dispatch(setPlacePreviewVisibility(false)),
-    closeForm: () =>
-      dispatch(setPlaceFormVisibility(false))
-  }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Preview);
+export default Preview;
