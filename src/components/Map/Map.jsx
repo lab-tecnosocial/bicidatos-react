@@ -20,7 +20,6 @@ import { ModalSelectorTipo } from "./ModalSelectorTipo";
 import { servicios, denuncias } from './optionsData';
 import SearchField from "./SearchField";
 import SearchCoordinates from "./SearchCoordinates";
-// import { useLocation } from "react-router-dom";
 
 const Map = () => {
   const { state, dispatch } = useStore();

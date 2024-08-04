@@ -5,8 +5,6 @@ import Preview from "./components/Preview/Preview";
 import Form from "./components/Form/Form";
 import { auth, provider } from "./database/firebase";
 import { useEffect, useState } from "react";
-import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
-
 function App() {
   const [user, setUser] = useState(null);
   if (user) {
@@ -38,31 +36,12 @@ function App() {
   }
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={
-            <>
-              <Header user={user} signIn={signInWithGoogle} signOut={signOut} />
-              <main>
-                <Map />
-                <Preview />
-                <Form />
-              </main>
-            </>
-          } />
-          <Route path="mapa" element={
-            <>
-              <Header user={user} signIn={signInWithGoogle} signOut={signOut} />
-              <main>
-                <Map />
-                <Preview />
-                <Form />
-              </main>
-            </>
-          } />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </BrowserRouter>
+      <Header user={user} signIn={signInWithGoogle} signOut={signOut} />
+      <main>
+        <Map />
+        <Preview />
+        <Form />
+      </main>
     </>
   );
 }

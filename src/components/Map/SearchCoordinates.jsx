@@ -1,6 +1,5 @@
 import TextField from '@material-ui/core/TextField';
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import L from 'leaflet';
 import { useMap } from 'react-leaflet';
 import './SearchCoordinates.css';
@@ -9,7 +8,6 @@ import Alert from './Alert';
 
 const SearchCoordinates = ({ setShowSearchCoordinates }) => {
   const formRef = useRef(null);
-  const navigate = useNavigate();
   const mapRef = useRef(null);
   const map = useMap();
   const [coordinates, setCoordinates] = useState('');
@@ -48,8 +46,6 @@ const SearchCoordinates = ({ setShowSearchCoordinates }) => {
         });
       }
     }
-
-    navigate(`/mapa?lat=${lat}&lng=${lng}`, { replace: true });
 
     if (mapRef.current) {
       const zoomLevel = 16;

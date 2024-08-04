@@ -2,10 +2,8 @@ import { useState } from "react";
 import { useStore } from "../../store/context";
 import { useMapEvents, Marker } from "react-leaflet";
 import Alert from "./Alert";
-import { useNavigate } from "react-router-dom";
 
 const AddMarker = () => {
-  const navigate = useNavigate();
   const [position, setPosition] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
 
@@ -44,7 +42,6 @@ const AddMarker = () => {
         e.latlng.lng <= boliviaLatLng.east
       ) {
         setPosition(e.latlng);
-        navigate(`/mapa?lat=${e.latlng.lat}&lng=${e.latlng.lng}`);
         setLocation(e.latlng);
         toggleForm(true);
         nullPlace();

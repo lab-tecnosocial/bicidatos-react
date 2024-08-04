@@ -25,7 +25,6 @@ import QrGenerator from "./QrGenerator";
 import { Tooltip } from '@material-ui/core';
 
 const Preview = () => {
-  const cardRef = useRef(null);
   const [index, setIndex] = useState(0);
   const [actualizar, setActualizar] = useState(false);
   const { state, dispatch } = useStore();
@@ -37,30 +36,12 @@ const Preview = () => {
 
   useEffect(() => {
     setIndex(0);
+    if (place) {
+      closeForm();
+    }
   }, [place]);
 
   const handleActualizar = () => setActualizar(prevActualizar => !prevActualizar);
-  const handleShare = (e) => {
-    e.preventDefault();
-    console.log("hola");
-    // let node =document.getElementById("preview-service");
-    // domtoimage.toJpeg(document.getElementById('contenido-servicio'), { quality: 0.95 })
-    // .then(function (dataUrl) {
-    //     var link = document.createElement('a');
-    //     link.download = 'my-image-name.jpeg';
-    //     link.href = dataUrl;
-    //     link.click();
-    // });
-    cardRef.current.style.display = 'block';
-    html2canvas(cardRef.current).then((canvas) => {
-      const url = canvas.toDataURL('image/png');
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'tarjeta.png';
-      a.click();
-      cardRef.current.style.display = 'none';
-    });
-  }
   const incrementIndex = () => setIndex(prevIndex => prevIndex + 1);
   const decrementIndex = () => setIndex(prevIndex => prevIndex - 1);
 
@@ -85,7 +66,6 @@ const Preview = () => {
     )
     // console.log('id del lugar: ', place.id);
     var arregloOrd = ordenarPorFecha(place);
-    closeForm();
   }
 
 
@@ -96,7 +76,7 @@ const Preview = () => {
         }`}
 
     >
-      <div className="preview__close" onClick={() => closePreview()}>
+      <div className="preview__close" onClick={closePreview}>
         <AiFillCloseCircle></AiFillCloseCircle>
       </div>
 
@@ -165,11 +145,7 @@ const Preview = () => {
               <UpdateIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Compartir" arrow>
-            <IconButton type="button" onClick={handleShare}>
-              <ShareOutlinedIcon />
-            </IconButton>
-          </Tooltip>
+
         </div>
 
         {actualizar && place?.historial[Object.keys(place?.historial)[index]].accesibilidad && <FormBiciparqueos />}
@@ -177,7 +153,7 @@ const Preview = () => {
         {actualizar && place?.historial[Object.keys(place?.historial)[index]].fecha_observacion && <FormAforos />}
         {actualizar && place?.historial[Object.keys(place?.historial)[index]].tipo_incidente && <FormDenuncias />}
 
-        <div ref={cardRef} style={{ display: "none", zIndex: "1", position: "fixed", right: "0", top: "0", width: "720px", height: "442px", fontFamily: "Poppins", backgroundImage: `url(${imagen})` }}>
+        <div style={{ display: "none", zIndex: "1", position: "fixed", right: "0", top: "0", width: "720px", height: "442px", fontFamily: "Poppins", backgroundImage: `url(${imagen})` }}>
           {/* <img src={imagen} alt="Imagen de la tarjeta" width={600} height={350} /> */}
           <div style={{ display: "flex", alignItems: "center", flexDirection: "column", width: "100%" }}>
 
