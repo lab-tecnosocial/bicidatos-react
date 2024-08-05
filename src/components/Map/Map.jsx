@@ -245,6 +245,7 @@ const Map = () => {
   }
 
   const showPreview = (place) => {
+    console.log('showPreview', place);
     if (isVisible) {
       togglePreview(false);
       setPlaceForPreview(null);
