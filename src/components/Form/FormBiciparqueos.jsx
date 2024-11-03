@@ -1,6 +1,5 @@
 import { useStore } from "../../store/context";
-import { AiFillCloseCircle } from "react-icons/ai";
-import "./Form.css";
+import CloseIcon from '@material-ui/icons/Close';
 import { Field, Formik, Form as FormikForm } from "formik";
 import { LatLng } from "leaflet";
 import { useRef } from "react";

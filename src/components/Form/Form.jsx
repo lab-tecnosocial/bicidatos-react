@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useStore } from "../../store/context";
-import { AiFillCloseCircle } from "react-icons/ai";
+import CloseIcon from '@material-ui/icons/Close';
 import "./Form.css";
 import FormBiciparqueos from "./FormBiciparqueos";
 import FormServicios from "./FormServicios";
@@ -30,7 +30,7 @@ const Form = () => {
           role="button"
           onClick={() => closeForm()}
         >
-          <AiFillCloseCircle />
+          <CloseIcon />
         </span>
         <span className="form__header__title">Añadir punto</span>
       </div>
